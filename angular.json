@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular7crud": {
+    "logwork": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular7crud",
+            "outputPath": "dist/logwork",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -59,18 +59,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular7crud:build"
+            "browserTarget": "logwork:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular7crud:build:production"
+              "browserTarget": "logwork:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular7crud:build"
+            "browserTarget": "logwork:build"
           }
         },
         "test": {
@@ -104,7 +104,7 @@
         }
       }
     },
-    "angular7crud-e2e": {
+    "logwork-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -113,11 +113,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "angular7crud:serve"
+            "devServerTarget": "logwork:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "angular7crud:serve:production"
+              "devServerTarget": "logwork:serve:production"
             }
           }
         },
@@ -133,5 +133,5 @@
       }
     }
   },
-  "defaultProject": "angular7crud"
+  "defaultProject": "logwork"
 }

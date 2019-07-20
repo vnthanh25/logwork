@@ -1,10 +1,10 @@
 {
-  "name": "angular7crud",
+  "name": "logwork",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "ng serve --base-href=/logwork/",
+    "build": "ng build --prod --base-href=/logwork/ --build-optimizer=false",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
