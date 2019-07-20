@@ -15,11 +15,11 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
   { path: 'new-user', component: NewUserComponent },
-  { path: 'details/:id', component: EditUserComponent, resolve:{data : EditUserResolver} }
+  { path: 'details/:id', component: EditUserComponent, resolve: { data : EditUserResolver} }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: false })],
+  imports: [RouterModule.forRoot(routes, { useHash: false, anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' })],
   exports: [RouterModule]
 })
 
