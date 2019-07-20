@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class BusinessService {
 
-  uri = 'http://localhost:4200/business';
+  uri = 'https://logwork-f697e.firebaseio.com';
 
   constructor(private http: HttpClient) { }
 

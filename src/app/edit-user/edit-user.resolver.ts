@@ -11,7 +11,7 @@ export class EditUserResolver implements Resolve<any> {
 
     return new Promise((resolve, reject) => {
       let userId = route.paramMap.get('id');
-      this.firebaseService.getUser(userId)
+      this.firebaseService.getDocument('users', userId)
       .subscribe(
         data => {
           resolve(data);

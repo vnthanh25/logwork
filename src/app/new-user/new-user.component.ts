@@ -69,7 +69,14 @@ export class NewUserComponent implements OnInit {
   }
 
   onSubmit(value){
-    this.firebaseService.createUser(value, this.avatarLink)
+    const user = {
+      name: value.name,
+      nameToSearch: value.name.toLowerCase(),
+      surname: value.surname,
+      age: parseInt(value.age),
+      avatar: this.avatarLink
+    }
+    this.firebaseService.createDocument('users', user)
     .then(
       res => {
         this.resetFields();

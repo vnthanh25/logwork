@@ -71,7 +71,7 @@ export class EditUserComponent implements OnInit {
   onSubmit(value){
     value.avatar = this.item.avatar;
     value.age = Number(value.age);
-    this.firebaseService.updateUser(this.item.id, value)
+    this.firebaseService.updateDocument('users', this.item.id, value)
     .then(
       res => {
         this.router.navigate(['/home']);
@@ -80,7 +80,7 @@ export class EditUserComponent implements OnInit {
   }
 
   delete(){
-    this.firebaseService.deleteUser(this.item.id)
+    this.firebaseService.deleteDocument('users', this.item.id)
     .then(
       res => {
         this.router.navigate(['/home']);

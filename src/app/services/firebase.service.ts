@@ -12,41 +12,35 @@ export class FirebaseService {
       return this.db.collection('/avatar').valueChanges()
   }
 
-  getUser(userKey){
-    return this.db.collection('users').doc(userKey).snapshotChanges();
+  createDocument(collection: string, document: any) {
+    return this.db.collection(collection).add(document);
   }
 
-  updateUser(userKey, value){
+  getDocument(collection: string, userKey){
+    return this.db.collection(collection).doc(userKey).snapshotChanges();
+  }
+
+  updateDocument(collection: string, userKey, value){
     value.nameToSearch = value.name.toLowerCase();
-    return this.db.collection('users').doc(userKey).set(value);
+    return this.db.collection(collection).doc(userKey).set(value);
   }
 
-  deleteUser(userKey){
-    return this.db.collection('users').doc(userKey).delete();
+  deleteDocument(collection: string, userKey){
+    return this.db.collection(collection).doc(userKey).delete();
   }
 
-  getUsers(){
-    return this.db.collection('users').snapshotChanges();
+  getDocuments(collection: string){
+    return this.db.collection(collection).snapshotChanges();
   }
 
-  searchUsers(searchValue){
-    return this.db.collection('users',ref => ref.where('nameToSearch', '>=', searchValue)
+  searchDocuments(collection: string, searchValue){
+    return this.db.collection(collection,ref => ref.where('nameToSearch', '>=', searchValue)
       .where('nameToSearch', '<=', searchValue + '\uf8ff'))
       .snapshotChanges()
   }
 
-  searchUsersByAge(value){
-    return this.db.collection('users',ref => ref.orderBy('age').startAt(value)).snapshotChanges();
+  searchDocumentsByProperty(collection: string, property: string, value){
+    return this.db.collection(collection,ref => ref.orderBy(property).startAt(value)).snapshotChanges();
   }
 
-
-  createUser(value, avatar){
-    return this.db.collection('users').add({
-      name: value.name,
-      nameToSearch: value.name.toLowerCase(),
-      surname: value.surname,
-      age: parseInt(value.age),
-      avatar: avatar
-    });
-  }
 }
