@@ -1,0 +1,99 @@
+<div class="create-page">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Create activity</li>
+        </ol>
+    </nav>
+    <div class="page-content">
+        <form class="create-form" [formGroup]="createActivityForm" novalidate (ngSubmit)="onSubmit(createActivityForm.value)">
+            <div class="row">
+                <!-- First column -->
+                <div class="col col-md-6">
+                    <!-- projectName -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                            <input matInput placeholder="ProjectName" class="form-control" formControlName="projectName">
+                        </mat-form-field>
+                        <ng-container *ngFor="let validation of validation_messages.projectName">
+                            <mat-error *ngIf="createActivityForm.get('projectName').hasError(validation.type) && (createActivityForm.get('projectName').dirty || createActivityForm.get('projectName').touched)">{{validation.message}}</mat-error>
+                        </ng-container>
+                    </div>
+                    <!-- code -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                            <input matInput placeholder="Code" class="form-control" formControlName="code">
+                        </mat-form-field>
+                        <ng-container *ngFor="let validation of validation_messages.code">
+                            <mat-error *ngIf="createActivityForm.get('code').hasError(validation.type) && (createActivityForm.get('code').dirty || createActivityForm.get('code').touched)">{{validation.message}}</mat-error>
+                        </ng-container>
+                    </div>
+                    <!-- name -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                          <textarea matInput placeholder="Summary" class="form-control" formControlName="name"></textarea>
+                        </mat-form-field>
+                        <ng-container *ngFor="let validation of validation_messages.name">
+                          <mat-error *ngIf="createActivityForm.get('name').hasError(validation.type) && (createActivityForm.get('name').dirty || createActivityForm.get('name').touched)">{{validation.message}}</mat-error>
+                        </ng-container>
+                    </div>
+                    <!-- type -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                            <input type="text" matInput placeholder="Type" class="form-control" formControlName="type" [matAutocomplete]="auto">
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                <mat-option *ngFor="let activiType of filteredActiviTypes | async" [value]="activiType">
+                                    {{activiType}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <ng-container *ngFor="let validation of validation_messages.type">
+                            <mat-error *ngIf="createActivityForm.get('type').hasError(validation.type) && (createActivityForm.get('type').dirty || createActivityForm.get('type').touched)">{{validation.message}}</mat-error>
+                        </ng-container>
+                    </div>
+                </div>
+                <!-- Second column -->
+                <div class="col col-md-6">
+                    <!-- reportTo -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                            <input matInput placeholder="ReportTo" class="form-control" formControlName="reportTo">
+                        </mat-form-field>
+                        <ng-container *ngFor="let validation of validation_messages.reportTo">
+                            <mat-error *ngIf="createActivityForm.get('reportTo').hasError(validation.type) && (createActivityForm.get('reportTo').dirty || createActivityForm.get('reportTo').touched)">{{validation.message}}</mat-error>
+                        </ng-container>
+                    </div>
+                    <!-- workDate -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                            <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="workDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <ng-container *ngFor="let validation of validation_messages.workDate">
+                            <mat-error *ngIf="createActivityForm.get('workDate').hasError(validation.type) && (createActivityForm.get('workDate').dirty || createActivityForm.get('workDate').touched)">{{validation.message}}</mat-error>
+                        </ng-container>
+                    </div>
+                    <!-- status -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                                <input type="text" matInput placeholder="Status" class="form-control" formControlName="status" [matAutocomplete]="autoStatus">
+                                <mat-autocomplete autoActiveFirstOption #autoStatus="matAutocomplete">
+                                    <mat-option *ngFor="let status of filteredStatuses | async" [value]="status">
+                                        {{status}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                        </mat-form-field>
+                        <ng-container *ngFor="let validation of validation_messages.status">
+                            <mat-error *ngIf="createActivityForm.get('status').hasError(validation.type) && (createActivityForm.get('status').dirty || createActivityForm.get('status').touched)">{{validation.message}}</mat-error>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            <div class="row submit-button-container">
+                <div class="col-md-3">
+                    <button mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!createActivityForm.valid">Create</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

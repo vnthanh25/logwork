@@ -16,17 +16,17 @@ export class FirebaseService {
     return this.db.collection(collection).add(document);
   }
 
-  getDocument(collection: string, userKey){
-    return this.db.collection(collection).doc(userKey).snapshotChanges();
+  getDocument(collection: string, id){
+    return this.db.collection(collection).doc(id).snapshotChanges();
   }
 
-  updateDocument(collection: string, userKey, value){
+  updateDocument(collection: string, id, value){
     value.nameToSearch = value.name.toLowerCase();
-    return this.db.collection(collection).doc(userKey).set(value);
+    return this.db.collection(collection).doc(id).set(value);
   }
 
-  deleteDocument(collection: string, userKey){
-    return this.db.collection(collection).doc(userKey).delete();
+  deleteDocument(collection: string, id: any){
+    return this.db.collection(collection).doc(id).delete();
   }
 
   getDocuments(collection: string){
@@ -36,11 +36,12 @@ export class FirebaseService {
   searchDocuments(collection: string, searchValue){
     return this.db.collection(collection,ref => ref.where('nameToSearch', '>=', searchValue)
       .where('nameToSearch', '<=', searchValue + '\uf8ff'))
-      .snapshotChanges()
+      .snapshotChanges();
   }
 
   searchDocumentsByProperty(collection: string, property: string, value){
-    return this.db.collection(collection,ref => ref.orderBy(property).startAt(value)).snapshotChanges();
+    //return this.db.collection(collection,ref => ref.orderBy(property).startAt(value)).snapshotChanges();
+    return this.db.collection(collection,ref => ref.where(property, '==', value)).snapshotChanges();
   }
 
 }

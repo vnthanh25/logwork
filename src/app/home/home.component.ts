@@ -18,7 +18,10 @@ export class HomeComponent implements OnInit {
   constructor(
     public firebaseService: FirebaseService,
     private router: Router
-  ) { }
+  ) {
+    // Set localStorage: currentEntity.
+    localStorage.setItem('currentEntity', 'user');
+  }
 
   ngOnInit() {
     this.getData();
@@ -36,7 +39,11 @@ export class HomeComponent implements OnInit {
   viewDetails(item){
     this.router.navigate(['/details/'+ item.payload.doc.id]);
   }
-
+  
+  listActivities(item) {
+    localStorage.setItem('idUser', item.payload.doc.id);
+    this.router.navigate(['/activity']);
+  }
   capitalizeFirstLetter(value){
     return value.charAt(0).toUpperCase() + value.slice(1);
   }

@@ -14,9 +14,11 @@ import { environment } from '../environments/environment';
 
 import { BusinessService } from './business.service';
 import { FirebaseService } from './services/firebase.service';
+import { ExcelService } from './services/excel.service';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatInputModule, MatSliderModule, MatDialogModule } from '@angular/material';
+import {MatButtonModule, MatInputModule, MatSliderModule, MatDialogModule, MatDatepickerModule, MatNativeDateModule, MatAutocompleteModule, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
+import { MomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
 
 import { AppComponent } from './app.component';
 import { GstAddComponent } from './gst-add/gst-add.component';
@@ -27,6 +29,22 @@ import { EditUserComponent } from './edit-user/edit-user.component';
 import { EditUserResolver } from './edit-user/edit-user.resolver';
 import { NewUserComponent } from './new-user/new-user.component';
 import { HomeComponent } from './home/home.component';
+import { ActivityListComponent } from './components/activity/activity-list.component';
+import { ActivityCreateComponent } from './components/activity/activity-create.component';
+import { ActivityEditResolver } from './components/activity/activity-edit.resolver';
+import { ActivityEditComponent } from './components/activity/activity-edit.component';
+
+export const VN_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MM YYYY',
+    dateA11yLabel: 'DD/MM/YYYY',
+    monthYearA11yLabel: 'MM YYYY',
+  },
+};
 
 @NgModule({
   declarations: [
@@ -37,7 +55,10 @@ import { HomeComponent } from './home/home.component';
     AvatarDialogComponent,
     EditUserComponent,
     NewUserComponent,
-    HomeComponent
+    HomeComponent,
+    ActivityListComponent,
+    ActivityCreateComponent,
+    ActivityEditComponent
   ],
   entryComponents: [AvatarDialogComponent],
   imports: [
@@ -49,10 +70,14 @@ import { HomeComponent } from './home/home.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     BrowserAnimationsModule,
+    MomentDateModule,
     MatButtonModule,
     MatInputModule,
     MatSliderModule,
     MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatAutocompleteModule,
     // configure the imports
     HttpClientModule,
     TranslateModule.forRoot({
@@ -63,7 +88,11 @@ import { HomeComponent } from './home/home.component';
         }
     })
   ],
-  providers: [ BusinessService, FirebaseService, EditUserResolver ],
+  providers: [ BusinessService, FirebaseService, EditUserResolver, ActivityEditResolver, ExcelService,
+    //{ provide: MAT_DATE_LOCALE, useValue: 'it' },
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: VN_FORMATS }
+  ],
   bootstrap: [AppComponent],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

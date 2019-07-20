@@ -23,15 +23,8 @@
 	<div class="container-fluid">
 		<ul class="navbar-nav">
 			<li class="nav-item">
-				<a routerLink="business/create" class="nav-link" routerLinkActive="active">
-				Create Business
-				</a>
+				<a routerLink="user" class="nav-link" routerLinkActive="active">Users</a>
 			</li>
-			<li class="nav-item">
-				<a routerLink="business" class="nav-link" routerLinkActive="active">
-				Business
-				</a>
-			</li> 
 		</ul>
 		<ul>
 			<li class="navbar-nav"><h3>{{ 'app.title' | translate }}</h3></li>
@@ -51,14 +44,14 @@
 	<div class="side-bar">
 		<ul class="nav flex-column">
 	  	<li class="nav-item">
-	    	<a class="nav-link active" routerLink="home">
+			<button class="nav-link active" mat-icon-button aria-label="Create" (click)="listAction()">
 				<ion-icon name="list"></ion-icon>
-			</a>
+			</button>
 	  	</li>
 	  	<li class="nav-item">
-	    	<a class="nav-link" routerLink="new-user">
+			<button class="nav-link active" mat-icon-button aria-label="Create" (click)="addAction()">
 				<ion-icon name="add"></ion-icon>
-			</a>
+			</button>
 	  	</li>
 		</ul>
 	</div>

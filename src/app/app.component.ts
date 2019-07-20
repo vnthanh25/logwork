@@ -16,29 +16,67 @@ import { NavigationCancel,
 })
 export class AppComponent {
   title = 'log work';
-  constructor(private _loadingBar: SlimLoadingBarService, private _router: Router, private translate: TranslateService) {
+  constructor(private loadingBar: SlimLoadingBarService, private router: Router, private translate: TranslateService) {
     translate.setDefaultLang('vi');
-    this._router.events.subscribe((event: Event) => {
+    this.router.events.subscribe((event: Event) => {
       this.navigationInterceptor(event);
     });
+    // Set localStorage: currentEntity.
+    localStorage.setItem('currentEntity', 'user');
   }
   private navigationInterceptor(event: Event): void {
     if (event instanceof NavigationStart) {
-      this._loadingBar.start();
+      this.loadingBar.start();
     }
     if (event instanceof NavigationEnd) {
-      this._loadingBar.complete();
+      this.loadingBar.complete();
     }
     if (event instanceof NavigationCancel) {
-      this._loadingBar.stop();
+      this.loadingBar.stop();
     }
     if (event instanceof NavigationError) {
-      this._loadingBar.stop();
+      this.loadingBar.stop();
     }
   }
 
   useLanguage(language: string) {
     this.translate.use(language);
+  }
+
+  /* List action */
+  listAction() {
+    const currentEntity = localStorage.getItem('currentEntity');
+
+    switch (currentEntity) {
+      case 'user': {
+        // Route.
+        this.router.navigate(['/user']);
+        break;
+      }
+      case 'activity': {
+        // Route.
+        this.router.navigate(['/activity']);
+        break;
+      }
+    }
+  }
+
+  /* Add action */
+  addAction() {
+    const currentEntity = localStorage.getItem('currentEntity');
+
+    switch (currentEntity) {
+      case 'user': {
+        // Route.
+        this.router.navigate(['/new-user']);
+        break;
+      }
+      case 'activity': {
+        // Route.
+        this.router.navigate(['/activity/create']);
+        break;
+      }
+    }
   }
 
 }
