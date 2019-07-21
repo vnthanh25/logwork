@@ -15,6 +15,8 @@ export class EditUserComponent implements OnInit {
 
   exampleForm: FormGroup;
   item: any;
+  fileName: string;
+  avatar: any;
 
   validation_messages = {
    'name': [
@@ -42,9 +44,22 @@ export class EditUserComponent implements OnInit {
       if (data) {
         this.item = data.payload.data();
         this.item.id = data.payload.id;
+        this.avatar = this.item.avatar;
         this.createForm();
       }
     })
+  }
+
+  onFileChanged(event) {
+    let reader = new FileReader();
+    if (event.target.files && event.target.files.length > 0) {
+      let file = event.target.files[0];
+      reader.readAsDataURL(file);
+      reader.onloadend = (event) => {
+        this.fileName = file.name + " " + file.type;
+        this.avatar = reader.result;
+      };
+    }
   }
 
   createForm() {
@@ -63,14 +78,14 @@ export class EditUserComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.item.avatar = result.link;
+        //this.item.avatar = result.link;
       }
     });
   }
 
   onSubmit(value){
-    value.avatar = this.item.avatar;
     value.age = Number(value.age);
+    value.avatar = this.avatar;
     this.firebaseService.updateDocument('users', this.item.id, value)
     .then(
       res => {
@@ -94,5 +109,7 @@ export class EditUserComponent implements OnInit {
   cancel(){
     this.router.navigate(['/home']);
   }
+
+  
 
 }

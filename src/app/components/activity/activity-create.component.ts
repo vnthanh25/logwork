@@ -153,4 +153,9 @@ export class ActivityCreateComponent implements OnInit {
             this.createActivityForm.reset();
         });
     }
+
+    /* Cancel */
+    cancel() {
+        this.router.navigate(['/activity']);
+    }
 }

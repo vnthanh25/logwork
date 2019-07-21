@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material';
 import { AvatarDialogComponent } from "../avatar-dialog/avatar-dialog.component";
 import { Router } from '@angular/router';
 import { FirebaseService } from '../services/firebase.service';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-new-user',
@@ -14,6 +15,8 @@ export class NewUserComponent implements OnInit {
 
   exampleForm: FormGroup;
   avatarLink: string = "https://s3.amazonaws.com/uifaces/faces/twitter/adellecharles/128.jpg";
+  fileName: string;
+  avatar: any;
 
   validation_messages = {
    'name': [
@@ -28,6 +31,7 @@ export class NewUserComponent implements OnInit {
  };
 
   constructor(
+    private sanitizer: DomSanitizer,
     private fb: FormBuilder,
     public dialog: MatDialog,
     private router: Router,
@@ -38,12 +42,30 @@ export class NewUserComponent implements OnInit {
     this.createForm();
   }
 
+  onFileChanged(event) {
+    let reader = new FileReader();
+    if (event.target.files && event.target.files.length > 0) {
+      let file = event.target.files[0];
+      reader.readAsDataURL(file);
+      reader.onloadend = (event) => {
+        this.fileName = file.name + " " + file.type;
+        this.avatar = reader.result;
+      };
+    }
+  }
+  
+  sanitize(url: string) {
+    //return url;
+    return this.sanitizer.bypassSecurityTrustUrl(url);
+  }
+
   createForm() {
     this.exampleForm = this.fb.group({
       name: ['', Validators.required ],
       surname: ['', Validators.required ],
       age: ['', Validators.required ]
     });
+    this.avatar = '//:0';
   }
 
   openDialog() {
@@ -54,7 +76,7 @@ export class NewUserComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.avatarLink = result.link;
+        //this.avatarLink = result.link;
       }
     });
   }
@@ -66,6 +88,7 @@ export class NewUserComponent implements OnInit {
       surname: new FormControl('', Validators.required),
       age: new FormControl('', Validators.required),
     });
+    this.avatar = '//:0';
   }
 
   onSubmit(value){
@@ -74,7 +97,7 @@ export class NewUserComponent implements OnInit {
       nameToSearch: value.name.toLowerCase(),
       surname: value.surname,
       age: parseInt(value.age),
-      avatar: this.avatarLink
+      avatar: this.avatar
     }
     this.firebaseService.createDocument('users', user)
     .then(

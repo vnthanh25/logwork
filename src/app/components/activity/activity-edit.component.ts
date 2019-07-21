@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FirebaseService } from '../../services/firebase.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import * as moment from 'moment';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MAT_DATE_FORMATS } from '@angular/material';
 import { DatePipe } from '@angular/common';
+
+import { DialogOkCancelData, DialogOkCancelComponent } from '../dialog/dialog-ok-cancel.component';
 
 export const DD_MM_YYYY_Format = {
     parse: {
@@ -19,6 +22,11 @@ export const DD_MM_YYYY_Format = {
         monthYearA11yLabel: 'MMMM YYYY',
     },
 };
+
+export interface DialogData {
+    animal: string;
+    name: string;
+}
 
 @Component({
     selector: 'app-activity-edit',
@@ -33,6 +41,8 @@ export class ActivityEditComponent implements OnInit {
     filteredActiviTypes: Observable<string[]>;
     statuses: string[] = ['ToDo','Done','Cancelled','Assigned','Fixed','Rejected','Analyst','Development','Pending','Requirement','Testing','UAT','Ready for UAT','In Progress','Reopened','Resolved','Closed'];
     filteredStatuses: Observable<string[]>;
+    dialogTitle: string;
+    dialogContent: string;
     
     validation_messages = {
         code: [
@@ -60,10 +70,11 @@ export class ActivityEditComponent implements OnInit {
 
     /* Construtor */
     constructor(
-        private formBuilder: FormBuilder,
-        private route: ActivatedRoute,
         private router: Router,
-        public firebaseService: FirebaseService
+        private route: ActivatedRoute,
+        private formBuilder: FormBuilder,
+        public firebaseService: FirebaseService,
+        public dialog: MatDialog
     ) {}
 
     /* Init */
@@ -169,13 +180,23 @@ export class ActivityEditComponent implements OnInit {
 
     /* Delete */
     delete() {
-        this.firebaseService.deleteDocument(this.COLLECTION, this.activity.id).then( result => {
-            this.router.navigate(['/activity']);
-        }, error => {
-            console.log(error);
+        const dialogData: DialogOkCancelData = { title: 'Warning', content: 'Are you sure to delect it?', result: -1 };
+        const dialogRef = this.dialog.open(DialogOkCancelComponent, {
+            data: dialogData
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (dialogData.result === 1) {
+                this.firebaseService.deleteDocument(this.COLLECTION, this.activity.id).then( result => {
+                    this.router.navigate(['/activity']);
+                }, error => {
+                    console.log(error);
+                });
+            }
         });
     }
 
+    /* Cancel */
     cancel() {
         this.router.navigate(['/activity']);
     }

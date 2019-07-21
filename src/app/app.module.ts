@@ -25,6 +25,7 @@ import { GstAddComponent } from './gst-add/gst-add.component';
 import { GstGetComponent } from './gst-get/gst-get.component';
 import { GstEditComponent } from './gst-edit/gst-edit.component';
 import { AvatarDialogComponent } from './avatar-dialog/avatar-dialog.component';
+import { DialogOkCancelData, DialogOkCancelComponent } from './components/dialog/dialog-ok-cancel.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { EditUserResolver } from './edit-user/edit-user.resolver';
 import { NewUserComponent } from './new-user/new-user.component';
@@ -49,6 +50,7 @@ export const VN_FORMATS = {
 @NgModule({
   declarations: [
     AppComponent,
+    DialogOkCancelComponent,
     GstAddComponent,
     GstGetComponent,
     GstEditComponent,
@@ -60,7 +62,10 @@ export const VN_FORMATS = {
     ActivityCreateComponent,
     ActivityEditComponent
   ],
-  entryComponents: [AvatarDialogComponent],
+  entryComponents: [
+    AvatarDialogComponent,
+    DialogOkCancelComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

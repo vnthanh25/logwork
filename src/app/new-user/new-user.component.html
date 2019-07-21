@@ -7,8 +7,12 @@
   <div class="page-content">
     <div class="row">
       <div class="col col-md-4">
-        <img class="img-avatar" src="{{avatarLink}}">
-        <button mat-stroked-button class="change-img-button" color="primary" (click)="openDialog()">Change Image</button>
+          <div class="form-group row">
+              <input type="file" name="image" (change)="onFileChanged($event)">
+              <div class="info" *ngIf="avatar">
+                  <img [src]="avatar"/>
+              </div>
+          </div>
       </div>
 
       <div class="col col-md-8">

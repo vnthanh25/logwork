@@ -9,7 +9,7 @@ import { MatDialogRef } from '@angular/material';
 })
 export class AvatarDialogComponent implements OnInit {
 
-  avatars: Array<any> = new Array<any>();
+  avatar: any;
 
   constructor(
     public dialogRef: MatDialogRef<AvatarDialogComponent>,
@@ -22,7 +22,7 @@ export class AvatarDialogComponent implements OnInit {
 
   getData(){
     this.firebaseService.getAvatars()
-    .subscribe(data => this.avatars = data);
+    .subscribe(data => this.avatar = data);
   }
 
   close(avatar){
