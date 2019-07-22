@@ -19,14 +19,14 @@ export class NewUserComponent implements OnInit {
   avatar: any;
 
   validation_messages = {
+    'userName': [
+      { type: 'required', message: 'User name is required.' }
+    ],
    'name': [
      { type: 'required', message: 'Name is required.' }
    ],
    'surname': [
      { type: 'required', message: 'Surname is required.' }
-   ],
-   'age': [
-     { type: 'required', message: 'Age is required.' },
    ]
  };
 
@@ -61,9 +61,9 @@ export class NewUserComponent implements OnInit {
 
   createForm() {
     this.exampleForm = this.fb.group({
+      userName: ['', Validators.required ],
       name: ['', Validators.required ],
-      surname: ['', Validators.required ],
-      age: ['', Validators.required ]
+      surname: ['', Validators.required ]
     });
     this.avatar = '//:0';
   }
@@ -82,21 +82,20 @@ export class NewUserComponent implements OnInit {
   }
 
   resetFields(){
-    this.avatarLink = "https://s3.amazonaws.com/uifaces/faces/twitter/adellecharles/128.jpg";
     this.exampleForm = this.fb.group({
+      userName: new FormControl('', Validators.required),
       name: new FormControl('', Validators.required),
-      surname: new FormControl('', Validators.required),
-      age: new FormControl('', Validators.required),
+      surname: new FormControl('', Validators.required)
     });
     this.avatar = '//:0';
   }
 
   onSubmit(value){
     const user = {
+      userName: value.userName,
       name: value.name,
       nameToSearch: value.name.toLowerCase(),
       surname: value.surname,
-      age: parseInt(value.age),
       avatar: this.avatar
     }
     this.firebaseService.createDocument('users', user)

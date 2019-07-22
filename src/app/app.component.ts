@@ -8,6 +8,7 @@ import { NavigationCancel,
         NavigationError,
         NavigationStart,
         Router } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,12 @@ import { NavigationCancel,
 })
 export class AppComponent {
   title = 'log work';
-  constructor(private loadingBar: SlimLoadingBarService, private router: Router, private translate: TranslateService) {
+  constructor(
+    private loadingBar: SlimLoadingBarService,
+    private router: Router,
+    private translate: TranslateService,
+    public authService: AuthService
+  ) {
     translate.setDefaultLang('vi');
     this.router.events.subscribe((event: Event) => {
       this.navigationInterceptor(event);
@@ -59,6 +65,19 @@ export class AppComponent {
         break;
       }
     }
+  }
+
+  /* Login */
+  login() {
+    this.router.navigate(['/login']);
+  }
+
+  /* Logout */
+  logout() {
+    this.authService.logout().then(response => {
+      localStorage.removeItem('userName');
+      this.router.navigate(['/']);
+    });
   }
 
   /* Add action */

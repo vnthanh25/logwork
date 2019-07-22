@@ -19,14 +19,14 @@ export class EditUserComponent implements OnInit {
   avatar: any;
 
   validation_messages = {
+   'userName': [
+     { type: 'required', message: 'User name is required.' }
+   ],
    'name': [
      { type: 'required', message: 'Name is required.' }
    ],
    'surname': [
      { type: 'required', message: 'Surname is required.' }
-   ],
-   'age': [
-     { type: 'required', message: 'Age is required.' },
    ]
  };
 
@@ -64,9 +64,9 @@ export class EditUserComponent implements OnInit {
 
   createForm() {
     this.exampleForm = this.fb.group({
+      userName: [this.item.userName, Validators.required],
       name: [this.item.name, Validators.required],
-      surname: [this.item.surname, Validators.required],
-      age: [this.item.age, Validators.required]
+      surname: [this.item.surname, Validators.required]
     });
   }
 
@@ -84,7 +84,6 @@ export class EditUserComponent implements OnInit {
   }
 
   onSubmit(value){
-    value.age = Number(value.age);
     value.avatar = this.avatar;
     this.firebaseService.updateDocument('users', this.item.id, value)
     .then(
@@ -109,7 +108,5 @@ export class EditUserComponent implements OnInit {
   cancel(){
     this.router.navigate(['/home']);
   }
-
-  
 
 }

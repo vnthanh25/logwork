@@ -48,20 +48,12 @@ export class HomeComponent implements OnInit {
     return value.charAt(0).toUpperCase() + value.slice(1);
   }
 
-  searchByName(){
-    let value = this.searchValue.toLowerCase();
-    this.firebaseService.searchDocuments('users', value)
+  searchByUserName(){
+    const value = this.searchValue.toLowerCase();
+    this.firebaseService.searchDocumentsByStartProperty('users', 'userName', value)
     .subscribe(result => {
       this.name_filtered_items = result;
       this.items = this.combineLists(result, this.age_filtered_items);
-    })
-  }
-
-  rangeChange(event){
-    this.firebaseService.searchDocumentsByProperty('users', 'age', event.value)
-    .subscribe(result =>{
-      this.age_filtered_items = result;
-      this.items = this.combineLists(result, this.name_filtered_items);
     })
   }
 

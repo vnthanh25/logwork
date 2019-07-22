@@ -1,0 +1,40 @@
+<div class="login-page">
+    <div class="page-content">
+        <form class="login-form" [formGroup]="loginForm" novalidate (ngSubmit)="onSubmit(loginForm.value)">
+            <div class="row">
+                <!-- First column -->
+                <div class="col col-md-6">
+                    <!-- email -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                            <input matInput placeholder="Email" class="form-control" formControlName="email">
+                        </mat-form-field>
+                        <ng-container *ngFor="let validation of validation_messages.email">
+                            <mat-error *ngIf="loginForm.get('email').hasError(validation.type) && (loginForm.get('email').dirty || loginForm.get('email').touched)">{{validation.message}}</mat-error>
+                        </ng-container>
+                    </div>
+                </div>
+                <!-- Second column -->
+                <div class="col col-md-6">
+                    <!-- password -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                            <input type="password" matInput placeholder="Password" class="form-control" formControlName="password">
+                        </mat-form-field>
+                        <ng-container *ngFor="let validation of validation_messages.password">
+                            <mat-error *ngIf="loginForm.get('password').hasError(validation.type) && (loginForm.get('password').dirty || loginForm.get('password').touched)">{{validation.message}}</mat-error>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <button mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!loginForm.valid">Login</button>
+                </div>
+                <div class="col-md-4">
+                    <button mat-raised-button class="cancel-button" color="basic" type="button" (click)="cancel()">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

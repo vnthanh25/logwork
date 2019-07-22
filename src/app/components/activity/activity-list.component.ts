@@ -51,20 +51,38 @@ export class ActivityListComponent implements OnInit {
     }
 
     getActivities() {
-        const lastModifiedBy = localStorage.getItem('idUser');
-        this.firebaseService.searchDocumentsByProperty(this.COLLECTION, 'lastModifiedBy', lastModifiedBy).subscribe(result => {
+        const owner = localStorage.getItem('idUser');
+        this.firebaseService.searchDocumentsByProperty(this.COLLECTION, 'owner', owner).subscribe(result => {
+            const datePipe = this.datePipe;
             this.activities = result.map(item => {
                 let activity = { id: item.payload.doc.id, ... item.payload.doc.data() };
                 if (activity['workDate']) {
-                    activity['workDate'] = this.datePipe.transform(activity['workDate'], 'dd/MM/yyyy');
+                    activity['workDate'] = datePipe.transform(activity['workDate'], 'dd/MM/yyyy').toString();
                 }
+                /* if (moment.isMoment(activity['workDate'])) {
+                    activity['workDate'] = activity['workDate'].format();
+                } else if (activity['workDate'] instanceof Date) {
+                    activity['workDate'] = datePipe.transform(activity['workDate'], 'dd/MM/yyyy').toString();
+                } else {
+                    const numbers = activity['workDate'].match(/\d+/g);
+                    activity['workDate'] = new Date(numbers[2], numbers[1] - 1, numbers[0]);
+                    activity['workDate'] = datePipe.transform(activity['workDate'], 'dd/MM/yyyy').toString();
+                } */
                 return activity;
             });
-            const datePipe = this.datePipe;
             // Sort by workDate.
-            this.activities = this.activities.sort(function(item1: any, item2: any){
-                const value1 = datePipe.transform(item1.workDate, 'yyyyMMdd').toLowerCase();
-                const value2 = datePipe.transform(item2.workDate, 'yyyyMMdd').toLowerCase();
+            this.activities = this.activities.sort(function(item1: any, item2: any) {
+                // value1.
+                let value1 = item1.workDate;
+                const numbers1 = value1.match(/\d+/g);
+                value1 = new Date(numbers1[2], numbers1[1] - 1, numbers1[0]);
+                value1 = datePipe.transform(value1, 'yyyyMMdd').toString();
+                // value2.
+                let value2 = item2.workDate;
+                const numbers2 = value2.match(/\d+/g);
+                value2 = new Date(numbers2[2], numbers2[1] - 1, numbers2[0]);
+                value2 = datePipe.transform(value2, 'yyyyMMdd').toString();
+                // compare.
                 if (value1 > value2) { return 1; }
                 if (value1 < value2) { return -1; }
                 return 0;
@@ -81,6 +99,7 @@ export class ActivityListComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (dialogData.result === 1) {
                 this.firebaseService.deleteDocument(this.COLLECTION, id).then(result => {
+                    this.getActivities();
                 });
             }
         });
@@ -94,7 +113,7 @@ export class ActivityListComponent implements OnInit {
             data['Summary'] = item.name;
             data['Type'] = item.type;
             data['Start Date'] = item.workDate;
-            data['Assignee'] = this.users[item.lastModifiedBy].name;
+            data['Assignee'] = this.users[item.owner].name;
             data['Report To'] = item.reportTo;
             data['Status'] = item.status;
             return data;

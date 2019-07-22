@@ -44,4 +44,8 @@ export class FirebaseService {
     return this.db.collection(collection,ref => ref.where(property, '==', value)).snapshotChanges();
   }
 
+  searchDocumentsByStartProperty(collection: string, property: string, value){
+    return this.db.collection(collection,ref => ref.orderBy(property).startAt(value)).snapshotChanges();
+  }
+
 }

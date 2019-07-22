@@ -10,6 +10,7 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 
 import { BusinessService } from './business.service';
@@ -21,6 +22,7 @@ import {MatButtonModule, MatInputModule, MatSliderModule, MatDialogModule, MatDa
 import { MomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
 
 import { AppComponent } from './app.component';
+import { LoginComponent } from './components/login/login.component';
 import { GstAddComponent } from './gst-add/gst-add.component';
 import { GstGetComponent } from './gst-get/gst-get.component';
 import { GstEditComponent } from './gst-edit/gst-edit.component';
@@ -34,6 +36,7 @@ import { ActivityListComponent } from './components/activity/activity-list.compo
 import { ActivityCreateComponent } from './components/activity/activity-create.component';
 import { ActivityEditResolver } from './components/activity/activity-edit.resolver';
 import { ActivityEditComponent } from './components/activity/activity-edit.component';
+import { AuthService } from './services/auth.service';
 
 export const VN_FORMATS = {
   parse: {
@@ -50,6 +53,7 @@ export const VN_FORMATS = {
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
     DialogOkCancelComponent,
     GstAddComponent,
     GstGetComponent,
@@ -72,8 +76,9 @@ export const VN_FORMATS = {
     SlimLoadingBarModule,
     FormsModule,
     ReactiveFormsModule,
-    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),
     AngularFirestoreModule,
+    AngularFireAuthModule,
     BrowserAnimationsModule,
     MomentDateModule,
     MatButtonModule,
@@ -94,6 +99,7 @@ export const VN_FORMATS = {
     })
   ],
   providers: [ BusinessService, FirebaseService, EditUserResolver, ActivityEditResolver, ExcelService,
+    AuthService,
     //{ provide: MAT_DATE_LOCALE, useValue: 'it' },
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: VN_FORMATS }

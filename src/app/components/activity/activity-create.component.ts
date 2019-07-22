@@ -143,9 +143,10 @@ export class ActivityCreateComponent implements OnInit {
             reportTo: value.reportTo,
             workDate: value.workDate.format(),
             status: value.status,
-            createdBy: localStorage.getItem('idUser'),
+            owner: localStorage.getItem('idUser'),
+            createdBy: localStorage.getItem('userName'),
             createdDate: moment(new Date()).format(),
-            lastModifiedBy: localStorage.getItem('idUser'),
+            lastModifiedBy: localStorage.getItem('userName'),
             lastModifiedDate: moment(new Date()).format()
         };
         // Save.
