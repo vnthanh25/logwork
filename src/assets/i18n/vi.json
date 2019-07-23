@@ -30,6 +30,8 @@
         "workDate": "Ngày làm",
         "status": "Trạng thái",
         "action": "Hành động",
-        "exportExcel": "Xuất ra excel"
+        "exportExcel": "Xuất ra excel",
+        "pleaseLogin": "Vui lòng đăng nhập!",
+        "areYouDelete": "Bạn có chắc là xóa?"
     }
 }

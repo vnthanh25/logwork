@@ -30,6 +30,8 @@
         "workDate": "Work date",
         "status": "Status",
         "action": "Actions",
-        "exportExcel": "Export excel"
+        "exportExcel": "Export excel",
+        "pleaseLogin": "Please login!",
+        "areYouDelete": "Are you sure delete?"
     }
 }

@@ -9,6 +9,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 import {ExcelService} from '../../services/excel.service';
 import { DialogOkCancelData, DialogOkCancelComponent } from '../dialog/dialog-ok-cancel.component';
 import { EncryptService } from 'src/app/services/encrypt.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-activity-list',
@@ -28,7 +29,8 @@ export class ActivityListComponent implements OnInit {
         private router: Router,
         public firebaseService: FirebaseService,
         public dialog: MatDialog,
-        private encryptService: EncryptService
+        private encryptService: EncryptService,
+        private translate: TranslateService
     ) {
         // Set localStorage: currentEntity.
         localStorage.setItem('currentEntity', 'activity');
@@ -98,7 +100,7 @@ export class ActivityListComponent implements OnInit {
     }
 
     deleteActivity(id) {
-        const dialogData: DialogOkCancelData = { title: 'Warning', content: 'Are you sure to delect it?', result: -1 };
+        const dialogData: DialogOkCancelData = { title: 'Warning', content: this.translate.instant('activity.areYouDelete'), result: -1 };
         const dialogRef = this.dialog.open(DialogOkCancelComponent, {
             data: dialogData
         });

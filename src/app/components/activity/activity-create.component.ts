@@ -7,6 +7,7 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { MAT_DATE_FORMATS } from '@angular/material';
 import { EncryptService } from 'src/app/services/encrypt.service';
+import { TranslateService } from '@ngx-translate/core';
 
 export const DD_MM_YYYY_Format = {
     parse: {
@@ -59,7 +60,8 @@ export class ActivityCreateComponent implements OnInit {
         private formBuilder: FormBuilder,
         private router: Router,
         public firebaseService: FirebaseService,
-        private encryptService: EncryptService
+        private encryptService: EncryptService,
+        private translate: TranslateService
     ) {}
 
     /* Init */
@@ -151,6 +153,8 @@ export class ActivityCreateComponent implements OnInit {
         // Save.
         this.firebaseService.createDocument(this.COLLECTION, activity).then(result => {
             this.createActivityForm.reset();
+        }).catch(error => {
+            alert(this.translate.instant('activity.pleaseLogin'));
         });
     }
 

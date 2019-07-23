@@ -11,6 +11,7 @@ import { DatePipe } from '@angular/common';
 
 import { DialogOkCancelData, DialogOkCancelComponent } from '../dialog/dialog-ok-cancel.component';
 import { EncryptService } from 'src/app/services/encrypt.service';
+import { TranslateService } from '@ngx-translate/core';
 
 export const DD_MM_YYYY_Format = {
     parse: {
@@ -73,7 +74,8 @@ export class ActivityEditComponent implements OnInit {
         private formBuilder: FormBuilder,
         public firebaseService: FirebaseService,
         public dialog: MatDialog,
-        private encryptService: EncryptService
+        private encryptService: EncryptService,
+        private translate: TranslateService
     ) {}
 
     /* Init */
@@ -187,7 +189,7 @@ export class ActivityEditComponent implements OnInit {
 
     /* Delete */
     delete() {
-        const dialogData: DialogOkCancelData = { title: 'Warning', content: 'Are you sure to delect it?', result: -1 };
+        const dialogData: DialogOkCancelData = { title: 'Warning', content: this.translate.instant('activity.areYouDelete'), result: -1 };
         const dialogRef = this.dialog.open(DialogOkCancelComponent, {
             data: dialogData
         });
