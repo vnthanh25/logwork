@@ -10,6 +10,7 @@ import {ExcelService} from '../../services/excel.service';
 import { DialogOkCancelData, DialogOkCancelComponent } from '../dialog/dialog-ok-cancel.component';
 import { EncryptService } from 'src/app/services/encrypt.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
     selector: 'app-activity-list',
@@ -30,7 +31,8 @@ export class ActivityListComponent implements OnInit {
         public firebaseService: FirebaseService,
         public dialog: MatDialog,
         private encryptService: EncryptService,
-        private translate: TranslateService
+        private translate: TranslateService,
+        public authService: AuthService
     ) {
         // Set localStorage: currentEntity.
         localStorage.setItem('currentEntity', 'activity');

@@ -8,6 +8,7 @@ import {map, startWith} from 'rxjs/operators';
 import { MAT_DATE_FORMATS } from '@angular/material';
 import { EncryptService } from 'src/app/services/encrypt.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 export const DD_MM_YYYY_Format = {
     parse: {
@@ -61,7 +62,8 @@ export class ActivityCreateComponent implements OnInit {
         private router: Router,
         public firebaseService: FirebaseService,
         private encryptService: EncryptService,
-        private translate: TranslateService
+        private translate: TranslateService,
+        public authService: AuthService
     ) {}
 
     /* Init */

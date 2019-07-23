@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { Router, Params } from '@angular/router';
 import { UserService } from '../services';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    public authService: AuthService
   ) {
     // Set localStorage: currentEntity.
     localStorage.setItem('currentEntity', 'user');

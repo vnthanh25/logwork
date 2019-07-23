@@ -8,7 +8,7 @@
             <td>{{ 'activity.reportTo' | translate }}</td>
             <td>{{ 'activity.workDate' | translate }}</td>
             <td>{{ 'activity.status' | translate }}</td>
-            <td colspan="2">{{ 'activity.action' | translate }}</td>
+            <td colspan="3">{{ 'activity.action' | translate }}</td>
         </tr>
     </thead>
 
@@ -21,9 +21,10 @@
             <td>{{ activity.reportTo }}</td>
             <td>{{ activity.workDate}}</td>
             <td>{{ activity.status }}</td>
-            <td><a [routerLink]="['edit', activity.id]" class="btn btn-primary">{{ 'app.edit' | translate }}</a></td>
+            <td><a [routerLink]="['edit', activity.id, 'false']" class="btn btn-primary">{{ 'app.edit' | translate }}</a></td>
+            <td><a [routerLink]="['edit', activity.id, 'true']" class="btn btn-primary">{{ 'app.copy' | translate }}</a></td>
             <td><button mat-raised-button class="delete-button" color="warn" type="button" (click)="deleteActivity(activity.id)">{{ 'app.delete' | translate }}</button></td>
         </tr>
     </tbody>
 </table>
-<button mat-raised-button class="btn btn-primary" type="button" (click)="exportAsXLSX()">{{ 'activity.exportExcel' | translate }}</button>
+<button *ngIf="authService.isLoggedIn()" mat-raised-button class="btn btn-primary" type="button" (click)="exportAsXLSX()">{{ 'activity.exportExcel' | translate }}</button>

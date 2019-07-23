@@ -12,18 +12,7 @@ import { DatePipe } from '@angular/common';
 import { DialogOkCancelData, DialogOkCancelComponent } from '../dialog/dialog-ok-cancel.component';
 import { EncryptService } from 'src/app/services/encrypt.service';
 import { TranslateService } from '@ngx-translate/core';
-
-export const DD_MM_YYYY_Format = {
-    parse: {
-        dateInput: 'LL',
-    },
-    display: {
-        dateInput: 'DD/MM/YYYY',
-        monthYearLabel: 'MMM YYYY',
-        dateA11yLabel: 'LL',
-        monthYearA11yLabel: 'MMMM YYYY',
-    },
-};
+import { AuthService } from 'src/app/services/auth.service';
 
 export interface DialogData {
     animal: string;
@@ -75,56 +64,58 @@ export class ActivityEditComponent implements OnInit {
         public firebaseService: FirebaseService,
         public dialog: MatDialog,
         private encryptService: EncryptService,
-        private translate: TranslateService
+        private translate: TranslateService,
+        public authService: AuthService
     ) {}
 
     /* Init */
     ngOnInit() {
-        this.editForm();
-        this.filteredActiviTypes = this.editActivityForm.controls.type.valueChanges.pipe(
-            startWith(''),
-            map(value => this.filterActiviTypes(value))
-        );
-        this.filteredStatuses = this.editActivityForm.controls.status.valueChanges.pipe(
-            startWith(''),
-            map(value => this.filterStatuses(value))
-        );
+        this.route.data.subscribe(routeData => {
+            const data = routeData['data'];
+            if (data) {
+                if (data['isCreate']) {
+                    delete data['isCreate'];
+                    delete data['id'];
+                }
+                this.activity = data;
+                // Fill data to controls.
+                if (this.activity.workDate) {
+                    this.activity.workDate = moment(new Date(this.activity.workDate));
+                }
+                this.activity['code'] = this.encryptService.decrypt(this.activity['code']);
+                this.activity['summary'] = this.activity['summary'] ? this.encryptService.decrypt(this.activity['summary']) : '';
+                this.activity['projectName'] = this.encryptService.decrypt(this.activity['projectName']);
+                // Create form group.
+                this.createForm();
+                // Listen activity type change.
+                this.filteredActiviTypes = this.editActivityForm.controls.type.valueChanges.pipe(
+                    startWith(''),
+                    map(value => this.filterActiviTypes(value))
+                );
+                // Listen activity status change.
+                this.filteredStatuses = this.editActivityForm.controls.status.valueChanges.pipe(
+                    startWith(''),
+                    map(value => this.filterStatuses(value))
+                );
+            }
+        });
     }
-    
+
     private filterActiviTypes(value: string): string[] {
         const filterValue = value ? value.toLowerCase() : '';
-    
+
         return this.activityTypes.filter(option => option ? option.toLowerCase().includes(filterValue) : false);
     }
-    
+
     private filterStatuses(value: string): string[] {
         const filterValue = value ? value.toLowerCase() : '';
-    
+
         return this.statuses.filter(option => option ? option.toLowerCase().includes(filterValue) : false);
     }
 
     /*-----------------------------*/
     /*---------- Methods ----------*/
     /*-----------------------------*/
-
-    /* Edit form */
-    editForm() {
-        this.route.data.subscribe(routeData => {
-            const data = routeData['data'];
-            if (data) {
-              this.activity = data;
-              if (this.activity.workDate) {
-                this.activity.workDate = moment(new Date(this.activity.workDate));
-              }
-                
-              this.activity['code'] = this.encryptService.decrypt(this.activity['code']);
-              this.activity['summary'] = this.activity['summary'] ? this.encryptService.decrypt(this.activity['summary']) : '';
-              this.activity['projectName'] = this.encryptService.decrypt(this.activity['projectName']);
-              
-              this.createForm();
-            }
-          });
-    }
 
     /* Create form */
     createForm() {
@@ -182,9 +173,21 @@ export class ActivityEditComponent implements OnInit {
         this.activity.lastModifiedBy = localStorage.getItem('idUser');
         this.activity.lastModifiedDate = moment(new Date()).format();
         // Save.
-        this.firebaseService.updateDocument(this.COLLECTION, this.activity.id, this.activity).then(result => {
-            this.router.navigate(['/activity']);
-        });
+        let promiseResult = null;
+        if (this.activity.id) {// update.
+            promiseResult = this.firebaseService.updateDocument(this.COLLECTION, this.activity.id, this.activity);
+        } else {// create.
+            promiseResult = this.firebaseService.createDocument(this.COLLECTION, this.activity);
+        }
+        if (promiseResult) {
+            promiseResult.then(result => {
+                this.router.navigate(['/activity']);
+            }).catch(error => {
+                alert(this.translate.instant('activity.pleaseLogin'));
+            });
+        } else {
+            alert(this.translate.instant('activity.pleaseLogin'));
+        }
     }
 
     /* Delete */

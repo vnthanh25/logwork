@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: 'details/:id', component: EditUserComponent, resolve: { data : EditUserResolver } },
   { path: 'activity', component: ActivityListComponent },
   { path: 'activity/create', component: ActivityCreateComponent },
-  { path: 'activity/edit/:id', component: ActivityEditComponent, resolve: { data: ActivityEditResolver } }
+  { path: 'activity/edit/:id/:isCreate', component: ActivityEditComponent, resolve: { data: ActivityEditResolver } }
 ];
 
 @NgModule({

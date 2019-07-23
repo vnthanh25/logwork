@@ -88,7 +88,7 @@
             </div>
             <div class="row submit-button-container">
                 <div class="col-md-3">
-                    <button mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!createActivityForm.valid">{{ 'app.create' | translate }}</button>
+                    <button *ngIf="authService.isLoggedIn()" mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!createActivityForm.valid">{{ 'app.create' | translate }}</button>
                 </div>
                 <div class="col-md-4">
                     <button mat-raised-button class="cancel-button" color="basic" type="button" (click)="cancel()">{{ 'app.cancel' | translate }}</button>

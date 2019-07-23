@@ -10,7 +10,8 @@
         "edit": "Chỉnh sửa",
         "update": "Cập nhật",
         "delete": "Xóa",
-        "cancel": "Hủy"
+        "cancel": "Hủy",
+        "copy": "Sao chép"
     },
     "user": {
         "title": "Thành viên",

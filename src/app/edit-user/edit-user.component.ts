@@ -6,6 +6,7 @@ import { AvatarDialogComponent } from "../avatar-dialog/avatar-dialog.component"
 import { FirebaseService } from '../services/firebase.service';
 import { Router } from '@angular/router';
 import { UserService } from '../services';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-edit-user',
@@ -36,7 +37,8 @@ export class EditUserComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public authService: AuthService
   ) { }
 
   ngOnInit() {

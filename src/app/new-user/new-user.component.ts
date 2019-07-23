@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { FirebaseService } from '../services/firebase.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import { UserService } from '../services';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-new-user',
@@ -36,7 +37,8 @@ export class NewUserComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private fb: FormBuilder,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    public authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -106,6 +108,10 @@ export class NewUserComponent implements OnInit {
         this.router.navigate(['/home']);
       }
     );
+  }
+
+  cancel() {
+    this.router.navigate(['/home']);
   }
 
 }
