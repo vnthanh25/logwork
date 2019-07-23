@@ -36,8 +36,7 @@ export class FirebaseService {
   }
 
   updateDocument(collection: string, id, value){
-    value.nameToSearch = value.name.toLowerCase();
-    return this.db.collection(collection).doc(id).set(value);
+    return this.db.collection(collection).doc(id).set(value, { merge: true });
   }
 
   deleteDocument(collection: string, id: any){
@@ -48,19 +47,19 @@ export class FirebaseService {
     return this.db.collection(collection).snapshotChanges();
   }
 
-  searchDocuments(collection: string, searchValue){
-    return this.db.collection(collection,ref => ref.where('nameToSearch', '>=', searchValue)
-      .where('nameToSearch', '<=', searchValue + '\uf8ff'))
-      .snapshotChanges();
-  }
+  // searchDocuments(collection: string, searchValue) {
+  //   return this.db.collection(collection, ref => ref.where('nameToSearch', '>=', searchValue)
+  //     .where('nameToSearch', '<=', searchValue + '\uf8ff'))
+  //     .snapshotChanges();
+  // }
 
-  searchDocumentsByProperty(collection: string, property: string, value){
+  searchDocumentsByProperty(collection: string, property: string, value) {
     //return this.db.collection(collection,ref => ref.orderBy(property).startAt(value)).snapshotChanges();
-    return this.db.collection(collection,ref => ref.where(property, '==', value)).snapshotChanges();
+    return this.db.collection(collection, ref => ref.where(property, '==', value)).snapshotChanges();
   }
 
-  searchDocumentsByStartProperty(collection: string, property: string, value){
-    return this.db.collection(collection,ref => ref.orderBy(property).startAt(value)).snapshotChanges();
+  searchDocumentsByStartAtProperty(collection: string, property: string, value) {
+    return this.db.collection(collection, ref => ref.orderBy('email').startAt(value).endAt(value + '\uf8ff')).snapshotChanges();
   }
 
 }

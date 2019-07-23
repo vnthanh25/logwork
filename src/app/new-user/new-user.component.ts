@@ -91,12 +91,10 @@ export class NewUserComponent implements OnInit {
     this.avatar = '//:0';
   }
 
-  onSubmit(value){
+  onSubmit(value) {
     const user = {
-      email: value.userName,
-      userName: value.userName,
+      userName: value.userName.toLowerCase(),
       name: value.name,
-      nameToSearch: value.name.toLowerCase(),
       surname: value.surname,
       avatar: this.avatar
     };

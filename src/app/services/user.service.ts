@@ -16,7 +16,7 @@ export class UserService {
 
     create(user) {
         return new Promise((resolve, reject) => {
-            this.authService.createUser(user.email, this.DEFAULT_MK).then(response => {
+            this.authService.createUser(user.userName, this.DEFAULT_MK).then(response => {
                 this.firebaseService.createDocument(this.COLLECTION, user).then(response1 => {
                     resolve(response1);
                 }).catch(error1 => {
@@ -41,7 +41,6 @@ export class UserService {
     }
 
     searchByUserName(userName) {
-        const value = userName.toLowerCase();
-        return this.firebaseService.searchDocumentsByStartProperty(this.COLLECTION, 'userName', userName);
+        return this.firebaseService.searchDocumentsByStartAtProperty(this.COLLECTION, 'userName', userName);
     }
 }

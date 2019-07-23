@@ -85,18 +85,10 @@ export class EditUserComponent implements OnInit {
   }
 
   onSubmit(value) {
+    value.id = this.item.id;
     value.avatar = this.avatar;
+    value.userName = value.userName.toLowerCase();
     this.userService.update(value)
-    .then(
-      res => {
-        this.router.navigate(['/home']);
-      }
-    );
-  }
-
-  save() {
-    this.item.avatar = this.avatar;
-    this.userService.update(this.item)
     .then(
       res => {
         this.router.navigate(['/home']);

@@ -17,12 +17,13 @@
       <div class="col col-md-8">
         <form class="edit-form" [formGroup]="exampleForm" novalidate (ngSubmit)="onSubmit(exampleForm.value)">
           <div class="form-group">
-            <mat-form-field class="input-style">
+            <div>{{ 'user.userName' | translate }}: {{ item.userName }}</div>
+            <!-- <mat-form-field class="input-style">
               <input matInput placeholder="{{ 'user.userName' | translate }}" class="form-control" formControlName="userName">
             </mat-form-field>
             <ng-container *ngFor="let validation of validation_messages.userName">
               <mat-error *ngIf="exampleForm.get('userName').hasError(validation.type) && (exampleForm.get('userName').dirty || exampleForm.get('userName').touched)">{{validation.message}}</mat-error>
-            </ng-container>
+            </ng-container> -->
           </div>
 
           <div class="form-group">
