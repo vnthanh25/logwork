@@ -51,13 +51,4 @@ export class AuthService {
         return this.firebaseAuth.auth.signOut();
         //.then((res) => this.router.navigate(['/']));
     }
-
-    createUser(email, password) {
-        return this.firebaseAuth.auth.createUserWithEmailAndPassword(email, password);
-            // .then(() => {
-            // this.service.save(user);
-            // })
-            // .catch((e) => console.log(e));
-   }
-
 }

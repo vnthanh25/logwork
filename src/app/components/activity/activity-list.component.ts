@@ -8,7 +8,6 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 
 import {ExcelService} from '../../services/excel.service';
 import { DialogOkCancelData, DialogOkCancelComponent } from '../dialog/dialog-ok-cancel.component';
-import { EncryptService } from 'src/app/services/encrypt.service';
 
 @Component({
     selector: 'app-activity-list',
@@ -27,8 +26,7 @@ export class ActivityListComponent implements OnInit {
         private excelService: ExcelService,
         private router: Router,
         public firebaseService: FirebaseService,
-        public dialog: MatDialog,
-        private encryptService: EncryptService
+        public dialog: MatDialog
     ) {
         // Set localStorage: currentEntity.
         localStorage.setItem('currentEntity', 'activity');
@@ -70,11 +68,6 @@ export class ActivityListComponent implements OnInit {
                     activity['workDate'] = new Date(numbers[2], numbers[1] - 1, numbers[0]);
                     activity['workDate'] = datePipe.transform(activity['workDate'], 'dd/MM/yyyy').toString();
                 } */
-                
-                activity['code'] = this.encryptService.decrypt(activity['code']);
-                activity['summary'] = activity['summary'] ? this.encryptService.decrypt(activity['summary']) : '';
-                activity['projectName'] = this.encryptService.decrypt(activity['projectName']);
-                
                 return activity;
             });
             // Sort by workDate.
@@ -117,7 +110,7 @@ export class ActivityListComponent implements OnInit {
         const excelData = this.activities.map(item => {
             const data = {};
             data['Project Name'] = item.projectName;
-            data['Summary'] = item.summary;
+            data['Summary'] = item.name;
             data['Type'] = item.type;
             data['Start Date'] = item.workDate;
             data['Assignee'] = this.users[item.owner].name;

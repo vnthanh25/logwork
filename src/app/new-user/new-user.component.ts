@@ -5,7 +5,6 @@ import { AvatarDialogComponent } from "../avatar-dialog/avatar-dialog.component"
 import { Router } from '@angular/router';
 import { FirebaseService } from '../services/firebase.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import { UserService } from '../services';
 
 @Component({
   selector: 'app-new-user',
@@ -32,11 +31,11 @@ export class NewUserComponent implements OnInit {
  };
 
   constructor(
-    private userService: UserService,
     private sanitizer: DomSanitizer,
     private fb: FormBuilder,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    public firebaseService: FirebaseService
   ) { }
 
   ngOnInit() {
@@ -93,21 +92,19 @@ export class NewUserComponent implements OnInit {
 
   onSubmit(value){
     const user = {
-      email: value.userName,
       userName: value.userName,
       name: value.name,
       nameToSearch: value.name.toLowerCase(),
       surname: value.surname,
       avatar: this.avatar
-    };
-    //this.firebaseService.createDocument('users', user)
-    this.userService.create(user)
+    }
+    this.firebaseService.createDocument('users', user)
     .then(
       res => {
         this.resetFields();
         this.router.navigate(['/home']);
       }
-    );
+    )
   }
 
 }

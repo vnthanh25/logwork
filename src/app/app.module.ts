@@ -37,7 +37,6 @@ import { ActivityCreateComponent } from './components/activity/activity-create.c
 import { ActivityEditResolver } from './components/activity/activity-edit.resolver';
 import { ActivityEditComponent } from './components/activity/activity-edit.component';
 import { AuthService } from './services/auth.service';
-import { EncryptService } from './services/encrypt.service';
 
 export const VN_FORMATS = {
   parse: {
@@ -101,7 +100,6 @@ export const VN_FORMATS = {
   ],
   providers: [ BusinessService, FirebaseService, EditUserResolver, ActivityEditResolver, ExcelService,
     AuthService,
-    EncryptService,
     //{ provide: MAT_DATE_LOCALE, useValue: 'it' },
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: VN_FORMATS }
