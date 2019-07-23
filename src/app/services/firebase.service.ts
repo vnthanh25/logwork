@@ -8,24 +8,9 @@ export class FirebaseService {
 
   constructor(public db: AngularFirestore) {}
 
-  getAvatars() {
-      return this.db.collection('/avatar').valueChanges();
+  getAvatars(){
+      return this.db.collection('/avatar').valueChanges()
   }
-
-  // save(user: any) {
-  //     return new Promise((resolve, reject) => {
-  //         if(user.key) {
-  //         this.db.collection(this.PATH).
-  //                 .update(user.key, ({ name: user.name }))
-  //                 .then(() => resolve())
-  //                 .catch((e) => reject(e))
-  //         } else {
-  //         this.db.list(this.PATH)
-  //                 .push({ name: user.name })
-  //                 .then(() => resolve())
-  //         }
-  //     });
-  // }
 
   createDocument(collection: string, document: any) {
     return this.db.collection(collection).add(document);

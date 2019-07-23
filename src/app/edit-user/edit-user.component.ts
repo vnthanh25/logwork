@@ -5,7 +5,6 @@ import { MatDialog } from '@angular/material';
 import { AvatarDialogComponent } from "../avatar-dialog/avatar-dialog.component";
 import { FirebaseService } from '../services/firebase.service';
 import { Router } from '@angular/router';
-import { UserService } from '../services';
 
 @Component({
   selector: 'app-edit-user',
@@ -32,7 +31,7 @@ export class EditUserComponent implements OnInit {
  };
 
   constructor(
-    private userService: UserService,
+    public firebaseService: FirebaseService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router,
@@ -78,25 +77,24 @@ export class EditUserComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+      if(result){
         //this.item.avatar = result.link;
       }
     });
   }
 
-  onSubmit(value) {
+  onSubmit(value){
     value.avatar = this.avatar;
-    this.userService.update(value)
+    this.firebaseService.updateDocument('users', this.item.id, value)
     .then(
       res => {
         this.router.navigate(['/home']);
       }
-    );
+    )
   }
 
-  delete() {
-    //this.firebaseService.deleteDocument('users', this.item.id)
-    this.userService.delete(this.item.id)
+  delete(){
+    this.firebaseService.deleteDocument('users', this.item.id)
     .then(
       res => {
         this.router.navigate(['/home']);
@@ -104,10 +102,10 @@ export class EditUserComponent implements OnInit {
       err => {
         console.log(err);
       }
-    );
+    )
   }
 
-  cancel() {
+  cancel(){
     this.router.navigate(['/home']);
   }
 
