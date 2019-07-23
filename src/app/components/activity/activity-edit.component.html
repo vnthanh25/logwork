@@ -27,14 +27,11 @@
                                 <mat-error *ngIf="editActivityForm.get('code').hasError(validation.type) && (editActivityForm.get('code').dirty || editActivityForm.get('code').touched)">{{validation.message}}</mat-error>
                             </ng-container>
                         </div>
-                        <!-- name -->
+                        <!-- summary -->
                         <div class="form-group">
                             <mat-form-field class="input-style">
-                              <textarea matInput placeholder="Summary" class="form-control" formControlName="name"></textarea>
+                              <textarea matInput placeholder="Summary" class="form-control" formControlName="summary"></textarea>
                             </mat-form-field>
-                            <ng-container *ngFor="let validation of validation_messages.name">
-                                <mat-error *ngIf="editActivityForm.get('name').hasError(validation.type) && (editActivityForm.get('name').dirty || editActivityForm.get('name').touched)">{{validation.message}}</mat-error>
-                            </ng-container>
                         </div>
                         <!-- type -->
                         <div class="form-group">
