@@ -48,7 +48,7 @@ export class EditUserComponent implements OnInit {
         this.avatar = this.item.avatar;
         this.createForm();
       }
-    })
+    });
   }
 
   onFileChanged(event) {
@@ -87,6 +87,16 @@ export class EditUserComponent implements OnInit {
   onSubmit(value) {
     value.avatar = this.avatar;
     this.userService.update(value)
+    .then(
+      res => {
+        this.router.navigate(['/home']);
+      }
+    );
+  }
+
+  save() {
+    this.item.avatar = this.avatar;
+    this.userService.update(this.item)
     .then(
       res => {
         this.router.navigate(['/home']);

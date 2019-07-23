@@ -1,14 +1,14 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <td>Project name</td>
-            <td>Code</td>
-            <td>Summary</td>
-            <td>Type</td>
-            <td>Report to</td>
-            <td>Work date</td>
-            <td>Status</td>
-            <td colspan="2">Actions</td>
+            <td>{{ 'activity.projectName' | translate }}</td>
+            <td>{{ 'activity.code' | translate }}</td>
+            <td>{{ 'activity.summary' | translate }}</td>
+            <td>{{ 'activity.type' | translate }}</td>
+            <td>{{ 'activity.reportTo' | translate }}</td>
+            <td>{{ 'activity.workDate' | translate }}</td>
+            <td>{{ 'activity.status' | translate }}</td>
+            <td colspan="2">{{ 'activity.action' | translate }}</td>
         </tr>
     </thead>
 
@@ -21,9 +21,9 @@
             <td>{{ activity.reportTo }}</td>
             <td>{{ activity.workDate}}</td>
             <td>{{ activity.status }}</td>
-            <td><a [routerLink]="['edit', activity.id]" class="btn btn-primary">Edit</a></td>
-            <td><button mat-raised-button class="delete-button" color="warn" type="button" (click)="deleteActivity(activity.id)">Delete</button></td>
+            <td><a [routerLink]="['edit', activity.id]" class="btn btn-primary">{{ 'app.edit' | translate }}</a></td>
+            <td><button mat-raised-button class="delete-button" color="warn" type="button" (click)="deleteActivity(activity.id)">{{ 'app.delete' | translate }}</button></td>
         </tr>
     </tbody>
 </table>
-<button mat-raised-button class="btn btn-primary" type="button" (click)="exportAsXLSX()">Export excel</button>
+<button mat-raised-button class="btn btn-primary" type="button" (click)="exportAsXLSX()">{{ 'activity.exportExcel' | translate }}</button>

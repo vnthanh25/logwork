@@ -1,7 +1,7 @@
 <div class="edit-page">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item active" aria-current="page">Edit User</li>
+      <li class="breadcrumb-item active" aria-current="page">{{ 'app.edit' | translate }} {{ 'user.title' | translate }}</li>
     </ol>
   </nav>
   <div class="page-content">
@@ -15,12 +15,10 @@
           </div>
       </div>
       <div class="col col-md-8">
-
         <form class="edit-form" [formGroup]="exampleForm" novalidate (ngSubmit)="onSubmit(exampleForm.value)">
-
           <div class="form-group">
             <mat-form-field class="input-style">
-              <input matInput placeholder="User name" class="form-control" formControlName="userName">
+              <input matInput placeholder="{{ 'user.userName' | translate }}" class="form-control" formControlName="userName">
             </mat-form-field>
             <ng-container *ngFor="let validation of validation_messages.userName">
               <mat-error *ngIf="exampleForm.get('userName').hasError(validation.type) && (exampleForm.get('userName').dirty || exampleForm.get('userName').touched)">{{validation.message}}</mat-error>
@@ -29,7 +27,7 @@
 
           <div class="form-group">
             <mat-form-field class="input-style">
-              <input matInput placeholder="Name" class="form-control" formControlName="name">
+              <input matInput placeholder="{{ 'user.name' | translate }}" class="form-control" formControlName="name">
             </mat-form-field>
             <ng-container *ngFor="let validation of validation_messages.name">
               <mat-error *ngIf="exampleForm.get('name').hasError(validation.type) && (exampleForm.get('name').dirty || exampleForm.get('name').touched)">{{validation.message}}</mat-error>
@@ -38,7 +36,7 @@
 
           <div class="form-group">
             <mat-form-field class="input-style">
-              <input matInput placeholder="Surname" class="form-control" formControlName="surname">
+              <input matInput placeholder="{{ 'user.surname' | translate }}" class="form-control" formControlName="surname">
             </mat-form-field>
             <ng-container *ngFor="let validation of validation_messages.surname">
               <mat-error *ngIf="exampleForm.get('surname').hasError(validation.type) && (exampleForm.get('surname').dirty || exampleForm.get('surname').touched)">{{validation.message}}</mat-error>
@@ -47,13 +45,13 @@
 
           <div class="row submit-button-container">
             <div class="col-md-4">
-              <button mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!exampleForm.valid">Save</button>
+              <button mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!exampleForm.valid">{{ 'app.save' | translate }}</button>
             </div>
             <!-- <div class="col-md-4">
               <button mat-raised-button class="delete-button" color="warn" type="button" (click)="delete()">Delete</button>
             </div> -->
             <div class="col-md-4">
-              <button mat-raised-button class="cancel-button" color="basic" type="button" (click)="cancel()">Cancel</button>
+              <button mat-raised-button class="cancel-button" color="basic" type="button" (click)="cancel()">{{ 'app.cancel' | translate }}</button>
             </div>
           </div>
         </form>

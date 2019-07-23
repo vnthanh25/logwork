@@ -13,7 +13,6 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 
-import { BusinessService } from './business.service';
 import { FirebaseService } from './services/firebase.service';
 import { ExcelService } from './services/excel.service';
 
@@ -23,9 +22,6 @@ import { MomentDateModule, MomentDateAdapter } from '@angular/material-moment-ad
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
-import { GstAddComponent } from './gst-add/gst-add.component';
-import { GstGetComponent } from './gst-get/gst-get.component';
-import { GstEditComponent } from './gst-edit/gst-edit.component';
 import { AvatarDialogComponent } from './avatar-dialog/avatar-dialog.component';
 import { DialogOkCancelData, DialogOkCancelComponent } from './components/dialog/dialog-ok-cancel.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
@@ -56,9 +52,6 @@ export const VN_FORMATS = {
     AppComponent,
     LoginComponent,
     DialogOkCancelComponent,
-    GstAddComponent,
-    GstGetComponent,
-    GstEditComponent,
     AvatarDialogComponent,
     EditUserComponent,
     NewUserComponent,
@@ -99,7 +92,7 @@ export const VN_FORMATS = {
         }
     })
   ],
-  providers: [ BusinessService, FirebaseService, EditUserResolver, ActivityEditResolver, ExcelService,
+  providers: [ FirebaseService, EditUserResolver, ActivityEditResolver, ExcelService,
     AuthService,
     EncryptService,
     //{ provide: MAT_DATE_LOCALE, useValue: 'it' },

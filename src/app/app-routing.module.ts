@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { GstAddComponent } from './gst-add/gst-add.component';
-import { GstEditComponent } from './gst-edit/gst-edit.component';
-import { GstGetComponent } from './gst-get/gst-get.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { NewUserComponent } from './new-user/new-user.component';
@@ -14,9 +11,6 @@ import { ActivityEditComponent } from './components/activity/activity-edit.compo
 import { ActivityEditResolver } from './components/activity/activity-edit.resolver';
 
 const routes: Routes = [
-  { path: 'business/create', component: GstAddComponent },
-  { path: 'business/edit/:id', component: GstEditComponent },
-  { path: 'business', component: GstGetComponent },
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },

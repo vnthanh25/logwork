@@ -114,6 +114,11 @@ export class ActivityEditComponent implements OnInit {
               if (this.activity.workDate) {
                 this.activity.workDate = moment(new Date(this.activity.workDate));
               }
+                
+              this.activity['code'] = this.encryptService.decrypt(this.activity['code']);
+              this.activity['summary'] = this.activity['summary'] ? this.encryptService.decrypt(this.activity['summary']) : '';
+              this.activity['projectName'] = this.encryptService.decrypt(this.activity['projectName']);
+              
               this.createForm();
             }
           });

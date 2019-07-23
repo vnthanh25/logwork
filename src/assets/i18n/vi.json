@@ -1,6 +1,35 @@
 {
     "app": {
         "title": "Lưu vết công việc",
-        "text": "Xin chào"
+        "text": "Xin chào",
+        "members": "Danh sách thành viên",
+        "login": "Đăng nhập",
+        "logout": "Đăng xuất",
+        "save": "Lưu",
+        "create": "Tạo mới",
+        "edit": "Chỉnh sửa",
+        "update": "Cập nhật",
+        "delete": "Xóa",
+        "cancel": "Hủy"
+    },
+    "user": {
+        "title": "Thành viên",
+        "createUser": "Create user",
+        "userName": "Email",
+        "name": "Tên",
+        "surname": "Họ lót",
+        "searchByName": "Tìm theo email"
+    },
+    "activity": {
+        "title": "Công việc",
+        "projectName": "Tên dự án",
+        "code": "Tên công việc",
+        "summary": "Mô tả chi tiết",
+        "type": "Loại công việc",
+        "reportTo": "Người quản lý",
+        "workDate": "Ngày làm",
+        "status": "Trạng thái",
+        "action": "Hành động",
+        "exportExcel": "Xuất ra excel"
     }
 }
