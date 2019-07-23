@@ -59,7 +59,7 @@ export class FirebaseService {
   }
 
   searchDocumentsByStartAtProperty(collection: string, property: string, value) {
-    return this.db.collection(collection, ref => ref.orderBy('email').startAt(value).endAt(value + '\uf8ff')).snapshotChanges();
+    return this.db.collection(collection, ref => ref.orderBy(property).startAt(value).endAt(value + '\uf8ff')).snapshotChanges();
   }
 
 }
