@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { MAT_DATE_FORMATS } from '@angular/material';
+import { EncryptService } from 'src/app/services/encrypt.service';
 
 export const DD_MM_YYYY_Format = {
     parse: {
@@ -36,9 +37,6 @@ export class ActivityCreateComponent implements OnInit {
         code: [
             { type: 'required', message: 'Code is required.' }
         ],
-        name: [
-            { type: 'required', message: 'Name is required.' }
-        ],
         projectName: [
             { type: 'required', message: 'Project name is required.' }
         ],
@@ -60,7 +58,8 @@ export class ActivityCreateComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private router: Router,
-        public firebaseService: FirebaseService
+        public firebaseService: FirebaseService,
+        private encryptService: EncryptService
     ) {}
 
     /* Init */
@@ -98,8 +97,8 @@ export class ActivityCreateComponent implements OnInit {
             code: [
                 '', Validators.required
             ],
-            name: [
-                '', Validators.required
+            summary: [
+                ''
             ],
             projectName: [
                 '', Validators.required
@@ -123,7 +122,7 @@ export class ActivityCreateComponent implements OnInit {
     resetFields() {
         let formControls = {
             code: new FormControl('', Validators.required),
-            name: new FormControl('', Validators.required),
+            summary: new FormControl(''),
             projectName: new FormControl('', Validators.required),
             type: new FormControl('', Validators.required),
             reportTo: new FormControl('', Validators.required),
@@ -136,9 +135,9 @@ export class ActivityCreateComponent implements OnInit {
     /* Submit */
     onSubmit(value) {
         const activity = {
-            code: value.code,
-            name: value.name,
-            projectName: value.projectName,
+            code: this.encryptService.encrypt(value.code),
+            summary: value.summary ? this.encryptService.encrypt(value.summary) : '',
+            projectName: this.encryptService.encrypt(value.projectName),
             type: value.type,
             reportTo: value.reportTo,
             workDate: value.workDate.format(),

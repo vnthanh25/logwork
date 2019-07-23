@@ -10,6 +10,7 @@ import { MAT_DATE_FORMATS } from '@angular/material';
 import { DatePipe } from '@angular/common';
 
 import { DialogOkCancelData, DialogOkCancelComponent } from '../dialog/dialog-ok-cancel.component';
+import { EncryptService } from 'src/app/services/encrypt.service';
 
 export const DD_MM_YYYY_Format = {
     parse: {
@@ -48,9 +49,6 @@ export class ActivityEditComponent implements OnInit {
         code: [
             { type: 'required', message: 'Code is required.' }
         ],
-        name: [
-            { type: 'required', message: 'Name is required.' }
-        ],
         projectName: [
             { type: 'required', message: 'Project name is required.' }
         ],
@@ -74,7 +72,8 @@ export class ActivityEditComponent implements OnInit {
         private route: ActivatedRoute,
         private formBuilder: FormBuilder,
         public firebaseService: FirebaseService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private encryptService: EncryptService
     ) {}
 
     /* Init */
@@ -126,8 +125,8 @@ export class ActivityEditComponent implements OnInit {
             code: [
                 this.activity.code, Validators.required
             ],
-            name: [
-                this.activity.name, Validators.required
+            summary: [
+                this.activity.summary
             ],
             projectName: [
                 this.activity.projectName, Validators.required
@@ -151,7 +150,7 @@ export class ActivityEditComponent implements OnInit {
     resetFields() {
         this.editActivityForm = this.formBuilder.group({
             code: new FormControl('', Validators.required),
-            name: new FormControl('', Validators.required),
+            summary: new FormControl(''),
             projectName: new FormControl('', Validators.required),
             type: new FormControl('', Validators.required),
             reportTo: new FormControl('', Validators.required),
@@ -170,6 +169,9 @@ export class ActivityEditComponent implements OnInit {
                 this.activity.workDate = moment(this.activity.workDate.toGMTString()).format();
             }
         }
+        this.activity.code = this.encryptService.encrypt(this.activity.code);
+        this.activity.summary = this.activity.summary ? this.encryptService.encrypt(this.activity.summary) : '';
+        this.activity.projectName = this.encryptService.encrypt(this.activity.projectName);
         this.activity.lastModifiedBy = localStorage.getItem('idUser');
         this.activity.lastModifiedDate = moment(new Date()).format();
         // Save.
