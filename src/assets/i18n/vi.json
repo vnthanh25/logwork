@@ -13,6 +13,14 @@
         "cancel": "Hủy",
         "copy": "Sao chép"
     },
+    "validation": {
+        "isRequired": " không thể rỗng."
+    },
+    "login": {
+        "title": "Đăng nhập",
+        "userName": "Tài khoản FSOFT (@fsoft.com.vn)",
+        "password": "Mật khẩu"
+    },
     "user": {
         "title": "Thành viên",
         "createUser": "Create user",

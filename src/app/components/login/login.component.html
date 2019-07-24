@@ -4,13 +4,13 @@
             <div class="row">
                 <!-- First column -->
                 <div class="col col-md-6">
-                    <!-- email -->
+                    <!-- userName -->
                     <div class="form-group">
                         <mat-form-field class="input-style">
-                            <input matInput placeholder="Email" class="form-control" formControlName="email">
+                            <input matInput placeholder="{{ 'login.userName' | translate }}" class="form-control" formControlName="userName">
                         </mat-form-field>
-                        <ng-container *ngFor="let validation of validation_messages.email">
-                            <mat-error *ngIf="loginForm.get('email').hasError(validation.type) && (loginForm.get('email').dirty || loginForm.get('email').touched)">{{validation.message}}</mat-error>
+                        <ng-container *ngFor="let validation of validationMessages.userName">
+                            <mat-error *ngIf="loginForm.get('userName').hasError(validation.type) && (loginForm.get('userName').dirty || loginForm.get('userName').touched)">{{validation.message}}</mat-error>
                         </ng-container>
                     </div>
                 </div>
@@ -19,9 +19,9 @@
                     <!-- password -->
                     <div class="form-group">
                         <mat-form-field class="input-style">
-                            <input type="password" matInput placeholder="Password" class="form-control" formControlName="password">
+                            <input type="password" matInput placeholder="{{ 'login.password' | translate }}" class="form-control" formControlName="password">
                         </mat-form-field>
-                        <ng-container *ngFor="let validation of validation_messages.password">
+                        <ng-container *ngFor="let validation of validationMessages.password">
                             <mat-error *ngIf="loginForm.get('password').hasError(validation.type) && (loginForm.get('password').dirty || loginForm.get('password').touched)">{{validation.message}}</mat-error>
                         </ng-container>
                     </div>
@@ -29,10 +29,10 @@
             </div>
             <div class="row">
                 <div class="col-md-3">
-                    <button mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!loginForm.valid">Login</button>
+                    <button mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!loginForm.valid">{{ 'login.title' | translate }}</button>
                 </div>
                 <div class="col-md-4">
-                    <button mat-raised-button class="cancel-button" color="basic" type="button" (click)="cancel()">Cancel</button>
+                    <button mat-raised-button class="cancel-button" color="basic" type="button" (click)="cancel()">{{ 'app.cancel' | translate }}</button>
                 </div>
             </div>
         </form>

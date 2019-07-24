@@ -2,6 +2,7 @@ import { OnInit, Component } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-login',
@@ -10,24 +11,27 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
-    validation_messages = {
-        email: [
-            { type: 'required', message: 'Email is required.' }
-        ],
-        password: [
-            { type: 'required', message: 'Password is required.' }
-        ]
-    };
+    validationMessages;
 
     constructor(
         private formBuilder: FormBuilder,
         private router: Router,
-        private authService: AuthService
-    ) {}
+        private authService: AuthService,
+        private translate: TranslateService
+    ) {
+        this.validationMessages = {
+            userName: [
+                { type: 'required', message: this.translate.instant('login.userName') + ' ' + this.translate.instant('validation.isRequired') }
+            ],
+            password: [
+                { type: 'required', message: this.translate.instant('login.password') + ' ' + this.translate.instant('validation.isRequired') }
+            ]
+        };
+    }
 
     ngOnInit() {
         this.loginForm = this.formBuilder.group({
-            email: [
+            userName: [
                 '', Validators.required
             ],
             password: [
@@ -38,12 +42,16 @@ export class LoginComponent implements OnInit {
 
     /* Submit */
     onSubmit(value) {
-        this.signInWithEmail(value.email, value.password);
+        let userName: string = value.userName;
+        if (userName.indexOf('@') < 0) {
+            userName += '@fsoft.com.vn';
+        }
+        this.signInWithEmail(userName, value.password);
     }
 
-    signInWithEmail(email, password) {
-        this.authService.signInRegular(email, password).then((response) => {
-            localStorage.setItem('userName', email);
+    signInWithEmail(userName, password) {
+        this.authService.signInRegular(userName, password).then((response) => {
+            localStorage.setItem('userName', userName);
             this.router.navigate(['home']);
         }).catch((error) => {
             console.log('error: ' + error);

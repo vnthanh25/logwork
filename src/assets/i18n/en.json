@@ -13,6 +13,14 @@
         "cancel": "Cancel",
         "copy": "Copy"
     },
+    "validation": {
+        "isRequired": " is required."
+    },
+    "login": {
+        "title": "Login",
+        "userName": "Account of FSOFT (@fsoft.com.vn)",
+        "password": "Password"
+    },
     "user": {
         "title": "User",
         "createUser": "Create user",
