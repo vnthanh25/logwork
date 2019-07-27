@@ -6,18 +6,9 @@ import { UserEditResolver } from '../components/user/user-edit.resolver';
 import { UserListComponent } from '../components/user/user-list.component';
 
 const routers: Routes = [
-    {
-        path: '',
-        component: UserListComponent
-    },
-    {
-        path: 'create',
-        component: UserCreateComponent
-    },
-    {
-        path: 'edit/:id',
-        component: UserEditComponent, resolve: { data : UserEditResolver }
-    }
+    { path: '', component: UserListComponent },
+    { path: 'create', component: UserCreateComponent },
+    { path: 'edit/:id', component: UserEditComponent, resolve: { data : UserEditResolver } }
 ];
 
 @NgModule({

@@ -21,9 +21,9 @@
             <td>{{ activity.reportTo }}</td>
             <td>{{ activity.workDate}}</td>
             <td>{{ activity.status }}</td>
-            <td><a *ngIf="authService.isLoggedIn()" [routerLink]="['edit', activity.id, 'false']" class="btn btn-primary">{{ 'app.edit' | translate }}</a></td>
-            <td><a *ngIf="authService.isLoggedIn()" [routerLink]="['edit', activity.id, 'true']" class="btn btn-primary">{{ 'app.copy' | translate }}</a></td>
-            <td><button *ngIf="authService.isLoggedIn()" mat-raised-button class="delete-button" color="warn" type="button" (click)="deleteActivity(activity.id)">{{ 'app.delete' | translate }}</button></td>
+            <td><a *ngIf="authService.isLoggedIn()" [routerLink]="['edit', activity.id, 'false']" class="btn btn-primary">{{ 'activity.edit' | translate }}</a></td>
+            <td><a *ngIf="authService.isLoggedIn()" [routerLink]="['edit', activity.id, 'true']" class="btn btn-primary">{{ 'activity.copy' | translate }}</a></td>
+            <td><button *ngIf="authService.isLoggedIn()" mat-raised-button class="delete-button" color="warn" type="button" (click)="deleteActivity(activity.id)">{{ 'activity.delete' | translate }}</button></td>
         </tr>
     </tbody>
 </table>

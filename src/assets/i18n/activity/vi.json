@@ -1,0 +1,26 @@
+{
+    "activity": {
+        "title": "Công việc",
+        "save": "Lưu",
+        "create": "Tạo mới",
+        "edit": "Chỉnh sửa",
+        "update": "Cập nhật",
+        "delete": "Xóa",
+        "cancel": "Hủy",
+        "copy": "Sao chép",
+        "projectName": "Tên dự án",
+        "code": "Tên công việc",
+        "summary": "Mô tả chi tiết",
+        "type": "Loại công việc",
+        "reportTo": "Người quản lý",
+        "workDate": "Ngày làm",
+        "status": "Trạng thái",
+        "action": "Hành động",
+        "exportExcel": "Xuất ra excel",
+        "pleaseLogin": "Vui lòng đăng nhập!",
+        "areYouDelete": "Bạn có chắc là xóa?"
+    },
+    "validation": {
+        "isRequired": " không thể rỗng."
+    }
+}

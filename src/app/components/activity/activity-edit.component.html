@@ -1,7 +1,7 @@
 <div class="edit-page">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active" aria-current="page">{{ 'app.edit' | translate }} {{ 'activity.title' | translate }}</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ 'activity.edit' | translate }} {{ 'activity.title' | translate }}</li>
             </ol>
         </nav>
         <div class="page-content">
@@ -88,13 +88,13 @@
                 </div>
                 <div class="row submit-button-container">
                     <div class="col-md-4">
-                        <button *ngIf="authService.isLoggedIn()" mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!editActivityForm.valid">{{ 'app.save' | translate }}</button>
+                        <button *ngIf="authService.isLoggedIn()" mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!editActivityForm.valid">{{ 'activity.save' | translate }}</button>
                     </div>
                     <div class="col-md-4">
-                        <button *ngIf="authService.isLoggedIn()" mat-raised-button class="delete-button" color="warn" type="button" (click)="delete()">{{ 'app.delete' | translate }}</button>
+                        <button *ngIf="authService.isLoggedIn()" mat-raised-button class="delete-button" color="warn" type="button" (click)="delete()">{{ 'activity.delete' | translate }}</button>
                     </div>
                     <div class="col-md-4">
-                        <button mat-raised-button class="cancel-button" color="basic" type="button" (click)="cancel()">{{ 'app.cancel' | translate }}</button>
+                        <button mat-raised-button class="cancel-button" color="basic" type="button" (click)="cancel()">{{ 'activity.cancel' | translate }}</button>
                     </div>
                 </div>
             </form>

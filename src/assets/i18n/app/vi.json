@@ -21,19 +21,5 @@
         "title": "Đăng nhập",
         "userName": "Tài khoản FSOFT (@fsoft.com.vn)",
         "password": "Mật khẩu"
-    },
-    "activity": {
-        "title": "Công việc",
-        "projectName": "Tên dự án",
-        "code": "Tên công việc",
-        "summary": "Mô tả chi tiết",
-        "type": "Loại công việc",
-        "reportTo": "Người quản lý",
-        "workDate": "Ngày làm",
-        "status": "Trạng thái",
-        "action": "Hành động",
-        "exportExcel": "Xuất ra excel",
-        "pleaseLogin": "Vui lòng đăng nhập!",
-        "areYouDelete": "Bạn có chắc là xóa?"
     }
 }

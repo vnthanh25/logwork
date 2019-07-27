@@ -24,15 +24,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { AvatarDialogComponent } from './avatar-dialog/avatar-dialog.component';
 import { DialogOkCancelData, DialogOkCancelComponent } from './components/dialog/dialog-ok-cancel.component';
-import { UserListComponent } from './components/user/user-list.component';
-//import { UserEditComponent } from './components/user/user-edit.component';
-//import { UserEditResolver } from './components/user/user-edit.resolver';
-//import { UserCreateComponent } from './components/user/user-create.component';
 import { HomeComponent } from './home/home.component';
-import { ActivityListComponent } from './components/activity/activity-list.component';
-import { ActivityCreateComponent } from './components/activity/activity-create.component';
-import { ActivityEditResolver } from './components/activity/activity-edit.resolver';
-import { ActivityEditComponent } from './components/activity/activity-edit.component';
 import { AuthService } from './services/auth.service';
 import { EncryptService } from './services/encrypt.service';
 import { CommonModule } from '@angular/common';
@@ -61,13 +53,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoginComponent,
     DialogOkCancelComponent,
     AvatarDialogComponent,
-    //UserListComponent,
-    //UserEditComponent,
-    //UserCreateComponent,
-    HomeComponent,
-    ActivityListComponent,
-    ActivityCreateComponent,
-    ActivityEditComponent
+    HomeComponent
   ],
   entryComponents: [
     AvatarDialogComponent,
@@ -108,7 +94,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CommonModule,
     //TranslateModule
   ],
-  providers: [ FirebaseService, ActivityEditResolver, ExcelService,
+  providers: [ FirebaseService, ExcelService,
     AuthService,
     EncryptService,
     I18nProvider,

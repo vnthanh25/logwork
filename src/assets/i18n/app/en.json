@@ -21,19 +21,5 @@
         "title": "Login",
         "userName": "Account of FSOFT (@fsoft.com.vn)",
         "password": "Password"
-    },
-    "activity": {
-        "title": "Activity",
-        "projectName": "Project name",
-        "code": "Code",
-        "summary": "Summary",
-        "type": "Type",
-        "reportTo": "Report to",
-        "workDate": "Work date",
-        "status": "Status",
-        "action": "Actions",
-        "exportExcel": "Export excel",
-        "pleaseLogin": "Please login!",
-        "areYouDelete": "Are you sure delete?"
     }
 }

@@ -19,19 +19,14 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LoginComponent },
-  //{ path: 'user', loadChildren: () => import('./modules/user.module').then(mod => mod.UserModule) },
-  //{ path: 'user', loadChildren: () => UserModule },
-  //{ path: 'user', loadChildren: './modules/user.module#UserModule' },
-  { path: 'user',
-    children: [
-      {
+  { path: 'user', children: [{
         path: '', loadChildren: './modules/user.module#UserModule'
-      }
-    ]
+    }]
   },
-  { path: 'activity', component: ActivityListComponent },
-  { path: 'activity/create', component: ActivityCreateComponent },
-  { path: 'activity/edit/:id/:isCreate', component: ActivityEditComponent, resolve: { data: ActivityEditResolver } }
+  { path: 'activity', children: [{
+        path: '', loadChildren: './modules/activity.module#ActivityModule'
+    }]
+  }
 ];
 
 @NgModule({

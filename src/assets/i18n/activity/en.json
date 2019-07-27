@@ -1,0 +1,26 @@
+{
+    "activity": {
+        "title": "Activity",
+        "save": "Save",
+        "create": "Create",
+        "edit": "Edit",
+        "update": "Update",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "copy": "Copy",
+        "projectName": "Project name",
+        "code": "Code",
+        "summary": "Summary",
+        "type": "Type",
+        "reportTo": "Report to",
+        "workDate": "Work date",
+        "status": "Status",
+        "action": "Actions",
+        "exportExcel": "Export excel",
+        "pleaseLogin": "Please login!",
+        "areYouDelete": "Are you sure delete?"
+    },
+    "validation": {
+        "isRequired": " is required."
+    }
+}
