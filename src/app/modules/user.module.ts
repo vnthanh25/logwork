@@ -1,6 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserRoutingModule } from '../routing/user-routing.module';
+import { UserRoutingModule } from '../routings/user-routing.module';
 import { UserCreateComponent } from '../components/user/user-create.component';
 import { UserEditComponent } from '../components/user/user-edit.component';
 import { UserEditResolver } from '../components/user/user-edit.resolver';
