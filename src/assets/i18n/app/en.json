@@ -2,6 +2,7 @@
     "app": {
         "title": "Log work",
         "text": "Welcome every one",
+        "clickMe": "Touch me ^^",
         "members": "Members",
         "login": "Login",
         "logout": "Logout",

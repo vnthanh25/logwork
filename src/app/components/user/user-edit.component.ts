@@ -93,7 +93,7 @@ export class UserEditComponent implements OnInit {
     this.userService.update(value)
     .then(
       res => {
-        this.router.navigate(['/home']);
+        this.router.navigate(['/user']);
       }
     );
   }
@@ -103,7 +103,7 @@ export class UserEditComponent implements OnInit {
     this.userService.delete(this.item.id)
     .then(
       res => {
-        this.router.navigate(['/home']);
+        this.router.navigate(['/user']);
       },
       err => {
         console.log(err);
@@ -112,7 +112,7 @@ export class UserEditComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/user']);
   }
 
 }

@@ -90,13 +90,13 @@ export class UserCreateComponent implements OnInit {
     .then(
       res => {
         this.resetFields();
-        this.router.navigate(['/home']);
+        this.router.navigate(['/user']);
       }
     );
   }
 
   cancel() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/user']);
   }
 
 }

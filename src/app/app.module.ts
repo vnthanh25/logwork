@@ -17,18 +17,18 @@ import { FirebaseService } from './services/firebase.service';
 import { ExcelService } from './services/excel.service';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatInputModule, MatSliderModule, MatDialogModule, MatDatepickerModule, MatNativeDateModule, MatAutocompleteModule, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { MomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { AvatarDialogComponent } from './avatar-dialog/avatar-dialog.component';
-import { DialogOkCancelData, DialogOkCancelComponent } from './components/dialog/dialog-ok-cancel.component';
+import { DialogOkCancelComponent } from './components/dialog/dialog-ok-cancel.component';
 import { HomeComponent } from './home/home.component';
 import { AuthService } from './services/auth.service';
 import { EncryptService } from './services/encrypt.service';
 import { CommonModule } from '@angular/common';
 import { I18nProvider } from './providers/I18nProvider';
+import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatButtonModule } from '@angular/material';
 
 export const VN_FORMATS = {
   parse: {
@@ -56,7 +56,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     HomeComponent
   ],
   entryComponents: [
-    AvatarDialogComponent,
     DialogOkCancelComponent
   ],
   imports: [
@@ -72,13 +71,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     AngularFireAuthModule,
     MomentDateModule,
     MatButtonModule,
-    MatInputModule,
-    MatSliderModule,
-    MatDialogModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatAutocompleteModule,
-    // configure the imports
     HttpClientModule,
     TranslateModule.forRoot({
         loader: {

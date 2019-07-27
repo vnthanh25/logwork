@@ -18,6 +18,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule, MatInputModule, MatSliderModule, MatDialogModule, MatDatepickerModule, MatNativeDateModule, MatAutocompleteModule } from '@angular/material';
 import { I18nProvider } from '../providers/I18nProvider';
+import { DialogOkCancelComponent } from '../components/dialog/dialog-ok-cancel.component';
 
 export function ActivityHttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/activity/', '.json');
