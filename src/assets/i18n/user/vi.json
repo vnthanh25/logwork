@@ -1,0 +1,20 @@
+{
+    "user": {
+        "title": "Thành viên",
+        "save": "Lưu",
+        "create": "Tạo mới",
+        "edit": "Chỉnh sửa",
+        "update": "Cập nhật",
+        "delete": "Xóa",
+        "cancel": "Hủy",
+        "copy": "Sao chép",
+        "createUser": "Create user",
+        "userName": "Email",
+        "name": "Tên",
+        "surname": "Họ lót",
+        "searchByName": "Tìm theo email"
+    },
+    "validation": {
+        "isRequired": " không thể rỗng."
+    }
+}

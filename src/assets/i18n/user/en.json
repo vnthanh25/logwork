@@ -1,0 +1,20 @@
+{
+    "user": {
+        "title": "User",
+        "save": "Save",
+        "create": "Create",
+        "edit": "Edit",
+        "update": "Update",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "copy": "Copy",
+        "createUser": "Create user",
+        "userName": "Email",
+        "name": "Name",
+        "surname": "Surname",
+        "searchByName": "Search by email"
+    },
+    "validation": {
+        "isRequired": " is required."
+    }
+}

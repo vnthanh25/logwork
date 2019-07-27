@@ -1,0 +1,39 @@
+{
+    "app": {
+        "title": "Log work",
+        "text": "Welcome every one",
+        "members": "Members",
+        "login": "Login",
+        "logout": "Logout",
+        "save": "Save",
+        "create": "Create",
+        "edit": "Edit",
+        "update": "Update",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "copy": "Copy",
+        "searchByName": "Search by email"
+    },
+    "validation": {
+        "isRequired": " is required."
+    },
+    "login": {
+        "title": "Login",
+        "userName": "Account of FSOFT (@fsoft.com.vn)",
+        "password": "Password"
+    },
+    "activity": {
+        "title": "Activity",
+        "projectName": "Project name",
+        "code": "Code",
+        "summary": "Summary",
+        "type": "Type",
+        "reportTo": "Report to",
+        "workDate": "Work date",
+        "status": "Status",
+        "action": "Actions",
+        "exportExcel": "Export excel",
+        "pleaseLogin": "Please login!",
+        "areYouDelete": "Are you sure delete?"
+    }
+}

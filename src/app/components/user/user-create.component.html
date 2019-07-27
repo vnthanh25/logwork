@@ -1,7 +1,7 @@
 <div class="create-page">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item active" aria-current="page">{{ 'app.create' | translate }} {{ 'user.title' | translate }}</li>
+      <li class="breadcrumb-item active" aria-current="page">{{ 'user.create' | translate }} {{ 'user.title' | translate }}</li>
     </ol>
   </nav>
   <div class="page-content">
@@ -48,10 +48,10 @@
 
           <div class="row submit-button-container">
             <div class="col-md-4">
-              <button *ngIf="authService.isLoggedIn()" mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!exampleForm.valid">{{ 'app.create' | translate }}</button>
+              <button *ngIf="authService.isLoggedIn()" mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!exampleForm.valid">{{ 'user.create' | translate }}</button>
             </div>
             <div class="col-md-4">
-              <button mat-raised-button class="cancel-button" color="basic" type="button" (click)="cancel()">{{ 'app.cancel' | translate }}</button>
+              <button mat-raised-button class="cancel-button" color="basic" type="button" (click)="cancel()">{{ 'user.cancel' | translate }}</button>
             </div>
           </div>
 

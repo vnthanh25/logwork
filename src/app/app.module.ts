@@ -24,9 +24,10 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { AvatarDialogComponent } from './avatar-dialog/avatar-dialog.component';
 import { DialogOkCancelData, DialogOkCancelComponent } from './components/dialog/dialog-ok-cancel.component';
-import { EditUserComponent } from './edit-user/edit-user.component';
-import { EditUserResolver } from './edit-user/edit-user.resolver';
-import { NewUserComponent } from './new-user/new-user.component';
+import { UserListComponent } from './components/user/user-list.component';
+//import { UserEditComponent } from './components/user/user-edit.component';
+//import { UserEditResolver } from './components/user/user-edit.resolver';
+//import { UserCreateComponent } from './components/user/user-create.component';
 import { HomeComponent } from './home/home.component';
 import { ActivityListComponent } from './components/activity/activity-list.component';
 import { ActivityCreateComponent } from './components/activity/activity-create.component';
@@ -34,6 +35,8 @@ import { ActivityEditResolver } from './components/activity/activity-edit.resolv
 import { ActivityEditComponent } from './components/activity/activity-edit.component';
 import { AuthService } from './services/auth.service';
 import { EncryptService } from './services/encrypt.service';
+import { CommonModule } from '@angular/common';
+import { I18nProvider } from './providers/I18nProvider';
 
 export const VN_FORMATS = {
   parse: {
@@ -47,14 +50,20 @@ export const VN_FORMATS = {
   },
 };
 
+// required for AOT compilation
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/app/', '.json');
+}
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     DialogOkCancelComponent,
     AvatarDialogComponent,
-    EditUserComponent,
-    NewUserComponent,
+    //UserListComponent,
+    //UserEditComponent,
+    //UserCreateComponent,
     HomeComponent,
     ActivityListComponent,
     ActivityCreateComponent,
@@ -65,7 +74,9 @@ export const VN_FORMATS = {
     DialogOkCancelComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     SlimLoadingBarModule,
     FormsModule,
@@ -73,7 +84,6 @@ export const VN_FORMATS = {
     AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    BrowserAnimationsModule,
     MomentDateModule,
     MatButtonModule,
     MatInputModule,
@@ -89,12 +99,19 @@ export const VN_FORMATS = {
             provide: TranslateLoader,
             useFactory: HttpLoaderFactory,
             deps: [HttpClient]
-        }
+        },
+        useDefaultLang: true,
+        isolate: true
     })
   ],
-  providers: [ FirebaseService, EditUserResolver, ActivityEditResolver, ExcelService,
+  exports: [
+    CommonModule,
+    //TranslateModule
+  ],
+  providers: [ FirebaseService, ActivityEditResolver, ExcelService,
     AuthService,
     EncryptService,
+    I18nProvider,
     //{ provide: MAT_DATE_LOCALE, useValue: 'it' },
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: VN_FORMATS }
@@ -105,8 +122,3 @@ export const VN_FORMATS = {
   ]
 })
 export class AppModule { }
-
-// required for AOT compilation
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/');
-}

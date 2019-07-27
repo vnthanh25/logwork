@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
+import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 
 import {SlimLoadingBarService} from 'ng2-slim-loading-bar';
 import { NavigationCancel,
@@ -9,6 +9,8 @@ import { NavigationCancel,
         NavigationStart,
         Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
+import { I18nProvider } from './providers/I18nProvider';
+//import { LocalizeRouterService } from 'localize-router';
 
 @Component({
   selector: 'app-root',
@@ -21,11 +23,29 @@ export class AppComponent {
     private loadingBar: SlimLoadingBarService,
     private router: Router,
     private translate: TranslateService,
+    private i18nProvider: I18nProvider,
+    //private localizeRouterService: LocalizeRouterService,
     public authService: AuthService
   ) {
-    translate.setDefaultLang('vi');
-    this.router.events.subscribe((event: Event) => {
-      this.navigationInterceptor(event);
+    const language = 'vi';
+    translate.addLangs(['en', 'vi']);
+    translate.setDefaultLang(language);
+    this.i18nProvider.defaultLanguage = language;
+
+    /* translate.addLangs(["en", "vi"]);
+    translate.setDefaultLang('en');
+
+    const browserLang = translate.getBrowserLang();
+    translate.use(browserLang.match(/en|vi/) ? browserLang : 'vi'); */
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      console.log('onLangChange');
+    });
+    this.translate.onTranslationChange.subscribe((event: LangChangeEvent) => {
+      console.log('onTranslationChange');
+    });
+
+    this.translate.onDefaultLangChange.subscribe((event: LangChangeEvent) => {
+      console.log('onDefaultLangChange');
     });
     // Set localStorage: currentEntity.
     localStorage.setItem('currentEntity', 'user');
@@ -47,6 +67,8 @@ export class AppComponent {
 
   useLanguage(language: string) {
     this.translate.use(language);
+    this.i18nProvider.defaultLanguage = language;
+    this.i18nProvider.eventLanguageChange.emit(language);
   }
 
   /* List action */
@@ -87,7 +109,7 @@ export class AppComponent {
     switch (currentEntity) {
       case 'user': {
         // Route.
-        this.router.navigate(['/new-user']);
+        this.router.navigate(['/user/create']);
         break;
       }
       case 'activity': {

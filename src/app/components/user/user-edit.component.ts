@@ -2,18 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
-import { AvatarDialogComponent } from "../avatar-dialog/avatar-dialog.component";
-import { FirebaseService } from '../services/firebase.service';
+import { AvatarDialogComponent } from "../../avatar-dialog/avatar-dialog.component";
+import { FirebaseService } from '../../services/firebase.service';
 import { Router } from '@angular/router';
-import { UserService } from '../services';
-import { AuthService } from '../services/auth.service';
+import { UserService } from '../../services';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-edit-user',
-  templateUrl: './edit-user.component.html',
-  styleUrls: ['./edit-user.component.scss']
+  selector: 'app-user-edit',
+  templateUrl: './user-edit.component.html',
+  styleUrls: ['./user-edit.component.scss']
 })
-export class EditUserComponent implements OnInit {
+export class UserEditComponent implements OnInit {
 
   exampleForm: FormGroup;
   item: any;

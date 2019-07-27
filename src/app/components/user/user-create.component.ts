@@ -1,22 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
-import { AvatarDialogComponent } from "../avatar-dialog/avatar-dialog.component";
 import { Router } from '@angular/router';
-import { FirebaseService } from '../services/firebase.service';
+import { FirebaseService } from '../../services/firebase.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import { UserService } from '../services';
-import { AuthService } from '../services/auth.service';
+import { UserService } from '../../services';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-new-user',
-  templateUrl: './new-user.component.html',
-  styleUrls: ['./new-user.component.scss']
+  selector: 'app-user-create',
+  templateUrl: './user-create.component.html',
+  styleUrls: ['./user-create.component.scss']
 })
-export class NewUserComponent implements OnInit {
+export class UserCreateComponent implements OnInit {
 
   exampleForm: FormGroup;
-  avatarLink: string = "https://s3.amazonaws.com/uifaces/faces/twitter/adellecharles/128.jpg";
   fileName: string;
   avatar: any;
 
@@ -51,12 +49,12 @@ export class NewUserComponent implements OnInit {
       let file = event.target.files[0];
       reader.readAsDataURL(file);
       reader.onloadend = (event) => {
-        this.fileName = file.name + " " + file.type;
+        this.fileName = file.name + ' ' + file.type;
         this.avatar = reader.result;
       };
     }
   }
-  
+
   sanitize(url: string) {
     //return url;
     return this.sanitizer.bypassSecurityTrustUrl(url);
@@ -71,20 +69,7 @@ export class NewUserComponent implements OnInit {
     this.avatar = '//:0';
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(AvatarDialogComponent, {
-      height: '400px',
-      width: '400px',
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        //this.avatarLink = result.link;
-      }
-    });
-  }
-
-  resetFields(){
+  resetFields() {
     this.exampleForm = this.fb.group({
       userName: new FormControl('', Validators.required),
       name: new FormControl('', Validators.required),

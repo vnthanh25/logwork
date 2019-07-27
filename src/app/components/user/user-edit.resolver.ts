@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, ActivatedRoute } from "@angular/router";
-import { FirebaseService } from '../services/firebase.service';
+import { FirebaseService } from '../../services/firebase.service';
 
 @Injectable()
-export class EditUserResolver implements Resolve<any> {
+export class UserEditResolver implements Resolve<any> {
 
   constructor(public firebaseService: FirebaseService) { }
 
-  resolve(route: ActivatedRouteSnapshot,) {
+  resolve(route: ActivatedRouteSnapshot) {
 
     return new Promise((resolve, reject) => {
-      let userId = route.paramMap.get('id');
+      const userId = route.paramMap.get('id');
       this.firebaseService.getDocument('users', userId)
       .subscribe(
         data => {
           resolve(data);
         }
       );
-    })
+    });
   }
 }
