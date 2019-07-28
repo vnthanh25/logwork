@@ -17,7 +17,7 @@ import { FirebaseService } from './services/firebase.service';
 import { ExcelService } from './services/excel.service';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MomentDateModule, MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -29,18 +29,7 @@ import { EncryptService } from './services/encrypt.service';
 import { CommonModule } from '@angular/common';
 import { I18nProvider } from './providers/I18nProvider';
 import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatButtonModule } from '@angular/material';
-
-export const VN_FORMATS = {
-  parse: {
-    dateInput: 'DD/MM/YYYY',
-  },
-  display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'MM YYYY',
-    dateA11yLabel: 'DD/MM/YYYY',
-    monthYearA11yLabel: 'MM YYYY',
-  },
-};
+import { CustomDateAdapter } from './providers/custom-date-adapter';
 
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
@@ -91,8 +80,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     EncryptService,
     I18nProvider,
     //{ provide: MAT_DATE_LOCALE, useValue: 'it' },
-    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
-    { provide: MAT_DATE_FORMATS, useValue: VN_FORMATS }
+    //{ provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    //{ provide: MAT_DATE_FORMATS, useValue: VN_FORMATS }
+    { provide: DateAdapter, useClass: CustomDateAdapter },
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
   ],
   bootstrap: [AppComponent],
   schemas: [

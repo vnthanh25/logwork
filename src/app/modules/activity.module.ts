@@ -9,16 +9,17 @@ import { TranslateModule, TranslateLoader, TranslateService, MissingTranslationH
 import { ModuleWithProviders } from '@angular/compiler/src/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, Router } from '@angular/router';
 import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { MomentDateModule } from '@angular/material-moment-adapter';
-import { MatButtonModule, MatInputModule, MatSliderModule, MatDialogModule, MatDatepickerModule, MatNativeDateModule, MatAutocompleteModule } from '@angular/material';
+import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
+import { MatButtonModule, MatInputModule, MatSliderModule, MatDialogModule, MatDatepickerModule, MatNativeDateModule, MatAutocompleteModule, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { I18nProvider } from '../providers/I18nProvider';
 import { DialogOkCancelComponent } from '../components/dialog/dialog-ok-cancel.component';
+import { CustomDateAdapter } from '../providers/custom-date-adapter';
 
 export function ActivityHttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/activity/', '.json');
@@ -63,7 +64,10 @@ export function ActivityHttpLoaderFactory(http: HttpClient) {
         ActivityEditComponent
     ],
     providers: [
-        ActivityEditResolver
+        ActivityEditResolver,
+        { provide: DateAdapter, useClass: CustomDateAdapter },
+        { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
+        { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
     ],
     schemas: [
         CUSTOM_ELEMENTS_SCHEMA
@@ -72,11 +76,17 @@ export function ActivityHttpLoaderFactory(http: HttpClient) {
 export class ActivityModule {
     constructor(
         private translate: TranslateService,
-        private i18nProvider: I18nProvider
+        private i18nProvider: I18nProvider,
+        private router: Router
     ) {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => {
+            return false;
+        };
         this.translate.use(this.i18nProvider.defaultLanguage);
         this.i18nProvider.eventLanguageChange.subscribe(language => {
           this.translate.use(language);
+          this.router.navigated = false;
+          this.router.navigateByUrl(this.router.url);
         });
     }
 }

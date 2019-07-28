@@ -19,7 +19,7 @@
             <td>{{ activity.summary }}</td>
             <td>{{ activity.type }}</td>
             <td>{{ activity.reportTo }}</td>
-            <td>{{ activity.workDate}}</td>
+            <td>{{ activity.workDate | date: dateFormat}}</td>
             <td>{{ activity.status }}</td>
             <td><a *ngIf="authService.isLoggedIn()" [routerLink]="['edit', activity.id, 'false']" class="btn btn-primary">{{ 'activity.edit' | translate }}</a></td>
             <td><a *ngIf="authService.isLoggedIn()" [routerLink]="['edit', activity.id, 'true']" class="btn btn-primary">{{ 'activity.copy' | translate }}</a></td>

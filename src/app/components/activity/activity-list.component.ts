@@ -20,6 +20,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class ActivityListComponent implements OnInit {
     COLLECTION = 'activities';
     COLLECTION_USER = 'users';
+    public dateFormat: string;
     datePipe = new DatePipe('en-US');
     activities: Array<any>;
     users: {};
@@ -36,6 +37,7 @@ export class ActivityListComponent implements OnInit {
     ) {
         // Set localStorage: currentEntity.
         localStorage.setItem('currentEntity', 'activity');
+        this.dateFormat = localStorage.getItem('dateFormat').replace(/D/g, 'd').replace(/Y/g, 'y');
     }
     /* OnInit */
     ngOnInit() {
@@ -62,17 +64,17 @@ export class ActivityListComponent implements OnInit {
             const datePipe = this.datePipe;
             this.activities = result.map(item => {
                 let activity = { id: item.payload.doc.id, ... item.payload.doc.data() };
-                if (activity['workDate']) {
-                    activity['workDate'] = datePipe.transform(activity['workDate'], 'dd/MM/yyyy').toString();
+                /*if (activity['workDate']) {
+                    activity['workDate'] = datePipe.transform(activity['workDate'], localStorage.getItem('dateFormat')).toString();
                 }
-                /* if (moment.isMoment(activity['workDate'])) {
+                 if (moment.isMoment(activity['workDate'])) {
                     activity['workDate'] = activity['workDate'].format();
                 } else if (activity['workDate'] instanceof Date) {
-                    activity['workDate'] = datePipe.transform(activity['workDate'], 'dd/MM/yyyy').toString();
+                    activity['workDate'] = datePipe.transform(activity['workDate'], localStorage.getItem('dateFormat')).toString();
                 } else {
                     const numbers = activity['workDate'].match(/\d+/g);
                     activity['workDate'] = new Date(numbers[2], numbers[1] - 1, numbers[0]);
-                    activity['workDate'] = datePipe.transform(activity['workDate'], 'dd/MM/yyyy').toString();
+                    activity['workDate'] = datePipe.transform(activity['workDate'], localStorage.getItem('dateFormat')).toString();
                 } */
                 
                 activity['code'] = this.encryptService.decrypt(activity['code']);
@@ -85,17 +87,17 @@ export class ActivityListComponent implements OnInit {
             this.activities = this.activities.sort(function(item1: any, item2: any) {
                 // value1.
                 let value1 = item1.workDate;
-                const numbers1 = value1.match(/\d+/g);
-                value1 = new Date(numbers1[2], numbers1[1] - 1, numbers1[0]);
+                //const numbers1 = value1.match(/\d+/g);
+                //value1 = new Date(numbers1[2], numbers1[1] - 1, numbers1[0]);
                 value1 = datePipe.transform(value1, 'yyyyMMdd').toString();
                 // value2.
                 let value2 = item2.workDate;
-                const numbers2 = value2.match(/\d+/g);
-                value2 = new Date(numbers2[2], numbers2[1] - 1, numbers2[0]);
+                //const numbers2 = value2.match(/\d+/g);
+                //value2 = new Date(numbers2[2], numbers2[1] - 1, numbers2[0]);
                 value2 = datePipe.transform(value2, 'yyyyMMdd').toString();
                 // compare.
-                if (value1 > value2) { return 1; }
-                if (value1 < value2) { return -1; }
+                if (value1 > value2) { return -1; }
+                if (value1 < value2) { return 1; }
                 return 0;
             });
         });
@@ -116,7 +118,6 @@ export class ActivityListComponent implements OnInit {
         });
     }
 
-    
     exportAsXLSX(): void {
         const excelData = this.activities.map(item => {
             const data = {};

@@ -10,18 +10,6 @@ import { EncryptService } from 'src/app/services/encrypt.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/services/auth.service';
 
-export const DD_MM_YYYY_Format = {
-    parse: {
-        dateInput: 'LL',
-    },
-    display: {
-        dateInput: 'DD/MM/YYYY',
-        monthYearLabel: 'MMM YYYY',
-        dateA11yLabel: 'LL',
-        monthYearA11yLabel: 'MMMM YYYY',
-    },
-};
-
 @Component({
     selector: 'app-activity-create',
     templateUrl: './activity-create.component.html',

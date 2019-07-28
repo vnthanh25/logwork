@@ -27,6 +27,7 @@ export class AppComponent {
     //private localizeRouterService: LocalizeRouterService,
     public authService: AuthService
   ) {
+    localStorage.setItem('dateFormat', 'DD/MM/YYYY');
     const language = 'vi';
     translate.addLangs(['en', 'vi']);
     translate.setDefaultLang(language);
@@ -38,14 +39,14 @@ export class AppComponent {
     const browserLang = translate.getBrowserLang();
     translate.use(browserLang.match(/en|vi/) ? browserLang : 'vi'); */
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-      console.log('onLangChange');
+      //console.log('onLangChange');
     });
     this.translate.onTranslationChange.subscribe((event: LangChangeEvent) => {
-      console.log('onTranslationChange');
+      //console.log('onTranslationChange');
     });
 
     this.translate.onDefaultLangChange.subscribe((event: LangChangeEvent) => {
-      console.log('onDefaultLangChange');
+      //console.log('onDefaultLangChange');
     });
     // Set localStorage: currentEntity.
     localStorage.setItem('currentEntity', 'user');
@@ -69,6 +70,11 @@ export class AppComponent {
     this.translate.use(language);
     this.i18nProvider.defaultLanguage = language;
     this.i18nProvider.eventLanguageChange.emit(language);
+    if (language === 'vi') {
+      localStorage.setItem('dateFormat', 'DD/MM/YYYY');
+    } else {
+      localStorage.setItem('dateFormat', 'MM/DD/YYYY');
+    }
   }
 
   /* List action */
