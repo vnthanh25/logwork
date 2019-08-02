@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --base-href=/logwork/",
-    "build": "ng build --prod --base-href=/logwork/ --build-optimizer=true",
+    "build": "ng build --prod --base-href=/logwork/ --build-optimizer=false",
     "analyze": "ng build --prod --stats-json && webpack-bundle-analyzer dist/logwork/stats-es2015.json",
     "test": "ng test",
     "lint": "ng lint",

@@ -26,7 +26,7 @@ import { DialogOkCancelComponent } from './components/dialog/dialog-ok-cancel.co
 import { HomeComponent } from './home/home.component';
 import { AuthService } from './services/auth.service';
 import { EncryptService } from './services/encrypt.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { I18nProvider } from './providers/I18nProvider';
 import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatButtonModule } from '@angular/material';
 import { CustomDateAdapter } from './providers/custom-date-adapter';
@@ -79,6 +79,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AuthService,
     EncryptService,
     I18nProvider,
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     //{ provide: MAT_DATE_LOCALE, useValue: 'it' },
     //{ provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     //{ provide: MAT_DATE_FORMATS, useValue: VN_FORMATS }
