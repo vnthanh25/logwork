@@ -21,7 +21,6 @@ import { MomentDateModule, MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, M
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
-import { AvatarDialogComponent } from './avatar-dialog/avatar-dialog.component';
 import { DialogOkCancelComponent } from './components/dialog/dialog-ok-cancel.component';
 import { HomeComponent } from './home/home.component';
 import { AuthService } from './services/auth.service';
@@ -30,6 +29,7 @@ import { CommonModule, LocationStrategy, HashLocationStrategy } from '@angular/c
 import { I18nProvider } from './providers/I18nProvider';
 import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatButtonModule } from '@angular/material';
 import { CustomDateAdapter } from './providers/custom-date-adapter';
+import { EmailService } from './services/email.service';
 
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
@@ -41,7 +41,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     LoginComponent,
     DialogOkCancelComponent,
-    AvatarDialogComponent,
     HomeComponent
   ],
   entryComponents: [
@@ -72,12 +71,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     })
   ],
   exports: [
-    CommonModule,
+    //CommonModule,
     //TranslateModule
   ],
-  providers: [ FirebaseService, ExcelService,
+  providers: [ FirebaseService, ExcelService, EmailService,
     AuthService,
-    EncryptService,
+    //EncryptService,
     I18nProvider,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     //{ provide: MAT_DATE_LOCALE, useValue: 'it' },

@@ -12,6 +12,7 @@
         "userName": "Email",
         "name": "Tên",
         "surname": "Họ lót",
+        "account": "Tên window user",
         "searchByName": "Tìm theo email"
     },
     "validation": {

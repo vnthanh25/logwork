@@ -12,6 +12,7 @@
         "userName": "Email",
         "name": "Name",
         "surname": "Surname",
+        "account": "Window account",
         "searchByName": "Search by email"
     },
     "validation": {

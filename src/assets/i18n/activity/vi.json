@@ -13,6 +13,7 @@
         "summary": "Mô tả chi tiết",
         "type": "Loại công việc",
         "reportTo": "Người quản lý",
+        "reportToEmails": "Email của những người quản lý",
         "workDate": "Ngày làm",
         "status": "Trạng thái",
         "action": "Hành động",

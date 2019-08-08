@@ -61,7 +61,11 @@ export function ActivityHttpLoaderFactory(http: HttpClient) {
     declarations: [
         ActivityListComponent,
         ActivityCreateComponent,
-        ActivityEditComponent
+        ActivityEditComponent,
+        //DialogOkCancelComponent
+    ],
+    entryComponents: [
+      //DialogOkCancelComponent
     ],
     providers: [
         ActivityEditResolver,

@@ -9,6 +9,7 @@ import { MAT_DATE_FORMATS } from '@angular/material';
 import { EncryptService } from 'src/app/services/encrypt.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { EmailService } from 'src/app/services/email.service';
 
 @Component({
     selector: 'app-activity-create',
@@ -50,6 +51,7 @@ export class ActivityCreateComponent implements OnInit {
         private router: Router,
         public firebaseService: FirebaseService,
         private encryptService: EncryptService,
+        private emailService: EmailService,
         private translate: TranslateService,
         public authService: AuthService
     ) {}
@@ -101,6 +103,9 @@ export class ActivityCreateComponent implements OnInit {
             reportTo: [
                 '', Validators.required
             ],
+            reportToEmails: [
+                ''
+            ],
             workDate: [
                 '', Validators.required
             ],
@@ -118,6 +123,7 @@ export class ActivityCreateComponent implements OnInit {
             projectName: new FormControl('', Validators.required),
             type: new FormControl('', Validators.required),
             reportTo: new FormControl('', Validators.required),
+            reportToEmails: new FormControl(''),
             workDate: new FormControl('', Validators.required),
             status: new FormControl('', Validators.required),
         };
@@ -132,6 +138,7 @@ export class ActivityCreateComponent implements OnInit {
             projectName: this.encryptService.encrypt(value.projectName),
             type: value.type,
             reportTo: value.reportTo,
+            reportToEmails: value.reportToEmails,
             workDate: value.workDate.format(),
             status: value.status,
             owner: localStorage.getItem('idUser'),
@@ -142,6 +149,20 @@ export class ActivityCreateComponent implements OnInit {
         };
         // Save.
         this.firebaseService.createDocument(this.COLLECTION, activity).then(result => {
+            // send mail.
+            if (activity.reportToEmails) {
+                const mailData = {
+                    'from': 'thanhvnf5@gmail.com',
+                    'to': activity.reportToEmails,
+                    'subject': 'Work log',
+                    'text': 'Project: ' + value.projectName + '. Công việc: ' + value.code,
+                    'html': ''
+                };
+                this.emailService.send(mailData).subscribe((response) => {
+                    //console.log(response);
+                });
+            }
+            // Reset control values.
             this.createActivityForm.reset();
         }).catch(error => {
             alert(this.translate.instant('activity.pleaseLogin'));

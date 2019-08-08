@@ -13,6 +13,7 @@
         "summary": "Summary",
         "type": "Type",
         "reportTo": "Report to",
+        "reportToEmails": "Report to emails",
         "workDate": "Work date",
         "status": "Status",
         "action": "Actions",

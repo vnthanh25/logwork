@@ -69,7 +69,11 @@ export function UserHttpLoaderFactory(http: HttpClient) {
     declarations: [
         UserListComponent,
         UserCreateComponent,
-        UserEditComponent
+        UserEditComponent,
+        //DialogOkCancelComponent
+    ],
+    entryComponents: [
+      //DialogOkCancelComponent
     ],
     providers: [
         UserEditResolver,

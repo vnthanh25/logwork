@@ -59,6 +59,12 @@
                             <mat-error *ngIf="createActivityForm.get('reportTo').hasError(validation.type) && (createActivityForm.get('reportTo').dirty || createActivityForm.get('reportTo').touched)">{{validation.message}}</mat-error>
                         </ng-container>
                     </div>
+                    <!-- reportToEmails -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                            <input matInput placeholder="{{ 'activity.reportToEmails' | translate }}" class="form-control" formControlName="reportToEmails">
+                        </mat-form-field>
+                    </div>
                     <!-- workDate -->
                     <div class="form-group">
                         <mat-form-field class="input-style">

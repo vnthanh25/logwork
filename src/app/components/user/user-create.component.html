@@ -46,6 +46,15 @@
             </ng-container>
           </div>
 
+          <div class="form-group">
+            <mat-form-field class="input-style">
+              <input matInput placeholder="{{ 'user.account' | translate }}" class="form-control" formControlName="account">
+            </mat-form-field>
+            <ng-container *ngFor="let validation of validation_messages.account">
+              <mat-error *ngIf="exampleForm.get('account').hasError(validation.type) && (exampleForm.get('account').dirty || exampleForm.get('account').touched)">{{validation.message}}</mat-error>
+            </ng-container>
+          </div>
+
           <div class="row submit-button-container">
             <div class="col-md-4">
               <button *ngIf="authService.isLoggedIn()" mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!exampleForm.valid">{{ 'user.create' | translate }}</button>

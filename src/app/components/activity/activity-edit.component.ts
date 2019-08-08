@@ -13,6 +13,7 @@ import { DialogOkCancelData, DialogOkCancelComponent } from '../dialog/dialog-ok
 import { EncryptService } from 'src/app/services/encrypt.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { EmailService } from 'src/app/services/email.service';
 
 export interface DialogData {
     animal: string;
@@ -64,6 +65,7 @@ export class ActivityEditComponent implements OnInit {
         public firebaseService: FirebaseService,
         public dialog: MatDialog,
         private encryptService: EncryptService,
+        private emailService: EmailService,
         private translate: TranslateService,
         public authService: AuthService
     ) {}
@@ -135,6 +137,9 @@ export class ActivityEditComponent implements OnInit {
             reportTo: [
                 this.activity.reportTo, Validators.required
             ],
+            reportToEmails: [
+                this.activity.reportToEmails
+            ],
             workDate: [
                 this.activity.workDate, Validators.required
             ],
@@ -152,6 +157,7 @@ export class ActivityEditComponent implements OnInit {
             projectName: new FormControl('', Validators.required),
             type: new FormControl('', Validators.required),
             reportTo: new FormControl('', Validators.required),
+            reportToEmails: new FormControl(''),
             workDate: new FormControl('', Validators.required),
             status: new FormControl('', Validators.required),
         });
@@ -181,6 +187,20 @@ export class ActivityEditComponent implements OnInit {
         }
         if (promiseResult) {
             promiseResult.then(result => {
+                // send mail.
+                if (this.activity.reportToEmails) {
+                    const mailData = {
+                        'from': 'thanhvnf5@gmail.com',
+                        'to': this.activity.reportToEmails,
+                        'subject': 'Work log',
+                        'text': 'Project: ' + value.projectName + '. Công việc: ' + value.code,
+                        'html': ''
+                    };
+                    this.emailService.send(mailData).subscribe((response) => {
+                        //console.log(response);
+                    });
+                }
+                // Redirect to list.
                 this.router.navigate(['/activity']);
             }).catch(error => {
                 alert(this.translate.instant('activity.pleaseLogin'));

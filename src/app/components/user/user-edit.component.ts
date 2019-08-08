@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
-import { AvatarDialogComponent } from "../../avatar-dialog/avatar-dialog.component";
 import { FirebaseService } from '../../services/firebase.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../services';
@@ -29,6 +28,9 @@ export class UserEditComponent implements OnInit {
    ],
    'surname': [
      { type: 'required', message: 'Surname is required.' }
+   ],
+   'account': [
+     { type: 'required', message: 'Account is required.' }
    ]
  };
 
@@ -69,20 +71,8 @@ export class UserEditComponent implements OnInit {
     this.exampleForm = this.fb.group({
       userName: [this.item.userName, Validators.required],
       name: [this.item.name, Validators.required],
-      surname: [this.item.surname, Validators.required]
-    });
-  }
-
-  openDialog() {
-    const dialogRef = this.dialog.open(AvatarDialogComponent, {
-      height: '400px',
-      width: '400px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        //this.item.avatar = result.link;
-      }
+      surname: [this.item.surname, Validators.required],
+      account: [this.item.account, Validators.required]
     });
   }
 

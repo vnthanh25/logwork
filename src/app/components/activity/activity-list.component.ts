@@ -6,7 +6,8 @@ import { Activity } from 'src/app/models/activity';
 import { DatePipe } from '@angular/common';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
-import {ExcelService} from '../../services/excel.service';
+import { ExcelService } from '../../services/excel.service';
+import { EmailService } from '../../services/email.service';
 import { DialogOkCancelData, DialogOkCancelComponent } from '../dialog/dialog-ok-cancel.component';
 import { EncryptService } from 'src/app/services/encrypt.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -23,11 +24,13 @@ export class ActivityListComponent implements OnInit {
     public dateFormat: string;
     datePipe = new DatePipe('en-US');
     activities: Array<any>;
+    userName;
     users: {};
 
     /* Constructor */
     constructor(
         private excelService: ExcelService,
+        private emailService: EmailService,
         private router: Router,
         public firebaseService: FirebaseService,
         public dialog: MatDialog,
@@ -37,6 +40,7 @@ export class ActivityListComponent implements OnInit {
     ) {
         // Set localStorage: currentEntity.
         localStorage.setItem('currentEntity', 'activity');
+        this.userName = localStorage.getItem('userName').replace('@fsoft.com.vn', '');
         this.dateFormat = localStorage.getItem('dateFormat').replace(/D/g, 'd').replace(/Y/g, 'y');
     }
     /* OnInit */
@@ -119,17 +123,53 @@ export class ActivityListComponent implements OnInit {
     }
 
     exportAsXLSX(): void {
-        const excelData = this.activities.map(item => {
+        // send mail.
+        this.emailService.send({});
+        const daySeconds = 8 * 3600;
+        let reporter;
+        let estimate = 1;
+        let worked = 1;
+        let remaining = 0;
+        let workdate;
+        const length = this.activities.length;
+        const excelData = [];
+        for (let index = length - 1; index > -1; index--) {
+            const item = this.activities[index];
+            reporter = this.users[item.owner].name;
+            estimate = 1;
+            remaining = 0;
+            if (item.status.toLowerCase() === 'In Progress'.toLowerCase()) {
+                estimate += 1;
+                remaining += 1;
+            }
+            worked = estimate - remaining;
+            workdate = this.datePipe.transform(item.workDate, 'dd/MM/yyyy');
+            const worklogDay = 'Coding;' + workdate + ';' + this.users[item.owner].account + ';' + (worked);
+            const worklog = 'Coding;' + workdate + ';' + this.users[item.owner].account + ';' + (worked * daySeconds);
             const data = {};
             data['Project Name'] = item.projectName;
-            data['Summary'] = item.summary;
-            data['Type'] = item.type;
-            data['Start Date'] = item.workDate;
-            data['Assignee'] = this.users[item.owner].name;
-            data['Report To'] = item.reportTo;
+            data['Project key'] = null;
+            data['Summary'] = item.code.charAt(0).toUpperCase() + item.code.slice(1);
+            data['Issue Type'] = item.type;
+            data['Reporter'] = item.reportTo;
+            data['Assignee'] = this.users[item.owner].account;
+            data['Start Date'] = workdate;
+            data['Due Date'] = workdate;
+            data['Original Estimate (day)'] = estimate;
+            data['Worked (day)'] = worked;
+            data['Remaining (day)'] = remaining;
+            data['Status (day)'] = item.status;
+            data['Worklog (comment;date_for_logwork;account;second) (day)'] = worklogDay;
+            data['Original Estimate'] = estimate * daySeconds;
+            data['Remaining'] = remaining * daySeconds;
             data['Status'] = item.status;
-            return data;
-        });
-        this.excelService.exportAsExcelFile(excelData, 'DailyReport_' + this.datePipe.transform(new Date(), 'yyyyMMdd'), 'daily');
+            data['Worklog (comment;date_for_logwork;account;second)'] = worklog;
+            // push.
+            excelData.push(data);
+        }
+
+        // const excelData = this.activities.map(item => {
+        // });
+        this.excelService.exportAsExcelFile(excelData, 'DailyReport_' + this.datePipe.transform(new Date(), 'yyyyMMdd') + '(' + reporter + ')', 'daily');
     }
 }

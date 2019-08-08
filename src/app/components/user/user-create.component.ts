@@ -27,6 +27,9 @@ export class UserCreateComponent implements OnInit {
    ],
    'surname': [
      { type: 'required', message: 'Surname is required.' }
+   ],
+   'account': [
+     { type: 'required', message: 'Account is required.' }
    ]
  };
 
@@ -64,7 +67,8 @@ export class UserCreateComponent implements OnInit {
     this.exampleForm = this.fb.group({
       userName: ['', Validators.required ],
       name: ['', Validators.required ],
-      surname: ['', Validators.required ]
+      surname: ['', Validators.required ],
+      account: ['', Validators.required ]
     });
     this.avatar = '//:0';
   }
@@ -73,7 +77,8 @@ export class UserCreateComponent implements OnInit {
     this.exampleForm = this.fb.group({
       userName: new FormControl('', Validators.required),
       name: new FormControl('', Validators.required),
-      surname: new FormControl('', Validators.required)
+      surname: new FormControl('', Validators.required),
+      account: new FormControl('', Validators.required)
     });
     this.avatar = '//:0';
   }
@@ -83,6 +88,7 @@ export class UserCreateComponent implements OnInit {
       userName: value.userName.toLowerCase(),
       name: value.name,
       surname: value.surname,
+      account: value.account,
       avatar: this.avatar
     };
     //this.firebaseService.createDocument('users', user)
