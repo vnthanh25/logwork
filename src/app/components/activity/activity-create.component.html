@@ -12,7 +12,12 @@
                     <!-- projectName -->
                     <div class="form-group">
                         <mat-form-field class="input-style">
-                            <input matInput placeholder="{{ 'activity.projectName' | translate }}" class="form-control" formControlName="projectName">
+                            <input type="text" matInput placeholder="{{ 'activity.projectName' | translate }}" class="form-control" formControlName="projectName" [matAutocomplete]="autoProject">
+                            <mat-autocomplete autoActiveFirstOption #autoProject="matAutocomplete">
+                                <mat-option *ngFor="let project of filteredProjects | async" [value]="project.name">
+                                    {{project.name}}
+                                </mat-option>
+                            </mat-autocomplete>
                         </mat-form-field>
                         <ng-container *ngFor="let validation of validation_messages.projectName">
                             <mat-error *ngIf="createActivityForm.get('projectName').hasError(validation.type) && (createActivityForm.get('projectName').dirty || createActivityForm.get('projectName').touched)">{{validation.message}}</mat-error>

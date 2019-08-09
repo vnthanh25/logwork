@@ -30,6 +30,7 @@ import { I18nProvider } from './providers/I18nProvider';
 import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatButtonModule } from '@angular/material';
 import { CustomDateAdapter } from './providers/custom-date-adapter';
 import { EmailService } from './services/email.service';
+import { ProjectService } from './services/project.service';
 
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
@@ -77,6 +78,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   providers: [ FirebaseService, ExcelService, EmailService,
     AuthService,
     //EncryptService,
+    ProjectService,
     I18nProvider,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     //{ provide: MAT_DATE_LOCALE, useValue: 'it' },

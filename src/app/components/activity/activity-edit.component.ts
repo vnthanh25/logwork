@@ -14,6 +14,8 @@ import { EncryptService } from 'src/app/services/encrypt.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { EmailService } from 'src/app/services/email.service';
+import { UserService } from 'src/app/services';
+import { ProjectService } from 'src/app/services/project.service';
 
 export interface DialogData {
     animal: string;
@@ -28,6 +30,8 @@ export interface DialogData {
 export class ActivityEditComponent implements OnInit {
     COLLECTION = 'activities';
     editActivityForm: FormGroup;
+    projects: any[];
+    filteredProjects: Observable<any[]>;
     activity: any;
     activityTypes: string[] = ['Epic','Story','Task','Sub-task','SIT Bug','UAT Bug','Project Detail','PROD Bug','Improvement','New Feature','Risk','Risk Action','Pentest','Defect','Source code review','Bug'];
     filteredActiviTypes: Observable<string[]>;
@@ -35,6 +39,7 @@ export class ActivityEditComponent implements OnInit {
     filteredStatuses: Observable<string[]>;
     dialogTitle: string;
     dialogContent: string;
+    datePipe = new DatePipe('en-US');
     
     validation_messages = {
         code: [
@@ -64,11 +69,15 @@ export class ActivityEditComponent implements OnInit {
         private formBuilder: FormBuilder,
         public firebaseService: FirebaseService,
         public dialog: MatDialog,
+        private translate: TranslateService,
+        public authService: AuthService,
         private encryptService: EncryptService,
         private emailService: EmailService,
-        private translate: TranslateService,
-        public authService: AuthService
-    ) {}
+        private userService: UserService,
+        private projectService: ProjectService
+    ) {
+        this.getProjects();
+    }
 
     /* Init */
     ngOnInit() {
@@ -84,11 +93,16 @@ export class ActivityEditComponent implements OnInit {
                 if (this.activity.workDate) {
                     this.activity.workDate = moment(new Date(this.activity.workDate));
                 }
+                this.activity['projectName'] = this.encryptService.decrypt(this.activity['projectName']);
                 this.activity['code'] = this.encryptService.decrypt(this.activity['code']);
                 this.activity['summary'] = this.activity['summary'] ? this.encryptService.decrypt(this.activity['summary']) : '';
-                this.activity['projectName'] = this.encryptService.decrypt(this.activity['projectName']);
                 // Create form group.
                 this.createForm();
+                // Listen project name change.
+                this.filteredProjects = this.editActivityForm.controls.projectName.valueChanges.pipe(
+                    startWith(''),
+                    map(value => this.filterProjects(value))
+                );
                 // Listen activity type change.
                 this.filteredActiviTypes = this.editActivityForm.controls.type.valueChanges.pipe(
                     startWith(''),
@@ -101,6 +115,16 @@ export class ActivityEditComponent implements OnInit {
                 );
             }
         });
+    }
+
+    private filterProjects(value: string): string[] {
+        if (!this.projects) {
+            this.getProjects();
+            return null;
+        }
+        const filterValue = value ? value.toLowerCase() : '';
+
+        return this.projects.filter(option => option ? option.name.toLowerCase().includes(filterValue) : false);
     }
 
     private filterActiviTypes(value: string): string[] {
@@ -163,6 +187,12 @@ export class ActivityEditComponent implements OnInit {
         });
     }
 
+    getProjects() {
+        this.projectService.getAll().then(response => {
+            this.projects = this.projectService.projects;
+        });
+    }
+
     /* Submit */
     onSubmit(value) {
         this.activity = { ... this.activity, ... value };
@@ -189,11 +219,12 @@ export class ActivityEditComponent implements OnInit {
             promiseResult.then(result => {
                 // send mail.
                 if (this.activity.reportToEmails) {
+                    const fullName = this.userService.users[this.activity.owner].surname + ' ' + this.userService.users[this.activity.owner].name;
                     const mailData = {
-                        'from': 'thanhvnf5@gmail.com',
+                        'from': localStorage.getItem('userName'),
                         'to': this.activity.reportToEmails,
                         'subject': 'Work log',
-                        'text': 'Project: ' + value.projectName + '. Công việc: ' + value.code,
+                        'text': 'Người làm: ' + fullName + '. Project: ' + value.projectName + '. Công việc: ' + value.code + '. Ngày: ' + this.datePipe.transform(this.activity.workDate, localStorage.getItem('dateFormat')).toString() + '.',
                         'html': ''
                     };
                     this.emailService.send(mailData).subscribe((response) => {

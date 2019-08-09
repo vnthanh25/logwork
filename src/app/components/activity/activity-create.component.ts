@@ -10,6 +10,9 @@ import { EncryptService } from 'src/app/services/encrypt.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { EmailService } from 'src/app/services/email.service';
+import { UserService } from 'src/app/services';
+import { ProjectService } from 'src/app/services/project.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-activity-create',
@@ -19,10 +22,13 @@ import { EmailService } from 'src/app/services/email.service';
 export class ActivityCreateComponent implements OnInit {
     COLLECTION = 'activities';
     createActivityForm: FormGroup;
+    projects: any[];
+    filteredProjects: Observable<any[]>;
     activityTypes: string[] = ['Epic','Story','Task','Sub-task','SIT Bug','UAT Bug','Project Detail','PROD Bug','Improvement','New Feature','Risk','Risk Action','Pentest','Defect','Source code review','Bug'];
     filteredActiviTypes: Observable<string[]>;
     statuses: string[] = ['ToDo','Done','Cancelled','Assigned','Fixed','Rejected','Analyst','Development','Pending','Requirement','Testing','UAT','Ready for UAT','In Progress','Reopened','Resolved','Closed'];
     filteredStatuses: Observable<string[]>;
+    datePipe = new DatePipe('en-US');
 
     validation_messages = {
         code: [
@@ -50,15 +56,22 @@ export class ActivityCreateComponent implements OnInit {
         private formBuilder: FormBuilder,
         private router: Router,
         public firebaseService: FirebaseService,
+        private translate: TranslateService,
+        public authService: AuthService,
         private encryptService: EncryptService,
         private emailService: EmailService,
-        private translate: TranslateService,
-        public authService: AuthService
+        private userService: UserService,
+        private projectService: ProjectService
     ) {}
 
     /* Init */
     ngOnInit() {
         this.createForm();
+        // Listen project name change.
+        this.filteredProjects = this.createActivityForm.controls.projectName.valueChanges.pipe(
+            startWith(''),
+            map(value => this.filterProjects(value))
+        );
         this.filteredActiviTypes = this.createActivityForm.controls.type.valueChanges.pipe(
             startWith(''),
             map(value => this.filterActiviTypes(value))
@@ -67,6 +80,16 @@ export class ActivityCreateComponent implements OnInit {
             startWith(''),
             map(value => this.filterStatuses(value))
         );
+    }
+
+    private filterProjects(value: string): string[] {
+        if (!this.projects) {
+            this.getProjects();
+            return null;
+        }
+        const filterValue = value ? value.toLowerCase() : '';
+
+        return this.projects.filter(option => option ? option.name.toLowerCase().includes(filterValue) : false);
     }
     
     private filterActiviTypes(value: string): string[] {
@@ -130,6 +153,12 @@ export class ActivityCreateComponent implements OnInit {
         this.createActivityForm = this.formBuilder.group(formControls);
     }
 
+    getProjects() {
+        this.projectService.getAll().then(response => {
+            this.projects = this.projectService.projects;
+        });
+    }
+
     /* Submit */
     onSubmit(value) {
         const activity = {
@@ -151,11 +180,12 @@ export class ActivityCreateComponent implements OnInit {
         this.firebaseService.createDocument(this.COLLECTION, activity).then(result => {
             // send mail.
             if (activity.reportToEmails) {
+                const fullName = this.userService.users[activity.owner].surname + ' ' + this.userService.users[activity.owner].name;
                 const mailData = {
-                    'from': 'thanhvnf5@gmail.com',
+                    'from': localStorage.getItem('userName'),
                     'to': activity.reportToEmails,
                     'subject': 'Work log',
-                    'text': 'Project: ' + value.projectName + '. Công việc: ' + value.code,
+                    'text': 'Người làm: ' + fullName + '. Project: ' + value.projectName + '. Công việc: ' + value.code + '. Ngày: ' + this.datePipe.transform(activity.workDate, localStorage.getItem('dateFormat')).toString() + '.',
                     'html': ''
                 };
                 this.emailService.send(mailData).subscribe((response) => {

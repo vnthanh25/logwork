@@ -27,7 +27,7 @@ export class AppComponent {
     //private localizeRouterService: LocalizeRouterService,
     public authService: AuthService
   ) {
-    localStorage.setItem('dateFormat', 'DD/MM/YYYY');
+    localStorage.setItem('dateFormat', 'dd/MM/yyyy');
     const language = 'vi';
     translate.addLangs(['en', 'vi']);
     translate.setDefaultLang(language);
@@ -71,9 +71,9 @@ export class AppComponent {
     this.i18nProvider.defaultLanguage = language;
     this.i18nProvider.eventLanguageChange.emit(language);
     if (language === 'vi') {
-      localStorage.setItem('dateFormat', 'DD/MM/YYYY');
+      localStorage.setItem('dateFormat', 'dd/MM/yyyy');
     } else {
-      localStorage.setItem('dateFormat', 'MM/DD/YYYY');
+      localStorage.setItem('dateFormat', 'MM/dd/yyyy');
     }
   }
 

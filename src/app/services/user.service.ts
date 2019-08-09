@@ -7,12 +7,22 @@ import { FirebaseService } from './firebase.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-    COLLECTION = 'users';
-    DEFAULT_MK = '123456';
+    private COLLECTION = 'users';
+    private DEFAULT_MK = '123456';
+    public users = {};
+
     constructor(
         private authService: AuthService,
         private firebaseService: FirebaseService
-    ) {}
+    ) {
+        this.firebaseService.getDocuments(this.COLLECTION).subscribe(result => {
+            const users = {};
+            result.forEach((item) => {
+                users[item.payload.doc.id] = item.payload.doc.data();
+            });
+            this.users = users;
+        });
+    }
 
     create(user) {
         return new Promise((resolve, reject) => {

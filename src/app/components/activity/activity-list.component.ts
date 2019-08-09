@@ -12,6 +12,7 @@ import { DialogOkCancelData, DialogOkCancelComponent } from '../dialog/dialog-ok
 import { EncryptService } from 'src/app/services/encrypt.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { UserService } from 'src/app/services';
 
 @Component({
     selector: 'app-activity-list',
@@ -25,42 +26,32 @@ export class ActivityListComponent implements OnInit {
     datePipe = new DatePipe('en-US');
     activities: Array<any>;
     userName;
-    users: {};
 
     /* Constructor */
     constructor(
-        private excelService: ExcelService,
-        private emailService: EmailService,
         private router: Router,
         public firebaseService: FirebaseService,
         public dialog: MatDialog,
         private encryptService: EncryptService,
         private translate: TranslateService,
-        public authService: AuthService
+        public authService: AuthService,
+        private excelService: ExcelService,
+        private emailService: EmailService,
+        private userService: UserService
     ) {
         // Set localStorage: currentEntity.
         localStorage.setItem('currentEntity', 'activity');
         this.userName = localStorage.getItem('userName').replace('@fsoft.com.vn', '');
-        this.dateFormat = localStorage.getItem('dateFormat').replace(/D/g, 'd').replace(/Y/g, 'y');
+        this.dateFormat = localStorage.getItem('dateFormat');//.replace(/D/g, 'd').replace(/Y/g, 'y');
     }
     /* OnInit */
     ngOnInit() {
         this.getActivities();
-        this.getUsers();
     }
+
     /*----------------------------- */
     /*---------- Methods ---------- */
     /*----------------------------- */
-
-    getUsers() {
-        this.firebaseService.getDocuments(this.COLLECTION_USER).subscribe(result => {
-            const users = {};
-            result.forEach(function(item) {
-                users[item.payload.doc.id] = item.payload.doc.data();
-            });
-            this.users = users;
-        });
-    }
 
     getActivities() {
         const owner = localStorage.getItem('idUser');
@@ -135,7 +126,7 @@ export class ActivityListComponent implements OnInit {
         const excelData = [];
         for (let index = length - 1; index > -1; index--) {
             const item = this.activities[index];
-            reporter = this.users[item.owner].name;
+            reporter = this.userService.users[item.owner].name;
             estimate = 1;
             remaining = 0;
             if (item.status.toLowerCase() === 'In Progress'.toLowerCase()) {
@@ -143,16 +134,16 @@ export class ActivityListComponent implements OnInit {
                 remaining += 1;
             }
             worked = estimate - remaining;
-            workdate = this.datePipe.transform(item.workDate, 'dd/MM/yyyy');
-            const worklogDay = 'Coding;' + workdate + ';' + this.users[item.owner].account + ';' + (worked);
-            const worklog = 'Coding;' + workdate + ';' + this.users[item.owner].account + ';' + (worked * daySeconds);
+            workdate = this.datePipe.transform(item.workDate, localStorage.getItem('dateFormat'));
+            const worklogDay = 'Coding;' + workdate + ';' + this.userService.users[item.owner].account + ';' + (worked);
+            const worklog = 'Coding;' + workdate + ';' + this.userService.users[item.owner].account + ';' + (worked * daySeconds);
             const data = {};
             data['Project Name'] = item.projectName;
             data['Project key'] = null;
             data['Summary'] = item.code.charAt(0).toUpperCase() + item.code.slice(1);
             data['Issue Type'] = item.type;
             data['Reporter'] = item.reportTo;
-            data['Assignee'] = this.users[item.owner].account;
+            data['Assignee'] = this.userService.users[item.owner].account;
             data['Start Date'] = workdate;
             data['Due Date'] = workdate;
             data['Original Estimate (day)'] = estimate;
