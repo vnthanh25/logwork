@@ -22,6 +22,7 @@ import { DatePipe } from '@angular/common';
 export class ActivityCreateComponent implements OnInit {
     COLLECTION = 'activities';
     createActivityForm: FormGroup;
+    userSelected;
     projects: any[];
     filteredProjects: Observable<any[]>;
     activityTypes: string[] = ['Epic','Story','Task','Sub-task','SIT Bug','UAT Bug','Project Detail','PROD Bug','Improvement','New Feature','Risk','Risk Action','Pentest','Defect','Source code review','Bug'];
@@ -80,6 +81,7 @@ export class ActivityCreateComponent implements OnInit {
             startWith(''),
             map(value => this.filterStatuses(value))
         );
+        this.userSelected = JSON.parse(localStorage.getItem('userSelected'));
     }
 
     private filterProjects(value: string): string[] {
@@ -170,7 +172,7 @@ export class ActivityCreateComponent implements OnInit {
             reportToEmails: value.reportToEmails,
             workDate: value.workDate.format(),
             status: value.status,
-            owner: localStorage.getItem('idUser'),
+            owner: localStorage.getItem('idUserSelected'),
             createdBy: localStorage.getItem('userName'),
             createdDate: moment(new Date()).format(),
             lastModifiedBy: localStorage.getItem('userName'),

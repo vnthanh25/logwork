@@ -49,7 +49,8 @@ export class UserListComponent implements OnInit {
   }
 
   listActivities(item) {
-    localStorage.setItem('idUser', item.payload.doc.id);
+    localStorage.setItem('idUserSelected', item.payload.doc.id);
+    localStorage.setItem('userSelected', JSON.stringify(item.payload.doc.data()));
     this.router.navigate(['/activity']);
   }
 

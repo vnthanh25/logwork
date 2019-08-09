@@ -30,6 +30,7 @@ export interface DialogData {
 export class ActivityEditComponent implements OnInit {
     COLLECTION = 'activities';
     editActivityForm: FormGroup;
+    userSelected;
     projects: any[];
     filteredProjects: Observable<any[]>;
     activity: any;
@@ -115,6 +116,7 @@ export class ActivityEditComponent implements OnInit {
                 );
             }
         });
+        this.userSelected = JSON.parse(localStorage.getItem('userSelected'));
     }
 
     private filterProjects(value: string): string[] {
@@ -206,7 +208,7 @@ export class ActivityEditComponent implements OnInit {
         this.activity.code = this.encryptService.encrypt(this.activity.code);
         this.activity.summary = this.activity.summary ? this.encryptService.encrypt(this.activity.summary) : '';
         this.activity.projectName = this.encryptService.encrypt(this.activity.projectName);
-        this.activity.lastModifiedBy = localStorage.getItem('idUser');
+        this.activity.lastModifiedBy = localStorage.getItem('idUserSelected');
         this.activity.lastModifiedDate = moment(new Date()).format();
         // Save.
         let promiseResult = null;

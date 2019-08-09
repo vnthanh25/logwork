@@ -1,113 +1,119 @@
 <div class="edit-page">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active" aria-current="page">{{ 'activity.edit' | translate }} {{ 'activity.title' | translate }}</li>
-            </ol>
-        </nav>
-        <div class="page-content">
-            <form class="edit-form" [formGroup]="editActivityForm" novalidate (ngSubmit)="onSubmit(editActivityForm.value)">
-                <div class="row">
-                    <!-- First column -->
-                    <div class="col col-md-6">
-                        <!-- projectName -->
-                        <div class="form-group">
-                            <mat-form-field class="input-style">
-                                <input type="text" matInput placeholder="{{ 'activity.projectName' | translate }}" class="form-control" formControlName="projectName" [matAutocomplete]="autoProject">
-                                <mat-autocomplete autoActiveFirstOption #autoProject="matAutocomplete">
-                                    <mat-option *ngFor="let project of filteredProjects | async" [value]="project.name">
-                                        {{project.name}}
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
-                            <ng-container *ngFor="let validation of validation_messages.projectName">
-                                <mat-error *ngIf="editActivityForm.get('projectName').hasError(validation.type) && (editActivityForm.get('projectName').dirty || editActivityForm.get('projectName').touched)">{{validation.message}}</mat-error>
-                            </ng-container>
-                        </div>
-                        <!-- code -->
-                        <div class="form-group">
-                            <mat-form-field class="input-style">
-                                <input matInput placeholder="{{ 'activity.code' | translate }}" class="form-control" formControlName="code">
-                            </mat-form-field>
-                            <ng-container *ngFor="let validation of validation_messages.code">
-                                <mat-error *ngIf="editActivityForm.get('code').hasError(validation.type) && (editActivityForm.get('code').dirty || editActivityForm.get('code').touched)">{{validation.message}}</mat-error>
-                            </ng-container>
-                        </div>
-                        <!-- summary -->
-                        <div class="form-group">
-                            <mat-form-field class="input-style">
-                              <textarea matInput placeholder="{{ 'activity.summary' | translate }}" class="form-control" formControlName="summary"></textarea>
-                            </mat-form-field>
-                        </div>
-                        <!-- type -->
-                        <div class="form-group">
-                            <mat-form-field class="input-style">
-                                <input type="text" matInput placeholder="{{ 'activity.type' | translate }}" class="form-control" formControlName="type" [matAutocomplete]="auto">
-                                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                                    <mat-option *ngFor="let activiType of filteredActiviTypes | async" [value]="activiType">
-                                        {{activiType}}
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
-                            <ng-container *ngFor="let validation of validation_messages.type">
-                                <mat-error *ngIf="editActivityForm.get('type').hasError(validation.type) && (editActivityForm.get('type').dirty || editActivityForm.get('type').touched)">{{validation.message}}</mat-error>
-                            </ng-container>
-                        </div>
-                    </div>
-                    <!-- Second column -->
-                    <div class="col col-md-6">
-                        <!-- reportTo -->
-                        <div class="form-group">
-                            <mat-form-field class="input-style">
-                                <input matInput placeholder="{{ 'activity.reportTo' | translate }}" class="form-control" formControlName="reportTo">
-                            </mat-form-field>
-                            <ng-container *ngFor="let validation of validation_messages.reportTo">
-                                <mat-error *ngIf="editActivityForm.get('reportTo').hasError(validation.type) && (editActivityForm.get('reportTo').dirty || editActivityForm.get('reportTo').touched)">{{validation.message}}</mat-error>
-                            </ng-container>
-                        </div>
-                        <!-- reportToEmails -->
-                        <div class="form-group">
-                            <mat-form-field class="input-style">
-                                <input matInput placeholder="{{ 'activity.reportToEmails' | translate }}" class="form-control" formControlName="reportToEmails">
-                            </mat-form-field>
-                        </div>
-                        <!-- workDate -->
-                        <div class="form-group">
-                            <mat-form-field class="input-style">
-                                <input matInput [matDatepicker]="picker" placeholder="{{ 'activity.workDate' | translate }}" formControlName="workDate">
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
-                            <ng-container *ngFor="let validation of validation_messages.workDate">
-                                <mat-error *ngIf="editActivityForm.get('workDate').hasError(validation.type) && (editActivityForm.get('workDate').dirty || editActivityForm.get('workDate').touched)">{{validation.message}}</mat-error>
-                            </ng-container>
-                        </div>
-                        <!-- status -->
-                        <div class="form-group">
-                            <mat-form-field class="input-style">
-                                <input type="text" matInput placeholder="{{ 'activity.status' | translate }}" class="form-control" formControlName="status" [matAutocomplete]="autoStatus">
-                                <mat-autocomplete autoActiveFirstOption #autoStatus="matAutocomplete">
-                                    <mat-option *ngFor="let status of filteredStatuses | async" [value]="status">
-                                        {{status}}
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
-                            <ng-container *ngFor="let validation of validation_messages.status">
-                                <mat-error *ngIf="editActivityForm.get('status').hasError(validation.type) && (editActivityForm.get('status').dirty || editActivityForm.get('status').touched)">{{validation.message}}</mat-error>
-                            </ng-container>
-                        </div>
-                    </div>
-                </div>
-                <div class="row submit-button-container">
-                    <div class="col-md-4">
-                        <button *ngIf="authService.isLoggedIn()" mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!editActivityForm.valid">{{ 'activity.save' | translate }}</button>
-                    </div>
-                    <div class="col-md-4">
-                        <button *ngIf="authService.isLoggedIn()" mat-raised-button class="delete-button" color="warn" type="button" (click)="delete()">{{ 'activity.delete' | translate }}</button>
-                    </div>
-                    <div class="col-md-4">
-                        <button mat-raised-button class="cancel-button" color="basic" type="button" (click)="cancel()">{{ 'activity.cancel' | translate }}</button>
-                    </div>
-                </div>
-            </form>
+    <div class="row">
+        <div class="col col-md-4 image-col">
+            <img class="image" [src]="userSelected.avatar">
+            {{userSelected.surname + ' ' + userSelected.name}}
         </div>
     </div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">{{ 'activity.edit' | translate }} {{ 'activity.title' | translate }}</li>
+        </ol>
+    </nav>
+    <div class="page-content">
+        <form class="edit-form" [formGroup]="editActivityForm" novalidate (ngSubmit)="onSubmit(editActivityForm.value)">
+            <div class="row">
+                <!-- First column -->
+                <div class="col col-md-6">
+                    <!-- projectName -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                            <input type="text" matInput placeholder="{{ 'activity.projectName' | translate }}" class="form-control" formControlName="projectName" [matAutocomplete]="autoProject">
+                            <mat-autocomplete autoActiveFirstOption #autoProject="matAutocomplete">
+                                <mat-option *ngFor="let project of filteredProjects | async" [value]="project.name">
+                                    {{project.name}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <ng-container *ngFor="let validation of validation_messages.projectName">
+                            <mat-error *ngIf="editActivityForm.get('projectName').hasError(validation.type) && (editActivityForm.get('projectName').dirty || editActivityForm.get('projectName').touched)">{{validation.message}}</mat-error>
+                        </ng-container>
+                    </div>
+                    <!-- code -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                            <input matInput placeholder="{{ 'activity.code' | translate }}" class="form-control" formControlName="code">
+                        </mat-form-field>
+                        <ng-container *ngFor="let validation of validation_messages.code">
+                            <mat-error *ngIf="editActivityForm.get('code').hasError(validation.type) && (editActivityForm.get('code').dirty || editActivityForm.get('code').touched)">{{validation.message}}</mat-error>
+                        </ng-container>
+                    </div>
+                    <!-- summary -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                            <textarea matInput placeholder="{{ 'activity.summary' | translate }}" class="form-control" formControlName="summary"></textarea>
+                        </mat-form-field>
+                    </div>
+                    <!-- type -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                            <input type="text" matInput placeholder="{{ 'activity.type' | translate }}" class="form-control" formControlName="type" [matAutocomplete]="auto">
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                <mat-option *ngFor="let activiType of filteredActiviTypes | async" [value]="activiType">
+                                    {{activiType}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <ng-container *ngFor="let validation of validation_messages.type">
+                            <mat-error *ngIf="editActivityForm.get('type').hasError(validation.type) && (editActivityForm.get('type').dirty || editActivityForm.get('type').touched)">{{validation.message}}</mat-error>
+                        </ng-container>
+                    </div>
+                </div>
+                <!-- Second column -->
+                <div class="col col-md-6">
+                    <!-- reportTo -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                            <input matInput placeholder="{{ 'activity.reportTo' | translate }}" class="form-control" formControlName="reportTo">
+                        </mat-form-field>
+                        <ng-container *ngFor="let validation of validation_messages.reportTo">
+                            <mat-error *ngIf="editActivityForm.get('reportTo').hasError(validation.type) && (editActivityForm.get('reportTo').dirty || editActivityForm.get('reportTo').touched)">{{validation.message}}</mat-error>
+                        </ng-container>
+                    </div>
+                    <!-- reportToEmails -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                            <input matInput placeholder="{{ 'activity.reportToEmails' | translate }}" class="form-control" formControlName="reportToEmails">
+                        </mat-form-field>
+                    </div>
+                    <!-- workDate -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                            <input matInput [matDatepicker]="picker" placeholder="{{ 'activity.workDate' | translate }}" formControlName="workDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <ng-container *ngFor="let validation of validation_messages.workDate">
+                            <mat-error *ngIf="editActivityForm.get('workDate').hasError(validation.type) && (editActivityForm.get('workDate').dirty || editActivityForm.get('workDate').touched)">{{validation.message}}</mat-error>
+                        </ng-container>
+                    </div>
+                    <!-- status -->
+                    <div class="form-group">
+                        <mat-form-field class="input-style">
+                            <input type="text" matInput placeholder="{{ 'activity.status' | translate }}" class="form-control" formControlName="status" [matAutocomplete]="autoStatus">
+                            <mat-autocomplete autoActiveFirstOption #autoStatus="matAutocomplete">
+                                <mat-option *ngFor="let status of filteredStatuses | async" [value]="status">
+                                    {{status}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <ng-container *ngFor="let validation of validation_messages.status">
+                            <mat-error *ngIf="editActivityForm.get('status').hasError(validation.type) && (editActivityForm.get('status').dirty || editActivityForm.get('status').touched)">{{validation.message}}</mat-error>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            <div class="row submit-button-container">
+                <div class="col-md-4">
+                    <button *ngIf="authService.isLoggedIn()" mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!editActivityForm.valid">{{ 'activity.save' | translate }}</button>
+                </div>
+                <div class="col-md-4">
+                    <button *ngIf="authService.isLoggedIn()" mat-raised-button class="delete-button" color="warn" type="button" (click)="delete()">{{ 'activity.delete' | translate }}</button>
+                </div>
+                <div class="col-md-4">
+                    <button mat-raised-button class="cancel-button" color="basic" type="button" (click)="cancel()">{{ 'activity.cancel' | translate }}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

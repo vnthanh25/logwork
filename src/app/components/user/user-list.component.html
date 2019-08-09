@@ -1,37 +1,39 @@
 <div class="row">
-    <div class="col-md-4 offset-md-1">
-      <div class="input-group">
-        <input type="text" class="form-control" [(ngModel)]="searchValue" [ngModelOptions]="{standalone: true}" placeholder="{{ 'user.searchByName' | translate }}" (keyup)="searchByUserName()">
-        <div class="input-group-append">
-          <span class="input-group-text"><ion-icon class="icon" name="search"></ion-icon></span>
-        </div>
+  <div class="col-md-4 offset-md-1">
+    <div class="input-group">
+      <input type="text" class="form-control" [(ngModel)]="searchValue" [ngModelOptions]="{standalone: true}" placeholder="{{ 'user.searchByName' | translate }}" (keyup)="searchByUserName()">
+      <div class="input-group-append">
+        <span class="input-group-text"><ion-icon class="icon" name="search"></ion-icon></span>
       </div>
     </div>
   </div>
+</div>
   
-  <div class="list-group users-list">
-    <div *ngFor="let item of items" class="list-group-item list-group-item-action flex-column align-items-start">
-      <div class="row">
-        <div class="col col-md-2 image-col">
-          <img class="image" [src]="item.payload.doc.data().avatar">
-        </div>
-        <div class="col col-md-2 actions-col">
-          <button class="btn btn-outline-primary action" (click)="viewDetails(item)" type="button">
-            <ion-icon class="icon" name="more"></ion-icon>
-          </button>
-        </div>
-        <div class="col col-md-6 text-col">
-          <h5 class="mb-1">{{item.payload.doc.data().surname}} {{item.payload.doc.data().name}}</h5>
-          <small>{{item.payload.doc.data().userName}}</small>
-        </div>
-        <div class="col col-md-2 actions-col">
-          <button class="btn btn-outline-primary action" (click)="listActivities(item)" type="button">
-            <ion-icon class="icon" name="arrow-round-forward"></ion-icon>
-          </button>
-        </div>
+<div class="list-group users-list">
+  <div *ngFor="let item of items" class="list-group-item list-group-item-action flex-column align-items-start">
+    <div class="row">
+      <div class="col col-md-2 image-col">
+        <img class="image" [src]="item.payload.doc.data().avatar">
+      </div>
+      <div class="col col-md-2 actions-col">
+        <button class="btn btn-outline-primary action" (click)="viewDetails(item)" type="button">
+          <ion-icon class="icon" name="more"></ion-icon>
+        </button>
+      </div>
+      <div class="col col-md-6 text-col">
+        <h5 class="mb-1">{{item.payload.doc.data().surname}} {{item.payload.doc.data().name}}</h5>
+        <small>{{item.payload.doc.data().userName}}</small>
+      </div>
+      <div class="col col-md-2 actions-col">
+        <button class="btn btn-outline-primary action" (click)="listActivities(item)" type="button">
+          <ion-icon class="icon" name="arrow-round-forward"></ion-icon>
+        </button>
       </div>
     </div>
   </div>
-  <button *ngIf="authService.isLoggedIn()" mat-raised-button class="btn btn-primary" type="button" (click)="exportDailyAsExcelFile()">{{ 'user.exportDailyAsExcel' | translate }}</button>
-  <button *ngIf="authService.isLoggedIn()" mat-raised-button class="btn btn-primary" type="button" (click)="exportWeeklyAsExcel()">{{ 'user.exportWeeklyAsExcel' | translate }}</button>
+</div>
+<section layout="row" layout-sm="column" layout-align="end center" layout-wrap>
+    <button *ngIf="authService.isLoggedIn()" mat-raised-button class="btn btn-primary" type="button" (click)="exportDailyAsExcelFile()">{{ 'user.exportDailyAsExcel' | translate }}</button>
+    <!-- <button *ngIf="authService.isLoggedIn()" mat-raised-button class="btn btn-primary" type="button" (click)="exportWeeklyAsExcel()">{{ 'user.exportWeeklyAsExcel' | translate }}</button> -->
+</section>
  

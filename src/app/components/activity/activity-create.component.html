@@ -1,4 +1,10 @@
 <div class="create-page">
+    <div class="row">
+        <div class="col col-md-4 image-col">
+            <img class="image" [src]="userSelected.avatar">
+            {{userSelected.surname + ' ' + userSelected.name}}
+        </div>
+    </div>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item active" aria-current="page">{{ 'activity.create' | translate }} {{ 'activity.title' | translate }}</li>

@@ -26,6 +26,7 @@ export class ActivityListComponent implements OnInit {
     public dateFormat: string;
     datePipe = new DatePipe('en-US');
     activities: Array<any>;
+    userSelected;
     userName;
 
     /* Constructor */
@@ -49,6 +50,7 @@ export class ActivityListComponent implements OnInit {
     /* OnInit */
     ngOnInit() {
         this.getActivities();
+        this.userSelected = JSON.parse(localStorage.getItem('userSelected'));
     }
 
     /*----------------------------- */
@@ -56,19 +58,10 @@ export class ActivityListComponent implements OnInit {
     /*----------------------------- */
 
     getActivities() {
-        const owner = localStorage.getItem('idUser');
+        const owner = localStorage.getItem('idUserSelected');
         this.activityService.getByProperty('owner', owner).then((response: any) => {
             this.activities = response;
         });
-
-
-
-
-
-
-
-
-
     }
 
     deleteActivity(id) {
