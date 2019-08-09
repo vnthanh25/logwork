@@ -13,7 +13,9 @@
         "name": "Name",
         "surname": "Surname",
         "account": "Window account",
-        "searchByName": "Search by email"
+        "searchByName": "Search by email",
+        "exportDailyAsExcel": "Export daily to excel",
+        "exportWeeklyAsExcel": "Export weekly to excel"
     },
     "validation": {
         "isRequired": " is required."

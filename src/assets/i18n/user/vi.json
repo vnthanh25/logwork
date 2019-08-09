@@ -13,7 +13,9 @@
         "name": "Tên",
         "surname": "Họ lót",
         "account": "Tên window user",
-        "searchByName": "Tìm theo email"
+        "searchByName": "Tìm theo email",
+        "exportDailyAsExcel": "Xuất theo ngày bằng excel",
+        "exportWeeklyAsExcel": "Xuất theo tuần bằng excel"
     },
     "validation": {
         "isRequired": " không thể rỗng."

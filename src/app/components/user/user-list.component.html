@@ -32,4 +32,6 @@
       </div>
     </div>
   </div>
-  
+  <button *ngIf="authService.isLoggedIn()" mat-raised-button class="btn btn-primary" type="button" (click)="exportDailyAsExcelFile()">{{ 'user.exportDailyAsExcel' | translate }}</button>
+  <button *ngIf="authService.isLoggedIn()" mat-raised-button class="btn btn-primary" type="button" (click)="exportWeeklyAsExcel()">{{ 'user.exportWeeklyAsExcel' | translate }}</button>
+ 

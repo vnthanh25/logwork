@@ -13,6 +13,7 @@ import { EncryptService } from 'src/app/services/encrypt.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services';
+import { ActivityService } from 'src/app/services/activity.service';
 
 @Component({
     selector: 'app-activity-list',
@@ -37,7 +38,8 @@ export class ActivityListComponent implements OnInit {
         public authService: AuthService,
         private excelService: ExcelService,
         private emailService: EmailService,
-        private userService: UserService
+        private userService: UserService,
+        private activityService: ActivityService
     ) {
         // Set localStorage: currentEntity.
         localStorage.setItem('currentEntity', 'activity');
@@ -55,47 +57,18 @@ export class ActivityListComponent implements OnInit {
 
     getActivities() {
         const owner = localStorage.getItem('idUser');
-        this.firebaseService.searchDocumentsByProperty(this.COLLECTION, 'owner', owner).subscribe(result => {
-            const datePipe = this.datePipe;
-            this.activities = result.map(item => {
-                let activity = { id: item.payload.doc.id, ... item.payload.doc.data() };
-                /*if (activity['workDate']) {
-                    activity['workDate'] = datePipe.transform(activity['workDate'], localStorage.getItem('dateFormat')).toString();
-                }
-                 if (moment.isMoment(activity['workDate'])) {
-                    activity['workDate'] = activity['workDate'].format();
-                } else if (activity['workDate'] instanceof Date) {
-                    activity['workDate'] = datePipe.transform(activity['workDate'], localStorage.getItem('dateFormat')).toString();
-                } else {
-                    const numbers = activity['workDate'].match(/\d+/g);
-                    activity['workDate'] = new Date(numbers[2], numbers[1] - 1, numbers[0]);
-                    activity['workDate'] = datePipe.transform(activity['workDate'], localStorage.getItem('dateFormat')).toString();
-                } */
-                
-                activity['code'] = this.encryptService.decrypt(activity['code']);
-                activity['summary'] = activity['summary'] ? this.encryptService.decrypt(activity['summary']) : '';
-                activity['projectName'] = this.encryptService.decrypt(activity['projectName']);
-                
-                return activity;
-            });
-            // Sort by workDate.
-            this.activities = this.activities.sort(function(item1: any, item2: any) {
-                // value1.
-                let value1 = item1.workDate;
-                //const numbers1 = value1.match(/\d+/g);
-                //value1 = new Date(numbers1[2], numbers1[1] - 1, numbers1[0]);
-                value1 = datePipe.transform(value1, 'yyyyMMdd').toString();
-                // value2.
-                let value2 = item2.workDate;
-                //const numbers2 = value2.match(/\d+/g);
-                //value2 = new Date(numbers2[2], numbers2[1] - 1, numbers2[0]);
-                value2 = datePipe.transform(value2, 'yyyyMMdd').toString();
-                // compare.
-                if (value1 > value2) { return -1; }
-                if (value1 < value2) { return 1; }
-                return 0;
-            });
+        this.activityService.getByProperty('owner', owner).then((response: any) => {
+            this.activities = response;
         });
+
+
+
+
+
+
+
+
+
     }
 
     deleteActivity(id) {
@@ -161,6 +134,6 @@ export class ActivityListComponent implements OnInit {
 
         // const excelData = this.activities.map(item => {
         // });
-        this.excelService.exportAsExcelFile(excelData, 'DailyReport_' + this.datePipe.transform(new Date(), 'yyyyMMdd') + '(' + reporter + ')', 'daily');
+        this.excelService.exportAsExcelFile(excelData, 'daily', 'DailyReport_' + this.datePipe.transform(new Date(), 'yyyyMMdd') + '(' + reporter + ')');
     }
 }
