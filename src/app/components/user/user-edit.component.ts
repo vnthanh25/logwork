@@ -14,8 +14,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class UserEditComponent implements OnInit {
 
-  exampleForm: FormGroup;
-  item: any;
+  userForm: FormGroup;
+  user: any;
   fileName: string;
   avatar: any;
 
@@ -47,9 +47,9 @@ export class UserEditComponent implements OnInit {
     this.route.data.subscribe(routeData => {
       let data = routeData['data'];
       if (data) {
-        this.item = data.payload.data();
-        this.item.id = data.payload.id;
-        this.avatar = this.item.avatar;
+        this.user = data.payload.data();
+        this.user.id = data.payload.id;
+        this.avatar = this.user.avatar;
         this.createForm();
       }
     });
@@ -68,16 +68,16 @@ export class UserEditComponent implements OnInit {
   }
 
   createForm() {
-    this.exampleForm = this.fb.group({
-      userName: [this.item.userName, Validators.required],
-      name: [this.item.name, Validators.required],
-      surname: [this.item.surname, Validators.required],
-      account: [this.item.account, Validators.required]
+    this.userForm = this.fb.group({
+      userName: [this.user.userName, Validators.required],
+      name: [this.user.name, Validators.required],
+      surname: [this.user.surname, Validators.required],
+      account: [this.user.account, Validators.required]
     });
   }
 
   onSubmit(value) {
-    value.id = this.item.id;
+    value.id = this.user.id;
     value.avatar = this.avatar;
     value.userName = value.userName.toLowerCase();
     this.userService.update(value)
@@ -89,8 +89,8 @@ export class UserEditComponent implements OnInit {
   }
 
   delete() {
-    //this.firebaseService.deleteDocument('users', this.item.id)
-    this.userService.delete(this.item.id)
+    //this.firebaseService.deleteDocument('users', this.user.id)
+    this.userService.delete(this.user.id)
     .then(
       res => {
         this.router.navigate(['/user']);

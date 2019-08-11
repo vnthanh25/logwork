@@ -10,7 +10,7 @@
 </div>
   
 <div class="list-group users-list">
-  <div *ngFor="let item of items" class="list-group-item list-group-item-action flex-column align-items-start">
+  <div *ngFor="let item of users" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="row">
       <div class="col col-md-2 image-col">
         <img class="image" [src]="item.payload.doc.data().avatar">
@@ -34,6 +34,6 @@
 </div>
 <section layout="row" layout-sm="column" layout-align="end center" layout-wrap>
     <button *ngIf="authService.isLoggedIn()" mat-raised-button class="btn btn-primary" type="button" (click)="exportDailyAsExcelFile()">{{ 'user.exportDailyAsExcel' | translate }}</button>
-    <!-- <button *ngIf="authService.isLoggedIn()" mat-raised-button class="btn btn-primary" type="button" (click)="exportWeeklyAsExcel()">{{ 'user.exportWeeklyAsExcel' | translate }}</button> -->
+    <button *ngIf="authService.isLoggedIn()" mat-raised-button class="btn btn-primary" type="button" (click)="exportWeeklyAsExcelFile()">{{ 'user.exportWeeklyAsExcel' | translate }}</button>
 </section>
  

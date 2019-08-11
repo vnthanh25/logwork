@@ -59,7 +59,7 @@ export class ActivityListComponent implements OnInit {
 
     getActivities() {
         const owner = localStorage.getItem('idUserSelected');
-        this.activityService.getByProperty('owner', owner).then((response: any) => {
+        this.activityService.getByPropertyOrderByWorkDate('owner', owner).then((response: any) => {
             this.activities = response;
         });
     }
@@ -74,9 +74,9 @@ export class ActivityListComponent implements OnInit {
             if (dialogData.result === 1) {
                 this.firebaseService.deleteDocument(this.COLLECTION, activity.id).then(result => {
                     // send mail.
-                    let toEmails = 'Thanh-Nhut.Vo@aia.com';
                     const userName = localStorage.getItem('userName');
                     const subject = 'Work log (Delete by ' + userName + ')';
+                    let toEmails = 'vnthanh25@gmail.com';
                     const fullName = this.userService.users[activity.owner].surname + ' ' + this.userService.users[activity.owner].name;
                     const mailData = {
                         'from': userName,

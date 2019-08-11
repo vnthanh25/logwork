@@ -18,7 +18,7 @@ import { DatePipe } from '@angular/common';
 export class UserListComponent implements OnInit {
   searchValue = '';
   datePipe = new DatePipe('en-US');
-  items: Array<any>;
+  users: Array<any>;
 
   constructor(
     private router: Router,
@@ -40,17 +40,23 @@ export class UserListComponent implements OnInit {
   getData() {
     this.userService.getAll()
     .subscribe(result => {
-      this.items = result;
+      let order1;
+      let order2;
+      this.users = result.sort((user1: any, user2: any) => {
+        order1 = parseInt(user1.payload.doc.data().order, 10);
+        order2 = parseInt(user2.payload.doc.data().order, 10);
+        return order1 - order2;
+      });
     });
   }
 
-  viewDetails(item){
-    this.router.navigate(['/user/edit/' + item.payload.doc.id]);
+  viewDetails(user){
+    this.router.navigate(['/user/edit/' + user.payload.doc.id]);
   }
 
-  listActivities(item) {
-    localStorage.setItem('idUserSelected', item.payload.doc.id);
-    localStorage.setItem('userSelected', JSON.stringify(item.payload.doc.data()));
+  listActivities(user) {
+    localStorage.setItem('idUserSelected', user.payload.doc.id);
+    localStorage.setItem('userSelected', JSON.stringify(user.payload.doc.data()));
     this.router.navigate(['/activity']);
   }
 
@@ -58,11 +64,17 @@ export class UserListComponent implements OnInit {
     const value = this.searchValue.toLowerCase();
     this.userService.searchByUserName(value)
     .subscribe(result => {
-      this.items = result;
+      let order1;
+      let order2;
+      this.users = result.sort((user1: any, user2: any) => {
+        order1 = parseInt(user1.payload.doc.data().order, 10);
+        order2 = parseInt(user2.payload.doc.data().order, 10);
+        return order1 - order2;
+      });
     });
   }
 
-  generateExcelDate(activities: any) {
+  generateExcelData(activities: any) {
     // send mail.
     //this.emailService.send({});
     const daySeconds = 8 * 3600;
@@ -73,36 +85,36 @@ export class UserListComponent implements OnInit {
     let workdate;
     const length = activities.length;
     const excelData = [];
-    for (let index = length - 1; index > -1; index--) {
-        const item = activities[index];
-        reporter = this.userService.users[item.owner].name;
+    for (let index = 0; index < length; index++) {
+        const activity = activities[index];
+        reporter = this.userService.users[activity.owner].name;
         estimate = 1;
         remaining = 0;
-        if (item.status.toLowerCase() === 'In Progress'.toLowerCase()) {
+        if (activity.status.toLowerCase() === 'In Progress'.toLowerCase()) {
             estimate += 1;
             remaining += 1;
         }
         worked = estimate - remaining;
-        workdate = this.datePipe.transform(item.workDate, localStorage.getItem('dateFormat'));
-        const worklogDay = 'Coding;' + workdate + ';' + this.userService.users[item.owner].account + ';' + (worked);
-        const worklog = 'Coding;' + workdate + ';' + this.userService.users[item.owner].account + ';' + (worked * daySeconds);
+        workdate = this.datePipe.transform(activity.workDate, localStorage.getItem('dateFormat'));
+        const worklogDay = 'Coding;' + workdate + ';' + this.userService.users[activity.owner].account + ';' + (worked);
+        const worklog = 'Coding;' + workdate + ';' + this.userService.users[activity.owner].account + ';' + (worked * daySeconds);
         const data = {};
-        data['Project Name'] = item.projectName;
+        data['Project Name'] = activity.projectName;
         data['Project key'] = null;
-        data['Summary'] = item.code.charAt(0).toUpperCase() + item.code.slice(1);
-        data['Issue Type'] = item.type;
-        data['Reporter'] = item.reportTo;
-        data['Assignee'] = this.userService.users[item.owner].account;
+        data['Summary'] = activity.code.charAt(0).toUpperCase() + activity.code.slice(1);
+        data['Issue Type'] = activity.type;
+        data['Reporter'] = activity.reportTo;
+        data['Assignee'] = this.userService.users[activity.owner].account;
         data['Start Date'] = workdate;
         data['Due Date'] = workdate;
         data['Original Estimate (day)'] = estimate;
         data['Worked (day)'] = worked;
         data['Remaining (day)'] = remaining;
-        data['Status (day)'] = item.status;
+        data['Status (day)'] = activity.status;
         data['Worklog (comment;date_for_logwork;account;second) (day)'] = worklogDay;
         data['Original Estimate'] = estimate * daySeconds;
         data['Remaining'] = remaining * daySeconds;
-        data['Status'] = item.status;
+        data['Status'] = activity.status;
         data['Worklog (comment;date_for_logwork;account;second)'] = worklog;
         // push.
         excelData.push(data);
@@ -112,45 +124,146 @@ export class UserListComponent implements OnInit {
   }
 
   exportDailyAsExcelFile(): void {
+    const sheets = {};
     const sheetRows = [];
     const sheetNames: string[] = [];
-    this.items.forEach((item: any) => {
-      const owner = item.payload.doc.data().id;
-      const sheetName: string = item.payload.doc.data().userName.replace('@fsoft.com.vn', '').toUpperCase();
-      sheetNames.push(sheetName);
+    this.users.forEach((user: any) => {
+      const owner = user.payload.doc.data().id;
+      const sheetName: string = user.payload.doc.data().userName.replace('@fsoft.com.vn', '').toUpperCase();
       if (owner) {
-        this.activityService.getByProperty('owner', owner).then((response:any[]) => {
-          sheetRows.push(this.generateExcelDate(response));
-          if (sheetRows.length === this.items.length) {
+        this.activityService.getByPropertyOrderByWorkDate('owner', owner).then((response:any[]) => {
+          console.log(owner);
+          console.log(sheetName);
+          sheetRows.push(this.generateExcelData(response));
+          sheetNames.push(sheetName);
+          if (sheetRows.length === this.users.length) {
             this.excelService.exportDailyAsExcelFile(sheetRows, sheetNames, 'Work logs(2Teams)');
           }
         }).catch(error => {
         });
       } else {
         sheetRows.push([]);
+        sheetNames.push(sheetName);
       }
     });
   }
 
-  exportWeeklyAsExcel(): void {
-    const sheetRows = [];
-    const sheetNames: string[] = [];
-    this.items.forEach((item: any) => {
-      const owner = item.payload.doc.data().id;
-      const sheetName: string = item.payload.doc.data().userName.replace('@fsoft.com.vn', '').toUpperCase();
-      sheetNames.push(sheetName);
+  generateExcelDataForWeekly(order, userName, fullName, activities: any[]) {
+    let projectName = '';
+    let data: any;
+    const excelData = [];
+    const length = activities.length;
+    for (let index = 0; index < length; index++) {
+      const activity = activities[index];
+      if (projectName !== activity.projectName) {
+        projectName = activity.projectName;
+        data = {};
+        data['Order'] = order;
+        data['User Name'] = userName;
+        data['Display Name'] = fullName;
+        data['Detail'] = activity.code;
+        data['Tasks status'] = activity.status;
+        data['Workload/Project'] = 1;
+        data['Project'] = activity.projectName;
+        data['Ready for new task'] = 'Yes';
+        // push.
+        excelData.push(data);
+      } else {
+        data['Tasks status'] = activity.status;
+        data['Workload/Project'] = data['Workload/Project'] + 1;
+      }
+    }
+    excelData.forEach((data) => {
+      const status = data['Tasks status'].toUpperCase();
+      if (status === 'DONE' || status === 'FIXED') {
+        data['Tasks status'] = 1;
+      } else {
+        data['Tasks status'] = 0.5;
+        data['Ready for new task'] = 'No';
+      }
+      data['Workload/Project'] = data['Workload/Project'] / length;
+    })
+    // return.
+    return excelData;
+  }
+
+  exportWeeklyAsExcelFile(): void {
+    const sheetRows = [[], [], []];
+    const sheetNames: string[] = ['Projects Overview', 'Projects Members', 'Projects Note'];
+    const membersSheet: any[] = [];
+    sheetRows.push(membersSheet);
+    sheetNames.push('Members');
+    let count = 0;
+    let activities;
+    let user;
+    let userActivities = {};
+    let owners = {};
+    const length = this.users.length;
+    for (let index = 0; index < length; index++) {
+      userActivities[index.toString()] = [];
+      user = this.users[index];
+      let owner = user.payload.doc.data().id;
+      owners[index.toString()] = user.payload.doc.data();
+      //console.log(user.payload.doc.data());
       if (owner) {
+        count++;
         this.activityService.getByProperty('owner', owner).then((response:any[]) => {
-          sheetRows.push(this.generateExcelDate(response));
-          if (sheetRows.length === this.items.length) {
-            this.excelService.exportDailyAsExcelFile(sheetRows, sheetNames, 'Work logs(2Teams)');
+          count--;
+          activities = response;
+          if (activities.length > 0) {
+            const datePipe = this.datePipe;
+            // Sort by projectName and workDate.
+            activities = activities.sort(function(item1: any, item2: any) {
+              // compare projectName asc.
+              if (item1.projectName < item2.projectName) { return -1; }
+              if (item1.projectName > item2.projectName) { return 1; }
+              // value1.
+              let value1 = item1.workDate;
+              //const numbers1 = value1.match(/\d+/g);
+              //value1 = new Date(numbers1[2], numbers1[1] - 1, numbers1[0]);
+              value1 = datePipe.transform(value1, 'yyyyMMdd').toString();
+              // value2.
+              let value2 = item2.workDate;
+              //const numbers2 = value2.match(/\d+/g);
+              //value2 = new Date(numbers2[2], numbers2[1] - 1, numbers2[0]);
+              value2 = datePipe.transform(value2, 'yyyyMMdd').toString();
+              // compare workDate asc.
+              if (value1 < value2) { return -1; }
+              if (value1 > value2) { return 1; }
+              return 0;
+            });
+            userActivities[index.toString()] = activities;
+          }
+          if (count === 0) {
+            for (let index = 0; index < length; index++) {
+              activities = userActivities[index.toString()];
+              owner = owners[index.toString()];
+              const order = owner.order;
+              const userName = owner.userName;
+              const fullName = owner.surname + ' ' + owner.name;
+              if (activities.length > 0) {
+                activities = this.generateExcelDataForWeekly(order, userName, fullName, activities);
+              } else {
+                const data = {};
+                data['Order'] = order;
+                data['User Name'] = userName;
+                data['Display Name'] = fullName;
+                data['Detail'] = 'Miss';
+                data['Tasks status'] = 0;
+                data['Workload/Project'] = 0;
+                data['Project'] = '';
+                data['Ready for new task'] = 'Yes';
+                activities.push(data);
+              }
+              membersSheet.push(...activities);
+            }
+            this.excelService.exportDailyAsExcelFile(sheetRows, sheetNames, 'Weekly report Mainternance team AIA');
           }
         }).catch(error => {
+          console.log(error);
         });
-      } else {
-        sheetRows.push([]);
       }
-    });
+    }// for.
   }
 
 }

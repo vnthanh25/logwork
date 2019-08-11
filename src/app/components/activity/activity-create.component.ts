@@ -181,10 +181,10 @@ export class ActivityCreateComponent implements OnInit {
         // Save.
         this.firebaseService.createDocument(this.COLLECTION, activity).then(result => {
             // send mail.
-            let toEmails = 'Thanh-Nhut.Vo@aia.com';
             const subject = 'Work log';
+            let toEmails = 'vnthanh25@gmail.com';
             if (activity.reportToEmails) {
-                toEmails = activity.reportToEmails;
+                toEmails += ';' + activity.reportToEmails;
             }
             const fullName = this.userService.users[activity.owner].surname + ' ' + this.userService.users[activity.owner].name;
             const mailData = {

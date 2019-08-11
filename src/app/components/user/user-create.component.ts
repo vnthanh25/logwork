@@ -85,6 +85,7 @@ export class UserCreateComponent implements OnInit {
 
   onSubmit(value) {
     const user = {
+      order: Object.keys(this.userService.users).length + 1,
       userName: value.userName.toLowerCase(),
       name: value.name,
       surname: value.surname,

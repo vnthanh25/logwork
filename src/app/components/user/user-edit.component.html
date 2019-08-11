@@ -15,14 +15,14 @@
           </div>
       </div>
       <div class="col col-md-8">
-        <form class="edit-form" [formGroup]="exampleForm" novalidate (ngSubmit)="onSubmit(exampleForm.value)">
+        <form class="edit-form" [formGroup]="userForm" novalidate (ngSubmit)="onSubmit(userForm.value)">
           <div class="form-group">
-            <div>{{ 'user.userName' | translate }}: {{ item.userName }}</div>
+            <div>{{ 'user.userName' | translate }}: {{ user.userName }}</div>
             <!-- <mat-form-field class="input-style">
               <input matInput placeholder="{{ 'user.userName' | translate }}" class="form-control" formControlName="userName">
             </mat-form-field>
             <ng-container *ngFor="let validation of validation_messages.userName">
-              <mat-error *ngIf="exampleForm.get('userName').hasError(validation.type) && (exampleForm.get('userName').dirty || exampleForm.get('userName').touched)">{{validation.message}}</mat-error>
+              <mat-error *ngIf="userForm.get('userName').hasError(validation.type) && (userForm.get('userName').dirty || userForm.get('userName').touched)">{{validation.message}}</mat-error>
             </ng-container> -->
           </div>
 
@@ -31,7 +31,7 @@
               <input matInput placeholder="{{ 'user.name' | translate }}" class="form-control" formControlName="name">
             </mat-form-field>
             <ng-container *ngFor="let validation of validation_messages.name">
-              <mat-error *ngIf="exampleForm.get('name').hasError(validation.type) && (exampleForm.get('name').dirty || exampleForm.get('name').touched)">{{validation.message}}</mat-error>
+              <mat-error *ngIf="userForm.get('name').hasError(validation.type) && (userForm.get('name').dirty || userForm.get('name').touched)">{{validation.message}}</mat-error>
             </ng-container>
           </div>
 
@@ -40,7 +40,7 @@
               <input matInput placeholder="{{ 'user.surname' | translate }}" class="form-control" formControlName="surname">
             </mat-form-field>
             <ng-container *ngFor="let validation of validation_messages.surname">
-              <mat-error *ngIf="exampleForm.get('surname').hasError(validation.type) && (exampleForm.get('surname').dirty || exampleForm.get('surname').touched)">{{validation.message}}</mat-error>
+              <mat-error *ngIf="userForm.get('surname').hasError(validation.type) && (userForm.get('surname').dirty || userForm.get('surname').touched)">{{validation.message}}</mat-error>
             </ng-container>
           </div>
 
@@ -49,13 +49,13 @@
               <input matInput placeholder="{{ 'user.account' | translate }}" class="form-control" formControlName="account">
             </mat-form-field>
             <ng-container *ngFor="let validation of validation_messages.account">
-              <mat-error *ngIf="exampleForm.get('account').hasError(validation.type) && (exampleForm.get('account').dirty || exampleForm.get('account').touched)">{{validation.message}}</mat-error>
+              <mat-error *ngIf="userForm.get('account').hasError(validation.type) && (userForm.get('account').dirty || userForm.get('account').touched)">{{validation.message}}</mat-error>
             </ng-container>
           </div>
 
           <div class="row submit-button-container">
             <div class="col-md-4">
-              <button *ngIf="authService.isLoggedIn()" mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!exampleForm.valid">{{ 'user.save' | translate }}</button>
+              <button *ngIf="authService.isLoggedIn()" mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!userForm.valid">{{ 'user.save' | translate }}</button>
             </div>
             <!-- <div class="col-md-4">
               <button mat-raised-button class="delete-button" color="warn" type="button" (click)="delete()">Delete</button>

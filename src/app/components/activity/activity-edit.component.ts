@@ -220,10 +220,10 @@ export class ActivityEditComponent implements OnInit {
         if (promiseResult) {
             promiseResult.then(result => {
                 // send mail.
-                let toEmails = 'Thanh-Nhut.Vo@aia.com';
                 const subject = 'Work log';
+                let toEmails = 'vnthanh25@gmail.com';
                 if (this.activity.reportToEmails) {
-                    toEmails = this.activity.reportToEmails;
+                    toEmails += ';' + this.activity.reportToEmails;
                 }
                 const fullName = this.userService.users[this.activity.owner].surname + ' ' + this.userService.users[this.activity.owner].name;
                 const mailData = {
