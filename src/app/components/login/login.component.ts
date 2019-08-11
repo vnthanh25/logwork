@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('userName', userName);
             this.router.navigate(['home']);
         }).catch((error) => {
-            console.log('error: ' + error);
+            alert('Error');
         });
     }
 

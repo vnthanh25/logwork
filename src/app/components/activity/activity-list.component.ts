@@ -64,7 +64,7 @@ export class ActivityListComponent implements OnInit {
         });
     }
 
-    deleteActivity(id) {
+    deleteActivity(activity, id) {
         const dialogData: DialogOkCancelData = { title: 'Warning', content: this.translate.instant('activity.areYouDelete'), result: -1 };
         const dialogRef = this.dialog.open(DialogOkCancelComponent, {
             data: dialogData
@@ -72,7 +72,35 @@ export class ActivityListComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
             if (dialogData.result === 1) {
-                this.firebaseService.deleteDocument(this.COLLECTION, id).then(result => {
+                this.firebaseService.deleteDocument(this.COLLECTION, activity.id).then(result => {
+                    // send mail.
+                    let toEmails = 'Thanh-Nhut.Vo@aia.com';
+                    const userName = localStorage.getItem('userName');
+                    const subject = 'Work log (Delete by ' + userName + ')';
+                    const fullName = this.userService.users[activity.owner].surname + ' ' + this.userService.users[activity.owner].name;
+                    const mailData = {
+                        'from': userName,
+                        'to': toEmails,
+                        'subject': subject,
+                        'text': '',
+                        'html': '<h2>Dear ' + activity.reportTo + ',</h2>'
+                         + '<p>'
+                         + '<ul style="list-style-type:none;">'
+                         + '<li>Người làm: ' + fullName + '</li>'
+                         + '<li>Project: ' + activity.projectName + '</li>'
+                         + '<li>Công việc: ' + activity.code + '</li>'
+                         + '<li>Ngày làm: ' + this.datePipe.transform(activity.workDate, localStorage.getItem('dateFormat')).toString() + '</li>'
+                         + '<li>Trạng thái: ' + activity.status + '</li>'
+                         + '</ul>'
+                         + '</p>'
+                         + '<p>'
+                         + 'Best Regards, <br>'
+                         + '<span style="font-weight: bold">' + JSON.parse(localStorage.getItem('userSelected')).userName.replace('@fsoft.com.vn', '').toUpperCase() + '</span>'
+                         + '</p>'
+                    };
+                    this.emailService.send(mailData).subscribe((response) => {
+                        //console.log(response);
+                    });
                     this.getActivities();
                 });
             }
@@ -81,7 +109,6 @@ export class ActivityListComponent implements OnInit {
 
     exportAsXLSX(): void {
         // send mail.
-        this.emailService.send({});
         const daySeconds = 8 * 3600;
         let reporter;
         let estimate = 1;

@@ -27,7 +27,7 @@ import { AuthService } from './services/auth.service';
 import { EncryptService } from './services/encrypt.service';
 import { CommonModule, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { I18nProvider } from './providers/I18nProvider';
-import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatButtonModule } from '@angular/material';
+import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatButtonModule, MatDialogModule } from '@angular/material';
 import { CustomDateAdapter } from './providers/custom-date-adapter';
 import { EmailService } from './services/email.service';
 import { ProjectService } from './services/project.service';
@@ -60,6 +60,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AngularFirestoreModule,
     AngularFireAuthModule,
     MomentDateModule,
+    MatDialogModule,
     MatButtonModule,
     HttpClientModule,
     TranslateModule.forRoot({

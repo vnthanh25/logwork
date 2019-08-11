@@ -10,6 +10,9 @@ import { NavigationCancel,
         Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { I18nProvider } from './providers/I18nProvider';
+import { DialogOkCancelData, DialogOkCancelComponent } from './components/dialog/dialog-ok-cancel.component';
+import { MatDialog } from '@angular/material';
+import { UserService } from './services';
 //import { LocalizeRouterService } from 'localize-router';
 
 @Component({
@@ -25,7 +28,9 @@ export class AppComponent {
     private translate: TranslateService,
     private i18nProvider: I18nProvider,
     //private localizeRouterService: LocalizeRouterService,
-    public authService: AuthService
+    public dialog: MatDialog,
+    public authService: AuthService,
+    private userService: UserService
   ) {
     localStorage.setItem('dateFormat', 'dd/MM/yyyy');
     const language = 'vi';
@@ -50,6 +55,17 @@ export class AppComponent {
     });
     // Set localStorage: currentEntity.
     localStorage.setItem('currentEntity', 'user');
+    if (localStorage.getItem('userName')) {
+      this.userService.searchByUserName(localStorage.getItem('userName')).subscribe((response: any[]) => {
+        if (response.length > 0) {
+          const user = response[0];
+          localStorage.setItem('currentEntity', 'activity');
+          localStorage.setItem('idUserSelected', user.payload.doc.id);
+          localStorage.setItem('userSelected', JSON.stringify(user.payload.doc.data()));
+          this.router.navigate(['/activity']);
+        }
+      });
+    }
   }
   private navigationInterceptor(event: Event): void {
     if (event instanceof NavigationStart) {
@@ -105,6 +121,25 @@ export class AppComponent {
     this.authService.logout().then(response => {
       localStorage.removeItem('userName');
       this.router.navigate(['/']);
+    });
+  }
+
+  /* Change password */
+  changePassword() {
+    
+    const dialogData: DialogOkCancelData = { title: this.translate.instant('app.changePasswordTitle'), content: this.translate.instant('app.changePasswordContent'), result: -1 };
+    const dialogRef = this.dialog.open(DialogOkCancelComponent, {
+        data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+        if (dialogData.result === 1) {
+            this.authService.changePassword(localStorage.getItem('userName')).then(response => {
+
+            }).catch(error => {
+
+            });
+        }
     });
   }
 

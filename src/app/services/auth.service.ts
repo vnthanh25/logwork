@@ -52,6 +52,10 @@ export class AuthService {
         //.then((res) => this.router.navigate(['/']));
     }
 
+    changePassword(email: string) {
+        return this.firebaseAuth.auth.sendPasswordResetEmail(email);
+    }
+
     createUser(email, password) {
         return this.firebaseAuth.auth.createUserWithEmailAndPassword(email, password);
             // .then(() => {

@@ -220,19 +220,35 @@ export class ActivityEditComponent implements OnInit {
         if (promiseResult) {
             promiseResult.then(result => {
                 // send mail.
+                let toEmails = 'Thanh-Nhut.Vo@aia.com';
+                const subject = 'Work log';
                 if (this.activity.reportToEmails) {
-                    const fullName = this.userService.users[this.activity.owner].surname + ' ' + this.userService.users[this.activity.owner].name;
-                    const mailData = {
-                        'from': localStorage.getItem('userName'),
-                        'to': this.activity.reportToEmails,
-                        'subject': 'Work log',
-                        'text': 'Người làm: ' + fullName + '. Project: ' + value.projectName + '. Công việc: ' + value.code + '. Ngày: ' + this.datePipe.transform(this.activity.workDate, localStorage.getItem('dateFormat')).toString() + '.',
-                        'html': ''
-                    };
-                    this.emailService.send(mailData).subscribe((response) => {
-                        //console.log(response);
-                    });
+                    toEmails = this.activity.reportToEmails;
                 }
+                const fullName = this.userService.users[this.activity.owner].surname + ' ' + this.userService.users[this.activity.owner].name;
+                const mailData = {
+                    'from': localStorage.getItem('userName'),
+                    'to': toEmails,
+                    'subject': subject,
+                    'text': '',
+                    'html': '<h2>Dear ' + value.reportTo + ',</h2>'
+                     + '<p>'
+                     + '<ul style="list-style-type:none;">'
+                     + '<li>Người làm: ' + fullName + '</li>'
+                     + '<li>Project: ' + value.projectName + '</li>'
+                     + '<li>Công việc: ' + value.code + '</li>'
+                     + '<li>Ngày làm: ' + this.datePipe.transform(this.activity.workDate, localStorage.getItem('dateFormat')).toString() + '</li>'
+                     + '<li>Trạng thái: ' + this.activity.status + '</li>'
+                     + '</ul>'
+                     + '</p>'
+                     + '<p>'
+                     + 'Best Regards, <br>'
+                     + '<span style="font-weight: bold">' + JSON.parse(localStorage.getItem('userSelected')).userName.replace('@fsoft.com.vn', '').toUpperCase() + '</span>'
+                     + '</p>'
+                };
+                this.emailService.send(mailData).subscribe((response) => {
+                    //console.log(response);
+                });
                 // Redirect to list.
                 this.router.navigate(['/activity']);
             }).catch(error => {

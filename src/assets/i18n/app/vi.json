@@ -6,6 +6,8 @@
         "members": "Danh sách thành viên",
         "login": "Đăng nhập",
         "logout": "Đăng xuất",
+        "changePasswordTitle": "Đổi mật khẩu",
+        "changePasswordContent": "Đường dẫn thay đổi mật khẩu sẽ gởi tới email của bạn.",
         "save": "Lưu",
         "create": "Tạo mới",
         "edit": "Chỉnh sửa",

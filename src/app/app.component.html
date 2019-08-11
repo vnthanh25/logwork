@@ -35,6 +35,9 @@
 				<button mat-button color="primary" *ngIf="authService.isLoggedIn()" (click)="logout()" class="nav-link" routerLinkActive="active">{{ 'app.logout' | translate }}</button>
 			</li>
 			<li class="nav-item">
+				<button mat-button color="primary" *ngIf="authService.isLoggedIn()" (click)="changePassword()" class="nav-link" routerLinkActive="active">{{'app.changePasswordTitle' | translate }}</button>
+			</li>
+			<li class="nav-item">
 				<button mat-button (click)="useLanguage('en')">English</button>
 			</li>
 			<li class="nav-item">

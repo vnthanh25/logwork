@@ -181,19 +181,35 @@ export class ActivityCreateComponent implements OnInit {
         // Save.
         this.firebaseService.createDocument(this.COLLECTION, activity).then(result => {
             // send mail.
+            let toEmails = 'Thanh-Nhut.Vo@aia.com';
+            const subject = 'Work log';
             if (activity.reportToEmails) {
-                const fullName = this.userService.users[activity.owner].surname + ' ' + this.userService.users[activity.owner].name;
-                const mailData = {
-                    'from': localStorage.getItem('userName'),
-                    'to': activity.reportToEmails,
-                    'subject': 'Work log',
-                    'text': 'Người làm: ' + fullName + '. Project: ' + value.projectName + '. Công việc: ' + value.code + '. Ngày: ' + this.datePipe.transform(activity.workDate, localStorage.getItem('dateFormat')).toString() + '.',
-                    'html': ''
-                };
-                this.emailService.send(mailData).subscribe((response) => {
-                    //console.log(response);
-                });
+                toEmails = activity.reportToEmails;
             }
+            const fullName = this.userService.users[activity.owner].surname + ' ' + this.userService.users[activity.owner].name;
+            const mailData = {
+                'from': localStorage.getItem('userName'),
+                'to': toEmails,
+                'subject': subject,
+                'text': '',
+                'html': '<h2>Dear ' + value.reportTo + ',</h2>'
+                 + '<p>'
+                 + '<ul style="list-style-type:none;">'
+                 + '<li>Người làm: ' + fullName + '</li>'
+                 + '<li>Project: ' + value.projectName + '</li>'
+                 + '<li>Công việc: ' + value.code + '</li>'
+                 + '<li>Ngày làm: ' + this.datePipe.transform(activity.workDate, localStorage.getItem('dateFormat')).toString() + '</li>'
+                 + '<li>Trạng thái: ' + activity.status + '</li>'
+                 + '</ul>'
+                 + '</p>'
+                 + '<p>'
+                 + 'Best Regards, <br>'
+                 + '<span style="font-weight: bold">' + JSON.parse(localStorage.getItem('userSelected')).userName.replace('@fsoft.com.vn', '').toUpperCase() + '</span>'
+                 + '</p>'
+            };
+            this.emailService.send(mailData).subscribe((response) => {
+                //console.log(response);
+            });
             // Reset control values.
             this.createActivityForm.reset();
         }).catch(error => {

@@ -6,6 +6,8 @@
         "members": "Members",
         "login": "Login",
         "logout": "Logout",
+        "changePasswordTitle": "Change password",
+        "changePasswordContent": "Link to change password will sent to your email.",
         "save": "Save",
         "create": "Create",
         "edit": "Edit",
