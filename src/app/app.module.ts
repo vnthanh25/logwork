@@ -32,6 +32,7 @@ import { CustomDateAdapter } from './providers/custom-date-adapter';
 import { EmailService } from './services/email.service';
 import { ProjectService } from './services/project.service';
 import { ActivityService } from './services/activity.service';
+import { EventProvider } from './providers/EventProvider';
 
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
@@ -83,6 +84,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ProjectService,
     ActivityService,
     I18nProvider,
+    EventProvider,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     //{ provide: MAT_DATE_LOCALE, useValue: 'it' },
     //{ provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },

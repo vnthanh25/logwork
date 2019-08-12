@@ -60,9 +60,9 @@ export class UserListComponent implements OnInit {
     this.router.navigate(['/activity']);
   }
 
-  searchByUserName() {
+  searchByUserNameStart() {
     const value = this.searchValue.toLowerCase();
-    this.userService.searchByUserName(value)
+    this.userService.searchByUserNameStart(value)
     .subscribe(result => {
       let order1;
       let order2;
@@ -132,8 +132,8 @@ export class UserListComponent implements OnInit {
       const sheetName: string = user.payload.doc.data().userName.replace('@fsoft.com.vn', '').toUpperCase();
       if (owner) {
         this.activityService.getByPropertyOrderByWorkDate('owner', owner).then((response:any[]) => {
-          console.log(owner);
-          console.log(sheetName);
+          //console.log(owner);
+          //console.log(sheetName);
           sheetRows.push(this.generateExcelData(response));
           sheetNames.push(sheetName);
           if (sheetRows.length === this.users.length) {

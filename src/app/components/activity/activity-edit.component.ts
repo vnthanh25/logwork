@@ -221,14 +221,19 @@ export class ActivityEditComponent implements OnInit {
             promiseResult.then(result => {
                 // send mail.
                 const subject = 'Work log';
-                let toEmails = 'vnthanh25@gmail.com';
+                const defaultEmail = 'thanh-nhut.vo@aia.com';
+                let toEmails = '';
                 if (this.activity.reportToEmails) {
-                    toEmails += ';' + this.activity.reportToEmails;
+                    toEmails = this.activity.reportToEmails.toLowerCase();
+                    //toEmails = toEmails.replace(';' + defaultEmail, '').replace(defaultEmail + ';', '').replace(defaultEmail, '');
+                } else {
+                    toEmails = defaultEmail;
                 }
                 const fullName = this.userService.users[this.activity.owner].surname + ' ' + this.userService.users[this.activity.owner].name;
                 const mailData = {
                     'from': localStorage.getItem('userName'),
                     'to': toEmails,
+                    'cc': defaultEmail,
                     'subject': subject,
                     'text': '',
                     'html': '<h2>Dear ' + value.reportTo + ',</h2>'

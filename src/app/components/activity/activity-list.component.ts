@@ -76,7 +76,7 @@ export class ActivityListComponent implements OnInit {
                     // send mail.
                     const userName = localStorage.getItem('userName');
                     const subject = 'Work log (Delete by ' + userName + ')';
-                    let toEmails = 'vnthanh25@gmail.com';
+                    const toEmails = 'thanh-nhut.vo@aia.com';
                     const fullName = this.userService.users[activity.owner].surname + ' ' + this.userService.users[activity.owner].name;
                     const mailData = {
                         'from': userName,

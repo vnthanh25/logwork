@@ -13,6 +13,7 @@ import { I18nProvider } from './providers/I18nProvider';
 import { DialogOkCancelData, DialogOkCancelComponent } from './components/dialog/dialog-ok-cancel.component';
 import { MatDialog } from '@angular/material';
 import { UserService } from './services';
+import { EventProvider } from './providers/EventProvider';
 //import { LocalizeRouterService } from 'localize-router';
 
 @Component({
@@ -21,12 +22,13 @@ import { UserService } from './services';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'log work';
+  private fullName = '';
   constructor(
     private loadingBar: SlimLoadingBarService,
     private router: Router,
     private translate: TranslateService,
     private i18nProvider: I18nProvider,
+    private eventProvider: EventProvider,
     //private localizeRouterService: LocalizeRouterService,
     public dialog: MatDialog,
     public authService: AuthService,
@@ -55,6 +57,7 @@ export class AppComponent {
     });
     // Set localStorage: currentEntity.
     localStorage.setItem('currentEntity', 'user');
+    // Default redirect to activity.
     if (localStorage.getItem('userName')) {
       this.userService.searchByUserName(localStorage.getItem('userName')).subscribe((response: any[]) => {
         if (response.length > 0) {
@@ -62,11 +65,19 @@ export class AppComponent {
           localStorage.setItem('currentEntity', 'activity');
           localStorage.setItem('idUserSelected', user.payload.doc.id);
           localStorage.setItem('userSelected', JSON.stringify(user.payload.doc.data()));
+          // Emit user logined.
+          this.eventProvider.eventLogined.emit(user.payload.doc.data());
+          // Redirect to activity.
           this.router.navigate(['/activity']);
         }
       });
     }
+    // Listen user login.
+    this.eventProvider.eventLogined.subscribe((user:any) => {
+      this.fullName = user.surname + ' ' + user.name;
+    });
   }
+  
   private navigationInterceptor(event: Event): void {
     if (event instanceof NavigationStart) {
       this.loadingBar.start();
@@ -120,6 +131,10 @@ export class AppComponent {
   logout() {
     this.authService.logout().then(response => {
       localStorage.removeItem('userName');
+      localStorage.removeItem('idUserSelected');
+      localStorage.removeItem('userSelected');
+      localStorage.removeItem('idUserLogined');
+      localStorage.removeItem('userLogined');
       this.router.navigate(['/']);
     });
   }
