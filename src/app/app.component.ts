@@ -124,23 +124,23 @@ export class AppComponent {
 
   /* Login */
   login() {
-    this.router.navigate(['/login']);
-    // this.authService.signInWithMicrosoft().then(response => {
-    //   const userName = response.additionalUserInfo.profile['mail'].toLowerCase();
-    //   this.userService.searchByUserName(userName).subscribe((users: any[]) => {
-    //       if (users.length > 0) {
-    //         const user = users[0];
-    //         localStorage.setItem('idUserLogined', user.payload.doc.id);
-    //         localStorage.setItem('userLogined', JSON.stringify(user.payload.doc.data()));
-    //         // Emit user logined.
-    //         this.eventProvider.eventLogined.emit(user.payload.doc.data());
-    //       }
-    //   });
-    //   localStorage.setItem('userName', userName);
-    //   this.router.navigate(['home']);
-    // }).catch(error => {
-    //   console.log(error);
-    // });
+    //this.router.navigate(['/login']);
+    this.authService.signInWithMicrosoft().then(response => {
+      const userName = response.additionalUserInfo.profile['mail'].toLowerCase();
+      this.userService.searchByUserName(userName).subscribe((users: any[]) => {
+          if (users.length > 0) {
+            const user = users[0];
+            localStorage.setItem('idUserLogined', user.payload.doc.id);
+            localStorage.setItem('userLogined', JSON.stringify(user.payload.doc.data()));
+            // Emit user logined.
+            this.eventProvider.eventLogined.emit(user.payload.doc.data());
+          }
+      });
+      localStorage.setItem('userName', userName);
+      this.router.navigate(['home']);
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
   /* Logout */

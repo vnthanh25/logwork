@@ -27,8 +27,14 @@ export class AuthService {
 
     signInWithMicrosoft() {
         const provider = new firebase.auth.OAuthProvider('microsoft.com');
+        //this.firebaseAuth.auth.signInWithRedirect(provider);
+        //return this.firebaseAuth.auth.getRedirectResult();
         return this.firebaseAuth.auth.signInWithPopup(provider);
         //return firebase.auth().signInWithPopup(provider);
+    }
+
+    signInWithMicrosoftResult() {
+        return this.firebaseAuth.auth.getRedirectResult();
     }
 
     signInWithTwitter() {
