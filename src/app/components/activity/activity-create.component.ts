@@ -180,9 +180,13 @@ export class ActivityCreateComponent implements OnInit {
         };
         // Save.
         this.firebaseService.createDocument(this.COLLECTION, activity).then(result => {
-            // send mail.
-            const subject = 'Work log';
             const defaultEmail = 'thanh-nhut.vo@aia.com';
+            const userSelected: any = JSON.parse(localStorage.getItem('userSelected'));
+            let ccEmails = defaultEmail;
+            if (userSelected.email) {
+                ccEmails += ';' + userSelected.email;
+            }
+            const subject = 'Work log';
             let toEmails = '';
             if (activity.reportToEmails) {
                 toEmails = activity.reportToEmails.toLowerCase();
@@ -194,7 +198,7 @@ export class ActivityCreateComponent implements OnInit {
             const mailData = {
                 'from': localStorage.getItem('userName'),
                 'to': toEmails,
-                'cc': defaultEmail,
+                'cc': ccEmails,
                 'subject': subject,
                 'text': '',
                 'html': '<h2>Dear ' + value.reportTo + ',</h2>'
@@ -212,7 +216,8 @@ export class ActivityCreateComponent implements OnInit {
                  + '<span style="font-weight: bold">' + JSON.parse(localStorage.getItem('userSelected')).userName.replace('@fsoft.com.vn', '').toUpperCase() + '</span>'
                  + '</p>'
             };
-            this.emailService.send(mailData).subscribe((response) => {
+           // send mail.
+           this.emailService.send(mailData).subscribe((response) => {
                 //console.log(response);
             });
             // Reset control values.
