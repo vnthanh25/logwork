@@ -21,8 +21,14 @@ export class AuthService {
         );
     }
     signInRegular(email, password) {
-        const credential = firebase.auth.EmailAuthProvider.credential( email, password );
+        //const credential = firebase.auth.EmailAuthProvider.credential( email, password );
         return this.firebaseAuth.auth.signInWithEmailAndPassword(email, password);
+    }
+
+    signInWithMicrosoft() {
+        const provider = new firebase.auth.OAuthProvider('microsoft.com');
+        return this.firebaseAuth.auth.signInWithPopup(provider);
+        //return firebase.auth().signInWithPopup(provider);
     }
 
     signInWithTwitter() {
@@ -50,6 +56,10 @@ export class AuthService {
     logout() {
         return this.firebaseAuth.auth.signOut();
         //.then((res) => this.router.navigate(['/']));
+    }
+    logoutMicrosoft() {
+        return this.firebaseAuth.auth.signOut();
+        //return firebase.auth().signOut();
     }
 
     changePassword(email: string) {

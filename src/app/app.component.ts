@@ -77,7 +77,7 @@ export class AppComponent {
       this.fullName = user.surname + ' ' + user.name;
     });
   }
-  
+
   private navigationInterceptor(event: Event): void {
     if (event instanceof NavigationStart) {
       this.loadingBar.start();
@@ -124,12 +124,30 @@ export class AppComponent {
 
   /* Login */
   login() {
-    this.router.navigate(['/login']);
+    //this.router.navigate(['/login']);
+    this.authService.signInWithMicrosoft().then(response => {
+      const userName = response.additionalUserInfo.profile['mail'].toLowerCase();
+      this.userService.searchByUserName(userName).subscribe((users: any[]) => {
+          if (users.length > 0) {
+            const user = users[0];
+            localStorage.setItem('idUserLogined', user.payload.doc.id);
+            localStorage.setItem('userLogined', JSON.stringify(user.payload.doc.data()));
+            // Emit user logined.
+            this.eventProvider.eventLogined.emit(user.payload.doc.data());
+          }
+      });
+      localStorage.setItem('userName', userName);
+      this.router.navigate(['home']);
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
   /* Logout */
   logout() {
     this.authService.logout().then(response => {
+    //this.authService.logoutMicrosoft().then(response => {
+      this.fullName = '';
       localStorage.removeItem('userName');
       localStorage.removeItem('idUserSelected');
       localStorage.removeItem('userSelected');

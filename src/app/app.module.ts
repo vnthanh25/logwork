@@ -33,7 +33,9 @@ import { EmailService } from './services/email.service';
 import { ProjectService } from './services/project.service';
 import { ActivityService } from './services/activity.service';
 import { EventProvider } from './providers/EventProvider';
+import * as firebase from 'firebase';
 
+firebase.initializeApp(environment.firebase);
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/app/', '.json');
