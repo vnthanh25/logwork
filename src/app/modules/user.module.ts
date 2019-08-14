@@ -21,6 +21,8 @@ import { I18nProvider } from '../providers/I18nProvider';
 import { DialogOkCancelComponent } from '../components/dialog/dialog-ok-cancel.component';
 import { CustomDateAdapter } from '../providers/custom-date-adapter';
 
+import { SpeechRecognitionModule, SpeechRecognitionService } from '@kamiazya/ngx-speech-recognition';
+
 export function UserHttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/user/', '.json');
 }
@@ -59,6 +61,12 @@ export function UserHttpLoaderFactory(http: HttpClient) {
             useDefaultLang: true,
             isolate: true,
             //missingTranslationHandler: [{provide: MissingTranslationHandler, useClass: TranslateHandler}]
+        }),
+        // load with configs.
+        SpeechRecognitionModule.withConfig({
+          lang: 'vi',
+          interimResults: true,
+          maxAlternatives: 10,
         })
     ],
     exports: [
@@ -79,7 +87,8 @@ export function UserHttpLoaderFactory(http: HttpClient) {
         UserEditResolver,
         { provide: DateAdapter, useClass: CustomDateAdapter },
         { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
-        { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
+        { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+        SpeechRecognitionService
     ],
     schemas: [
         CUSTOM_ELEMENTS_SCHEMA
@@ -89,6 +98,7 @@ export class UserModule {
     constructor(
         private translate: TranslateService,
         private i18nProvider: I18nProvider,
+        private speechService: SpeechRecognitionService,
         private router: Router
     ) {
         this.router.routeReuseStrategy.shouldReuseRoute = () => {
@@ -96,9 +106,10 @@ export class UserModule {
         };
         this.translate.use(this.i18nProvider.defaultLanguage);
         this.i18nProvider.eventLanguageChange.subscribe(language => {
-          this.translate.use(language);
-          this.router.navigated = false;
-          this.router.navigateByUrl(this.router.url);
+            this.speechService.lang = language;
+            this.translate.use(language);
+            this.router.navigated = false;
+            this.router.navigateByUrl(this.router.url);
         });
     }
 }

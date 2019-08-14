@@ -50,6 +50,10 @@ export class UserService {
         return this.firebaseService.getDocuments(this.COLLECTION);
     }
 
+    searchByNameStart(name) {
+        return this.firebaseService.searchDocumentsByStartAtProperty(this.COLLECTION, 'name', name);
+    }
+
     searchByUserName(userName) {
         return this.firebaseService.searchDocumentsByProperty(this.COLLECTION, 'userName', userName);
     }

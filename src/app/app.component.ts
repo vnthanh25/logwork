@@ -34,11 +34,12 @@ export class AppComponent {
     public authService: AuthService,
     private userService: UserService
   ) {
-    localStorage.setItem('dateFormat', 'dd/MM/yyyy');
     const language = 'vi';
     translate.addLangs(['en', 'vi']);
     translate.setDefaultLang(language);
     this.i18nProvider.defaultLanguage = language;
+    localStorage.setItem('language', language);
+    localStorage.setItem('dateFormat', 'dd/MM/yyyy');
 
     /* translate.addLangs(["en", "vi"]);
     translate.setDefaultLang('en');
@@ -94,6 +95,7 @@ export class AppComponent {
   }
 
   useLanguage(language: string) {
+    localStorage.setItem('language', language);
     this.translate.use(language);
     this.i18nProvider.defaultLanguage = language;
     this.i18nProvider.eventLanguageChange.emit(language);

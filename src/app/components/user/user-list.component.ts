@@ -10,6 +10,10 @@ import { ActivityService } from 'src/app/services/activity.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { DatePipe } from '@angular/common';
 
+import {
+  SpeechRecognitionService
+} from '@kamiazya/ngx-speech-recognition';
+
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
@@ -19,9 +23,11 @@ export class UserListComponent implements OnInit {
   searchValue = '';
   datePipe = new DatePipe('en-US');
   users: Array<any>;
+  public started = false;
 
   constructor(
     private router: Router,
+    private speechService: SpeechRecognitionService,
     public authService: AuthService,
     //private i18nProvider: I18nProvider,
     private translate: TranslateService,
@@ -31,6 +37,30 @@ export class UserListComponent implements OnInit {
   ) {
     // Set localStorage: currentEntity.
     localStorage.setItem('currentEntity', 'user');
+    this.speechService.onstart = (e) => {
+      this.started = true;
+    };
+    this.speechService.onend = (e) => {
+      this.started = false;
+    };
+    this.speechService.onresult = (e) => {
+      this.stopSpeech();
+      this.searchValue = e.results[0].item(0).transcript;
+      this.searchByName();
+    };
+
+  }
+
+  startSpeech() {
+    if (!this.started) {
+      this.speechService.start();
+    }
+  }
+
+  stopSpeech() {
+    if (this.started) {
+      this.speechService.stop();
+    }
   }
 
   ngOnInit() {
@@ -58,6 +88,21 @@ export class UserListComponent implements OnInit {
     localStorage.setItem('idUserSelected', user.payload.doc.id);
     localStorage.setItem('userSelected', JSON.stringify(user.payload.doc.data()));
     this.router.navigate(['/activity']);
+  }
+
+  searchByName() {
+    let value = this.searchValue.toLowerCase();
+    value = value.charAt(0).toUpperCase() + value.slice(1);
+    this.userService.searchByNameStart(value)
+    .subscribe(result => {
+      let order1;
+      let order2;
+      this.users = result.sort((user1: any, user2: any) => {
+        order1 = parseInt(user1.payload.doc.data().order, 10);
+        order2 = parseInt(user2.payload.doc.data().order, 10);
+        return order1 - order2;
+      });
+    });
   }
 
   searchByUserNameStart() {
