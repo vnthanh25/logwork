@@ -24,7 +24,6 @@ import { LoginComponent } from './components/login/login.component';
 import { DialogOkCancelComponent } from './components/dialog/dialog-ok-cancel.component';
 import { HomeComponent } from './home/home.component';
 import { AuthService } from './services/auth.service';
-import { EncryptService } from './services/encrypt.service';
 import { CommonModule, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { I18nProvider } from './providers/I18nProvider';
 import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatButtonModule, MatDialogModule } from '@angular/material';
@@ -82,7 +81,6 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [ FirebaseService, ExcelService, EmailService,
     AuthService,
-    //EncryptService,
     ProjectService,
     ActivityService,
     I18nProvider,

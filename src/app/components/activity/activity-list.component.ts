@@ -51,6 +51,7 @@ export class ActivityListComponent implements OnInit {
     ngOnInit() {
         this.getActivities();
         this.userSelected = JSON.parse(localStorage.getItem('userSelected'));
+        //console.log('Undefine:' + this.encryptService.encrypt('Undefine'));
     }
 
     /*----------------------------- */
