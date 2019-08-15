@@ -33,6 +33,8 @@ import { ProjectService } from './services/project.service';
 import { ActivityService } from './services/activity.service';
 import { EventProvider } from './providers/EventProvider';
 import * as firebase from 'firebase';
+import { ChartsModule } from 'ng2-charts';
+import { LogCountService } from './services/logcount.service';
 
 firebase.initializeApp(environment.firebase);
 // required for AOT compilation
@@ -65,6 +67,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatDialogModule,
     MatButtonModule,
     HttpClientModule,
+    ChartsModule,
     TranslateModule.forRoot({
         loader: {
             provide: TranslateLoader,
@@ -83,6 +86,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AuthService,
     ProjectService,
     ActivityService,
+    LogCountService,
     I18nProvider,
     EventProvider,
     { provide: LocationStrategy, useClass: HashLocationStrategy },

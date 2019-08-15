@@ -1,5 +1,6 @@
 {
     "app": {
+        "home": "Home",
         "title": "Work log",
         "text": "Welcome every one",
         "clickMe": "Touch me ^^",
