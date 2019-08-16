@@ -11,22 +11,20 @@ import { LogCountService } from '../services/logcount.service';
 export class HomeComponent implements OnInit {
   public lineChartData: ChartDataSets[] = 
   [
-/*
-    { "data": [5, 1, 0, 0, 0, 0], "label": "dunghq3" },
-    { "data": [5, 1, 0, 0, 0, 0], "label": "phuongntl6" },
-    { "data": [5, 1, 0, 0, 0, 0], "label": "manhbv1" },
-    { "data": [5, 1, 0, 0, 0, 0], "label": "hocdd" },
-    { "data": [5, 1, 0, 0, 0, 0], "label": "bactn" },
-    { "data": [5, 1, 0, 0, 0, 0], "label": "longndp" },
-    { "data": [5, 1, 0, 0, 0, 0], "label": "lamtt6" },
-    { "data": [5, 1, 0, 0, 0, 0], "label": "anhhdt1" },
-    { "data": [5, 1, 0, 0, 0, 0], "label": "thanhvn5" },
-    { "data": [5, 1, 0, 0, 0, 0], "label": "nghiath5" },
-    { "data": [5, 1, 0, 0, 0, 0], "label": "thanhvq" },
-    { "data": [5, 1, 0, 0, 0, 0], "label": "tuantm13" },
-    { "data": [5, 1, 0, 0, 0, 0], "label": "liemntt" },
-    { "data": [5, 1, 0, 0, 0, 0], "label": "truongln" }
-*/
+    { "data": [0, 0, 0, 0, 0, 0], "label": "dunghq3" },
+    { "data": [0, 0, 0, 0, 0, 0], "label": "phuongntl6" },
+    { "data": [0, 0, 0, 0, 0, 0], "label": "manhbv1" },
+    { "data": [0, 0, 0, 0, 0, 0], "label": "hocdd" },
+    { "data": [0, 0, 0, 0, 0, 0], "label": "bactn" },
+    { "data": [0, 0, 0, 0, 0, 0], "label": "longndp" },
+    { "data": [0, 0, 0, 0, 0, 0], "label": "lamtt6" },
+    { "data": [0, 0, 0, 0, 0, 0], "label": "anhhdt1" },
+    { "data": [0, 0, 0, 0, 0, 0], "label": "thanhvn5" },
+    { "data": [0, 0, 0, 0, 0, 0], "label": "nghiath5" },
+    { "data": [0, 0, 0, 0, 0, 0], "label": "thanhvq" },
+    { "data": [0, 0, 0, 0, 0, 0], "label": "tuantm13" },
+    { "data": [0, 0, 0, 0, 0, 0], "label": "liemntt" },
+    { "data": [0, 0, 0, 0, 0, 0], "label": "truongln" }
   ];
   public lineChartLabels: Label[] = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
 
@@ -104,11 +102,11 @@ export class HomeComponent implements OnInit {
   public lineChartPlugins = [];
 
   constructor(private logCountService: LogCountService) {
-    this.logCountService.getAll().subscribe((response: any) => {
-      this.lineChartData = JSON.parse(response[0].payload.doc.data().data);
-    });
   }
 
   ngOnInit() {
+    this.logCountService.getAll().subscribe((response: any) => {
+      this.lineChartData = JSON.parse(response[0].payload.doc.data().data);
+    });
   }
 }
