@@ -174,9 +174,9 @@ export class ActivityCreateComponent implements OnInit {
             status: value.status,
             owner: localStorage.getItem('idUserSelected'),
             createdBy: localStorage.getItem('userName'),
-            createdDate: moment(new Date()).format(),
+            createdDate: moment(new Date()).utc().format(),
             lastModifiedBy: localStorage.getItem('userName'),
-            lastModifiedDate: moment(new Date()).format()
+            lastModifiedDate: moment(new Date()).utc().format()
         };
         // Save.
         this.firebaseService.createDocument(this.COLLECTION, activity).then(result => {

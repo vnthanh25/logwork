@@ -25,10 +25,10 @@ export class DialogDateRangeComponent {
     ) {
         this.formGroup = this.formBuilder.group({
             fromDate: [
-                '', Validators.required
+                data.fromDate, Validators.required
             ],
             toDate: [
-                ''
+                data.toDate, Validators.required
             ]
         });
     }

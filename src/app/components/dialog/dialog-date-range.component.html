@@ -6,7 +6,7 @@
               <!-- From date -->
               <div class="form-group">
                   <mat-form-field class="input-style">
-                      <input matInput [matDatepicker]="fromPicker" placeholder="{{ data.fromDate }}" formControlName="fromDate">
+                      <input matInput [matDatepicker]="fromPicker" placeholder="{{ data.fromDateTitle }}" formControlName="fromDate">
                       <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
                       <mat-datepicker #fromPicker></mat-datepicker>
                   </mat-form-field>
@@ -19,7 +19,7 @@
               <!-- to date -->
               <div class="form-group">
                   <mat-form-field class="input-style">
-                      <input matInput [matDatepicker]="toPicker" placeholder="{{ data.toDate }}" formControlName="toDate">
+                      <input matInput [matDatepicker]="toPicker" placeholder="{{ data.toDateTitle }}" formControlName="toDate">
                       <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
                       <mat-datepicker #toPicker></mat-datepicker>
                   </mat-form-field>

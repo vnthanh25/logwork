@@ -4,6 +4,7 @@ import { EncryptService } from './encrypt.service';
 import { DatePipe } from '@angular/common';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { retry } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Injectable({providedIn: 'root'})
 export class ActivityService {
@@ -62,11 +63,23 @@ export class ActivityService {
     }
 
     getByPropertyAndWorkDateRange(name, value, fromDate, toDate) {
+        let fromDate1 = fromDate;
+        if (moment.isMoment(fromDate1)) {
+            fromDate1 = fromDate1.utc().format();
+        } else {
+            fromDate1 = fromDate1.format();
+        }
+        let toDate1 = toDate.add(1, 'd');
+        if (moment.isMoment(toDate1)) {
+            toDate1 = toDate1.utc().format();
+        } else {
+            toDate1 = toDate1.format();
+        }
         return new Promise((resolve, reject) => {
             this.fireStore.collection(this.COLLECTION, ref => ref
                 .where(name, '==', value)
-                .where('workDate' , '>=', fromDate)
-                .where('workDate', '<', toDate)
+                .where('workDate' , '>=', fromDate1)
+                .where('workDate', '<', toDate1)
             ).snapshotChanges().subscribe(result => {
                 const datePipe = this.datePipe;
                 let activities = [];

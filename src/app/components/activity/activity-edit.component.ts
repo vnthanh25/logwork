@@ -209,7 +209,7 @@ export class ActivityEditComponent implements OnInit {
         this.activity.summary = this.activity.summary ? this.encryptService.encrypt(this.activity.summary) : '';
         this.activity.projectName = this.encryptService.encrypt(this.activity.projectName);
         this.activity.lastModifiedBy = localStorage.getItem('idUserSelected');
-        this.activity.lastModifiedDate = moment(new Date()).format();
+        this.activity.lastModifiedDate = moment(new Date()).utc().format();
         // Save.
         let promiseResult = null;
         if (this.activity.id) {// update.

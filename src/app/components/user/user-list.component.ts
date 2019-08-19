@@ -173,15 +173,23 @@ export class UserListComponent implements OnInit {
   }
 
   exportDailyAsExcelFile(): void {
-    const dialogData: any = { title: this.translate.instant('user.choseDate'), fromDate: this.translate.instant('user.fromDate'), toDate: this.translate.instant('user.toDate'), cancel: this.translate.instant('user.cancel'), ok: this.translate.instant('user.ok') };
+    const dataFormat = 'yyyy-MM-dd';
+    const currentDate = this.datePipe.transform(new Date(), dataFormat).toString();
+    const fromDate = moment.utc(currentDate, dataFormat.toUpperCase());
+    const toDate = moment.utc(currentDate, dataFormat.toUpperCase());
+    const dialogData: any = { title: this.translate.instant('user.choseDate'), 
+      fromDate: fromDate, toDate: toDate, 
+      fromDateTitle: this.translate.instant('user.fromDate'), toDateTitle: this.translate.instant('user.toDate'), 
+      cancel: this.translate.instant('user.cancel'), ok: this.translate.instant('user.ok')
+    };
     const dialogRef = this.dialog.open(DialogDateRangeComponent, {
         data: dialogData
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (dialogData.result !== null) {
-        const fromDate = dialogData.result.fromDate.format();
-        const toDate = dialogData.result.toDate.add(1, 'd').format();
+        const fromDate = dialogData.result.fromDate;
+        const toDate = dialogData.result.toDate;
         const datePipe = this.datePipe;
         const sheets = {};
         const sheetRows = [];
@@ -267,15 +275,23 @@ export class UserListComponent implements OnInit {
   }
 
   exportWeeklyAsExcelFile(): void {
-    const dialogData: any = { title: this.translate.instant('user.choseDate'), fromDate: this.translate.instant('user.fromDate'), toDate: this.translate.instant('user.toDate'), cancel: this.translate.instant('user.cancel'), ok: this.translate.instant('user.ok') };
+    const dataFormat = 'yyyy-MM-dd';
+    const currentDate = this.datePipe.transform(new Date(), dataFormat).toString();
+    const fromDate = moment.utc(currentDate, dataFormat.toUpperCase());
+    const toDate = moment.utc(currentDate, dataFormat.toUpperCase());
+    const dialogData: any = { title: this.translate.instant('user.choseDate'), 
+      fromDate: fromDate, toDate: toDate, 
+      fromDateTitle: this.translate.instant('user.fromDate'), toDateTitle: this.translate.instant('user.toDate'), 
+      cancel: this.translate.instant('user.cancel'), ok: this.translate.instant('user.ok')
+    };
     const dialogRef = this.dialog.open(DialogDateRangeComponent, {
         data: dialogData
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (dialogData.result !== null) {
-        const fromDate = dialogData.result.fromDate.format();
-        const toDate = dialogData.result.toDate.add(1, 'd').format();
+        const fromDate = dialogData.result.fromDate;
+        const toDate = dialogData.result.toDate;
         const sheetRows = [[], [], []];
         const sheetNames: string[] = ['Projects Overview', 'Projects Members', 'Projects Note'];
         const membersSheet: any[] = [];

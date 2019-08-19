@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
+import * as moment from 'moment';
 import { LogCountService } from '../../services/logcount.service';
+import { UserService } from 'src/app/services';
+import { ActivityService } from 'src/app/services/activity.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -9,24 +13,32 @@ import { LogCountService } from '../../services/logcount.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  public lineChartData: ChartDataSets[] = 
-  [
-    { "data": [0, 0, 0, 0, 0, 0], "label": "dunghq3" },
-    { "data": [0, 0, 0, 0, 0, 0], "label": "phuongntl6" },
-    { "data": [0, 0, 0, 0, 0, 0], "label": "manhbv1" },
-    { "data": [0, 0, 0, 0, 0, 0], "label": "hocdd" },
-    { "data": [0, 0, 0, 0, 0, 0], "label": "bactn" },
-    { "data": [0, 0, 0, 0, 0, 0], "label": "longndp" },
-    { "data": [0, 0, 0, 0, 0, 0], "label": "lamtt6" },
-    { "data": [0, 0, 0, 0, 0, 0], "label": "anhhdt1" },
-    { "data": [0, 0, 0, 0, 0, 0], "label": "thanhvn5" },
-    { "data": [0, 0, 0, 0, 0, 0], "label": "nghiath5" },
-    { "data": [0, 0, 0, 0, 0, 0], "label": "thanhvq" },
-    { "data": [0, 0, 0, 0, 0, 0], "label": "tuantm13" },
-    { "data": [0, 0, 0, 0, 0, 0], "label": "liemntt" },
-    { "data": [0, 0, 0, 0, 0, 0], "label": "truongln" }
+  private datePipe = new DatePipe('en-US');
+  private defaultColor = { borderColor: 'black', backgroundColor: 'black' };
+  private memberColors = {
+    'dunghq3': { borderColor: 'black', backgroundColor: '#E52B50' },
+    'phuongntl6': { borderColor: 'black', backgroundColor: '#FFBF00' },
+    'manhbv1': { borderColor: 'black', backgroundColor: '#9966CC' },
+    'hocdd': { borderColor: 'black', backgroundColor: '#FBCEB1' },
+    'bactn': { borderColor: 'black', backgroundColor: '#7FFFD4' },
+    'longndp': { borderColor: 'black', backgroundColor: '	#007FFF' },
+    'lamtt6': { borderColor: 'black', backgroundColor: '#89CFF0' },
+    'anhhdt1': { borderColor: 'black', backgroundColor: '#F5F5DC' },
+    'thanhvn5': { borderColor: 'black', backgroundColor: '#0000FF' },
+    'nghiath5': { borderColor: 'black', backgroundColor: '#0095B6' },
+    'thanhvq': { borderColor: 'black', backgroundColor: '#8A2BE2' },
+    'tuantm13': { borderColor: 'black', backgroundColor: '#DE5D83' },
+    'liemntt': { borderColor: 'black', backgroundColor: '#CD7F32' },
+    'truongln': { borderColor: 'black', backgroundColor: '#964B00', }
+  }
+  public lineChartColors: Color[] = [
+    this.defaultColor
   ];
-  public lineChartLabels: Label[] = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+  public lineChartData: ChartDataSets[] =
+  [
+    { "data": [0, 0], "label": 'userName' }
+  ];
+  public lineChartLabels: Label[] = ['Members'];
 
   public lineChartOptions: ChartOptions = {
     responsive: true,
@@ -35,78 +47,74 @@ export class HomeComponent implements OnInit {
         scaleLabel: {
           display: true,
           labelString: 'Log count'
+        },
+        ticks: {
+          min: -1, // it is for ignoring negative step.
+          beginAtZero: true,
+          stepSize: 1  // if i use this it always set it '1', which look very awkward if it have high value  e.g. '100'.
         }
       }]
     }
   };
-  public lineChartColors: Color[] = [
-    {
-      borderColor: 'black',
-      backgroundColor: 'Blue',
-    },
-    {
-      borderColor: 'black',
-      backgroundColor: 'Green',
-    },
-    {
-      borderColor: 'black',
-      backgroundColor: 'Brown',
-    },
-    {
-      borderColor: 'black',
-      backgroundColor: 'Gray',
-    },
-    {
-      borderColor: 'black',
-      backgroundColor: 'Indigo',
-    },
-    {
-      borderColor: 'black',
-      backgroundColor: 'Magenta',
-    },
-    {
-      borderColor: 'black',
-      backgroundColor: 'Olive',
-    },
-    {
-      borderColor: 'black',
-      backgroundColor: 'Orange',
-    },
-    {
-      borderColor: 'black',
-      backgroundColor: '#E0115F',
-    },
-    {
-      borderColor: 'black',
-      backgroundColor: '#D1E231',
-    },
-    {
-      borderColor: 'black',
-      backgroundColor: 'Pink',
-    },
-    {
-      borderColor: 'black',
-      backgroundColor: 'Purple',
-    },
-    {
-      borderColor: 'black',
-      backgroundColor: 'Rose',
-    },
-    {
-      borderColor: 'black',
-      backgroundColor: 'Yellow',
-    },
-  ];
+  
   public lineChartLegend = true;
   public lineChartType = 'bar';
   public lineChartPlugins = [];
 
-  constructor(private logCountService: LogCountService) {
+  constructor(
+    private userService: UserService,
+    private activityService: ActivityService,
+    private logCountService: LogCountService
+  ) {
   }
 
   ngOnInit() {
-    this.logCountService.getAll().subscribe((response: any) => {
-      this.lineChartData = JSON.parse(response[0].payload.doc.data().data);
+    const dataFormat = 'yyyy-MM-dd';
+    const currentDate = this.datePipe.transform(new Date(), dataFormat).toString();
+    let fromDate = moment.utc(currentDate, dataFormat.toUpperCase());
+    const startDay = 3; // Wednerday;
+    while ((fromDate.weekday() + 7) % 7 !== startDay) {
+      fromDate = fromDate.add(-1, 'd');
+    }
+    const toDate = moment.utc(currentDate, dataFormat.toUpperCase());
+    // Data.
+    this.userService.getAll().subscribe(users => {
+      this.lineChartData = [];
+      this.lineChartColors = [];
+      const length = users.length;
+      let count = 0;
+      for (let index = 0; index < length; index++) {
+        const user: any = users[index];
+        const owner = user.payload.doc.data().id;
+        const userName = user.payload.doc.data().userName.replace('@fsoft.com.vn', '');
+        if (owner) {
+          count++;
+          const workDates: string[] = [];
+          let workDate: string;
+          this.activityService.getByPropertyAndWorkDateRange('owner', owner, fromDate, toDate).then((activities: any[]) => {
+            count--;
+            const datePipe = this.datePipe;
+            let data = { data: [-1, 0], label: userName };
+            let logCount = 0;
+            if (activities.length > 0) {
+              activities.forEach((activity: any) => {
+                workDate = datePipe.transform(activity.workDate, 'yyyyMMdd').toString();
+                if (workDates.indexOf(workDate) < 0) {
+                  logCount++;
+                  workDates.push(workDate);
+                }
+              });
+              data = { data: [logCount, 0], label: userName };
+            }
+            this.lineChartData.push(data);
+            let color = this.memberColors[userName];
+            if (!color) {
+              color = this.defaultColor;
+            }
+            this.lineChartColors.push(color);
+          });
+        }
+      }
     });
   }
 }
