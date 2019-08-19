@@ -9,10 +9,13 @@ import { lang } from 'moment';
 import { ActivityService } from 'src/app/services/activity.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { DatePipe } from '@angular/common';
+import * as moment from 'moment';
 
 import {
   SpeechRecognitionService
 } from '@kamiazya/ngx-speech-recognition';
+import { MatDialog } from '@angular/material';
+import { DialogDateRangeComponent } from '../dialog/dialog-date-range.component';
 
 @Component({
   selector: 'app-user-list',
@@ -29,6 +32,7 @@ export class UserListComponent implements OnInit {
     private router: Router,
     private speechService: SpeechRecognitionService,
     public authService: AuthService,
+    public dialog: MatDialog,
     //private i18nProvider: I18nProvider,
     private translate: TranslateService,
     private userService: UserService,
@@ -169,26 +173,56 @@ export class UserListComponent implements OnInit {
   }
 
   exportDailyAsExcelFile(): void {
-    const sheets = {};
-    const sheetRows = [];
-    const sheetNames: string[] = [];
-    this.users.forEach((user: any) => {
-      const owner = user.payload.doc.data().id;
-      const sheetName: string = user.payload.doc.data().userName.replace('@fsoft.com.vn', '').toUpperCase();
-      if (owner) {
-        this.activityService.getByPropertyOrderByWorkDate('owner', owner).then((response:any[]) => {
-          //console.log(owner);
-          //console.log(sheetName);
-          sheetRows.push(this.generateExcelData(response));
-          sheetNames.push(sheetName);
-          if (sheetRows.length === this.users.length) {
-            this.excelService.exportDailyAsExcelFile(sheetRows, sheetNames, 'Work logs(2Teams)');
+    const dialogData: any = { title: this.translate.instant('user.choseDate'), fromDate: this.translate.instant('user.fromDate'), toDate: this.translate.instant('user.toDate'), cancel: this.translate.instant('user.cancel'), ok: this.translate.instant('user.ok') };
+    const dialogRef = this.dialog.open(DialogDateRangeComponent, {
+        data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (dialogData.result !== null) {
+        const fromDate = dialogData.result.fromDate.format();
+        const toDate = dialogData.result.toDate.add(1, 'd').format();
+        const datePipe = this.datePipe;
+        const sheets = {};
+        const sheetRows = [];
+        const sheetNames: string[] = [];
+        this.users.forEach((user: any) => {
+          const owner = user.payload.doc.data().id;
+          const sheetName: string = user.payload.doc.data().userName.replace('@fsoft.com.vn', '').toUpperCase();
+          if (owner) {
+            this.activityService.getByPropertyAndWorkDateRange('owner', owner, fromDate, toDate).then((activities: any[]) => {
+              // Sort by workDate.
+              if (activities.length > 0) {
+                activities = activities.sort((item1: any, item2: any) => {
+                  // value1.
+                  let value1 = item1.workDate;
+                  //const numbers1 = value1.match(/\d+/g);
+                  //value1 = new Date(numbers1[2], numbers1[1] - 1, numbers1[0]);
+                  value1 = datePipe.transform(value1, 'yyyyMMdd').toString();
+                  // value2.
+                  let value2 = item2.workDate;
+                  //const numbers2 = value2.match(/\d+/g);
+                  //value2 = new Date(numbers2[2], numbers2[1] - 1, numbers2[0]);
+                  value2 = datePipe.transform(value2, 'yyyyMMdd').toString();
+                  // compare workDate asc.
+                  if (value1 < value2) { return -1; }
+                  if (value1 > value2) { return 1; }
+                  return 0;
+                });
+              }
+              // Generate data for excel.
+              sheetRows.push(this.generateExcelData(activities));
+              sheetNames.push(sheetName);
+              if (sheetRows.length === this.users.length) {
+                this.excelService.exportDailyAsExcelFile(sheetRows, sheetNames, 'Work logs(2Teams)');
+              }
+            }).catch(error => {
+            });
+          } else {
+            sheetRows.push([]);
+            sheetNames.push(sheetName);
           }
-        }).catch(error => {
         });
-      } else {
-        sheetRows.push([]);
-        sheetNames.push(sheetName);
       }
     });
   }
@@ -233,82 +267,94 @@ export class UserListComponent implements OnInit {
   }
 
   exportWeeklyAsExcelFile(): void {
-    const sheetRows = [[], [], []];
-    const sheetNames: string[] = ['Projects Overview', 'Projects Members', 'Projects Note'];
-    const membersSheet: any[] = [];
-    sheetRows.push(membersSheet);
-    sheetNames.push('Members');
-    let count = 0;
-    let activities;
-    let user;
-    let userActivities = {};
-    let owners = {};
-    const length = this.users.length;
-    for (let index = 0; index < length; index++) {
-      userActivities[index.toString()] = [];
-      user = this.users[index];
-      let owner = user.payload.doc.data().id;
-      owners[index.toString()] = user.payload.doc.data();
-      //console.log(user.payload.doc.data());
-      if (owner) {
-        count++;
-        this.activityService.getByProperty('owner', owner).then((response:any[]) => {
-          count--;
-          activities = response;
-          if (activities.length > 0) {
-            const datePipe = this.datePipe;
-            // Sort by projectName and workDate.
-            activities = activities.sort(function(item1: any, item2: any) {
-              // compare projectName asc.
-              if (item1.projectName < item2.projectName) { return -1; }
-              if (item1.projectName > item2.projectName) { return 1; }
-              // value1.
-              let value1 = item1.workDate;
-              //const numbers1 = value1.match(/\d+/g);
-              //value1 = new Date(numbers1[2], numbers1[1] - 1, numbers1[0]);
-              value1 = datePipe.transform(value1, 'yyyyMMdd').toString();
-              // value2.
-              let value2 = item2.workDate;
-              //const numbers2 = value2.match(/\d+/g);
-              //value2 = new Date(numbers2[2], numbers2[1] - 1, numbers2[0]);
-              value2 = datePipe.transform(value2, 'yyyyMMdd').toString();
-              // compare workDate asc.
-              if (value1 < value2) { return -1; }
-              if (value1 > value2) { return 1; }
-              return 0;
-            });
-            userActivities[index.toString()] = activities;
-          }
-          if (count === 0) {
-            for (let index = 0; index < length; index++) {
-              activities = userActivities[index.toString()];
-              owner = owners[index.toString()];
-              const order = owner.order;
-              const userName = owner.userName;
-              const fullName = owner.surname + ' ' + owner.name;
+    const dialogData: any = { title: this.translate.instant('user.choseDate'), fromDate: this.translate.instant('user.fromDate'), toDate: this.translate.instant('user.toDate'), cancel: this.translate.instant('user.cancel'), ok: this.translate.instant('user.ok') };
+    const dialogRef = this.dialog.open(DialogDateRangeComponent, {
+        data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (dialogData.result !== null) {
+        const fromDate = dialogData.result.fromDate.format();
+        const toDate = dialogData.result.toDate.add(1, 'd').format();
+        const sheetRows = [[], [], []];
+        const sheetNames: string[] = ['Projects Overview', 'Projects Members', 'Projects Note'];
+        const membersSheet: any[] = [];
+        sheetRows.push(membersSheet);
+        sheetNames.push('Members');
+        let count = 0;
+        let activities;
+        let user;
+        let userActivities = {};
+        let owners = {};
+        const length = this.users.length;
+        for (let index = 0; index < length; index++) {
+          userActivities[index.toString()] = [];
+          user = this.users[index];
+          let owner = user.payload.doc.data().id;
+          owners[index.toString()] = user.payload.doc.data();
+          //console.log(user.payload.doc.data());
+          if (owner) {
+            count++;
+            this.activityService.getByPropertyAndWorkDateRange('owner', owner, fromDate, toDate).then((response: any[]) => {
+              count--;
+              activities = response;
               if (activities.length > 0) {
-                activities = this.generateExcelDataForWeekly(order, userName, fullName, activities);
-              } else {
-                const data = {};
-                data['Order'] = order;
-                data['User Name'] = userName;
-                data['Display Name'] = fullName;
-                data['Detail'] = 'Miss';
-                data['Tasks status'] = 0;
-                data['Workload/Project'] = 0;
-                data['Project'] = '';
-                data['Ready for new task'] = 'Yes';
-                activities.push(data);
+                const datePipe = this.datePipe;
+                // Sort by projectName and workDate.
+                activities = activities.sort(function(item1: any, item2: any) {
+                  // compare projectName asc.
+                  if (item1.projectName < item2.projectName) { return -1; }
+                  if (item1.projectName > item2.projectName) { return 1; }
+                  // value1.
+                  let value1 = item1.workDate;
+                  //const numbers1 = value1.match(/\d+/g);
+                  //value1 = new Date(numbers1[2], numbers1[1] - 1, numbers1[0]);
+                  value1 = datePipe.transform(value1, 'yyyyMMdd').toString();
+                  // value2.
+                  let value2 = item2.workDate;
+                  //const numbers2 = value2.match(/\d+/g);
+                  //value2 = new Date(numbers2[2], numbers2[1] - 1, numbers2[0]);
+                  value2 = datePipe.transform(value2, 'yyyyMMdd').toString();
+                  // compare workDate asc.
+                  if (value1 < value2) { return -1; }
+                  if (value1 > value2) { return 1; }
+                  return 0;
+                });
+                userActivities[index.toString()] = activities;
               }
-              membersSheet.push(...activities);
-            }
-            this.excelService.exportDailyAsExcelFile(sheetRows, sheetNames, 'Weekly report Mainternance team AIA');
+              if (count === 0) {
+                for (let index = 0; index < length; index++) {
+                  activities = userActivities[index.toString()];
+                  owner = owners[index.toString()];
+                  const order = owner.order;
+                  const userName = owner.userName;
+                  const fullName = owner.surname + ' ' + owner.name;
+                  if (activities.length > 0) {
+                    // Generate data for excel.
+                    activities = this.generateExcelDataForWeekly(order, userName, fullName, activities);
+                  } else {
+                    const data = {};
+                    data['Order'] = order;
+                    data['User Name'] = userName;
+                    data['Display Name'] = fullName;
+                    data['Detail'] = 'Miss';
+                    data['Tasks status'] = 0;
+                    data['Workload/Project'] = 0;
+                    data['Project'] = '';
+                    data['Ready for new task'] = 'Yes';
+                    activities.push(data);
+                  }
+                  membersSheet.push(...activities);
+                }
+                this.excelService.exportDailyAsExcelFile(sheetRows, sheetNames, 'Weekly report Mainternance team AIA');
+              }
+            }).catch(error => {
+              console.log(error);
+            });
           }
-        }).catch(error => {
-          console.log(error);
-        });
+        }// for.
       }
-    }// for.
+    });
   }
 
 }

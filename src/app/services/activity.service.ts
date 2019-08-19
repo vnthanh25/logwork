@@ -2,14 +2,17 @@ import { Injectable } from "@angular/core";
 import { FirebaseService } from './firebase.service';
 import { EncryptService } from './encrypt.service';
 import { DatePipe } from '@angular/common';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { retry } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class ActivityService {
-    private COLLECTION = 'activities';
+    private COLLECTION: string = 'activities';
     public activities: any[];
     datePipe = new DatePipe('en-US');
     constructor(
         private firebaseService: FirebaseService,
+        private fireStore: AngularFirestore,
         private encryptService: EncryptService
     ) {
         //this.getAll();
@@ -40,6 +43,31 @@ export class ActivityService {
     getByProperty(name, value) {
         return new Promise((resolve, reject) => {
             this.firebaseService.searchDocumentsByProperty(this.COLLECTION, name, value).subscribe(result => {
+                const datePipe = this.datePipe;
+                let activities = [];
+                if (result.length > 0) {
+                    activities = result.map(item => {
+                        let activity = { id: item.payload.doc.id, ... item.payload.doc.data() };
+                        activity['code'] = this.encryptService.decrypt(activity['code']);
+                        activity['code'] = activity['code'].charAt(0).toUpperCase() + activity['code'].slice(1);
+                        activity['summary'] = activity['summary'] ? this.encryptService.decrypt(activity['summary']) : '';
+                        activity['projectName'] = this.encryptService.decrypt(activity['projectName']);
+                        
+                        return activity;
+                    });
+                }
+                resolve(activities);
+            });
+        });
+    }
+
+    getByPropertyAndWorkDateRange(name, value, fromDate, toDate) {
+        return new Promise((resolve, reject) => {
+            this.fireStore.collection(this.COLLECTION, ref => ref
+                .where(name, '==', value)
+                .where('workDate' , '>=', fromDate)
+                .where('workDate', '<', toDate)
+            ).snapshotChanges().subscribe(result => {
                 const datePipe = this.datePipe;
                 let activities = [];
                 if (result.length > 0) {

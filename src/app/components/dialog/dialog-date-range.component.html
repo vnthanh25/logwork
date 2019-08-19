@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+  <form [formGroup]="formGroup" novalidate>
+      <div class="row">
+          <div class="col col-md-6">
+              <!-- From date -->
+              <div class="form-group">
+                  <mat-form-field class="input-style">
+                      <input matInput [matDatepicker]="fromPicker" placeholder="{{ data.fromDate }}" formControlName="fromDate">
+                      <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                      <mat-datepicker #fromPicker></mat-datepicker>
+                  </mat-form-field>
+                  <ng-container *ngFor="let validation of validation_messages.fromDate">
+                      <mat-error *ngIf="formGroup.get('fromDate').hasError(validation.type) && (formGroup.get('fromDate').dirty || formGroup.get('fromDate').touched)">{{validation.message}}</mat-error>
+                  </ng-container>
+              </div>
+          </div>
+          <div class="col col-md-6">
+              <!-- to date -->
+              <div class="form-group">
+                  <mat-form-field class="input-style">
+                      <input matInput [matDatepicker]="toPicker" placeholder="{{ data.toDate }}" formControlName="toDate">
+                      <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                      <mat-datepicker #toPicker></mat-datepicker>
+                  </mat-form-field>
+                  <ng-container *ngFor="let validation of validation_messages.toDate">
+                      <mat-error *ngIf="formGroup.get('toDate').hasError(validation.type) && (formGroup.get('toDate').dirty || formGroup.get('toDate').touched)">{{validation.message}}</mat-error>
+                  </ng-container>
+              </div>
+          </div>
+      </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()" cdkFocusInitial>{{ data.cancel }}</button>
+  <button mat-button (click)="onOkClick()">{{ data.ok }}</button>
+</div>

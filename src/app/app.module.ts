@@ -26,7 +26,7 @@ import { HomeComponent } from './home/home.component';
 import { AuthService } from './services/auth.service';
 import { CommonModule, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { I18nProvider } from './providers/I18nProvider';
-import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatButtonModule, MatDialogModule } from '@angular/material';
+import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatButtonModule, MatDialogModule, MatDatepickerModule } from '@angular/material';
 import { CustomDateAdapter } from './providers/custom-date-adapter';
 import { EmailService } from './services/email.service';
 import { ProjectService } from './services/project.service';
@@ -35,6 +35,7 @@ import { EventProvider } from './providers/EventProvider';
 import * as firebase from 'firebase';
 import { ChartsModule } from 'ng2-charts';
 import { LogCountService } from './services/logcount.service';
+import { DialogDateRangeComponent } from './components/dialog/dialog-date-range.component';
 
 firebase.initializeApp(environment.firebase);
 // required for AOT compilation
@@ -47,10 +48,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     LoginComponent,
     DialogOkCancelComponent,
+    DialogDateRangeComponent,
     HomeComponent
   ],
   entryComponents: [
-    DialogOkCancelComponent
+    DialogOkCancelComponent,
+    DialogDateRangeComponent
   ],
   imports: [
     CommonModule,
@@ -66,6 +69,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MomentDateModule,
     MatDialogModule,
     MatButtonModule,
+    MatDatepickerModule,
     HttpClientModule,
     ChartsModule,
     TranslateModule.forRoot({
