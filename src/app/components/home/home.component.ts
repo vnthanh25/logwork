@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
-import { LogCountService } from '../services/logcount.service';
+import { LogCountService } from '../../services/logcount.service';
 
 @Component({
   selector: 'app-home',

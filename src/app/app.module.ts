@@ -22,7 +22,7 @@ import { MomentDateModule, MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, M
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { DialogOkCancelComponent } from './components/dialog/dialog-ok-cancel.component';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './components/home/home.component';
 import { AuthService } from './services/auth.service';
 import { CommonModule, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { I18nProvider } from './providers/I18nProvider';
