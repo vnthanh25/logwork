@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { FirebaseService } from '../../services/firebase.service';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
@@ -14,6 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services';
 import { ActivityService } from 'src/app/services/activity.service';
+import { MatPaginator, MatTableDataSource, PageEvent } from '@angular/material';
 
 @Component({
     selector: 'app-activity-list',
@@ -28,6 +29,15 @@ export class ActivityListComponent implements OnInit {
     activities: Array<any>;
     userSelected;
     userName;
+
+    public dataSource: any;
+    public pageSize = 6;
+    public currentPage = 0;
+    public totalSize = 0;
+    public pageSizeOptions: number[] = [3, 6, 9];
+
+    @ViewChild(MatPaginator, {static: false})
+    private paginator: MatPaginator;
 
     /* Constructor */
     constructor(
@@ -58,10 +68,27 @@ export class ActivityListComponent implements OnInit {
     /*---------- Methods ---------- */
     /*----------------------------- */
 
+    public handlePage(event: PageEvent) {
+        this.currentPage = event.pageIndex;
+        this.pageSize = event.pageSize;
+        this.iterator();
+    }
+
+    private iterator() {
+        const end = (this.currentPage + 1) * this.pageSize;
+        const start = this.currentPage * this.pageSize;
+        const items = this.activities.slice(start, end);
+        this.dataSource = items;
+    }
+
     getActivities() {
         const owner = localStorage.getItem('idUserSelected');
         this.activityService.getByPropertyOrderByWorkDate('owner', owner, false).then((response: any) => {
             this.activities = response;
+            this.dataSource = new MatTableDataSource<Element>(this.activities);
+            this.dataSource.paginator = this.paginator;
+            this.totalSize = this.activities.length;
+            this.iterator();
         });
     }
 

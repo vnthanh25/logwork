@@ -23,5 +23,12 @@
     },
     "validation": {
         "isRequired": " không thể rỗng."
-    }
+    },
+    "ITEMS_PER_PAGE_LABEL": "Số lượng trên trang:",
+    "NEXT_PAGE_LABEL": "Trang tiếp",
+    "PREVIOUS_PAGE_LABEL": "Trang trước",
+    "FIRST_PAGE_LABEL": "Trang đầu",
+    "LAST_PAGE_LABEL": "Trang cuối",
+    "RANGE_PAGE_LABEL_1": "0 trong {{length}}",
+    "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} trong {{length}}"
 }

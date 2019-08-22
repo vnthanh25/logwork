@@ -4,8 +4,8 @@
       {{userSelected.surname + ' ' + userSelected.name}}
     </div>
 </div>
-<div fxLayout="row wrap" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="32px" fxLayoutAlign="center">
-    <mat-card fxFlex="0 1 calc(33.3% - 32px)" class="card" *ngFor="let activity of activities">
+<div fxLayout="row wrap" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0px" fxLayoutAlign="left">
+    <mat-card fxFlex="0 1 calc(33.3% - 0px)" class="card card-info" *ngFor="let activity of dataSource">
         <mat-card-header>
             <mat-card-title>
                 {{ activity.workDate | date: dateFormat }}
@@ -24,33 +24,9 @@
         </mat-card-actions>
     </mat-card>
 </div>
-<!-- <table class="table table-hover">
-    <thead>
-        <tr>
-            <td>{{ 'activity.projectName' | translate }}</td>
-            <td>{{ 'activity.code' | translate }}</td>
-            <td>{{ 'activity.summary' | translate }}</td>
-            <td>{{ 'activity.type' | translate }}</td>
-            <td>{{ 'activity.reportTo' | translate }}</td>
-            <td>{{ 'activity.workDate' | translate }}</td>
-            <td>{{ 'activity.status' | translate }}</td>
-            <td colspan="3">{{ 'activity.action' | translate }}</td>
-        </tr>
-    </thead>
-
-    <tbody>
-        <tr *ngFor="let activity of activities">
-            <td>{{ activity.projectName }}</td>
-            <td>{{ activity.code }}</td>
-            <td>{{ activity.summary }}</td>
-            <td>{{ activity.type }}</td>
-            <td>{{ activity.reportTo }}</td>
-            <td>{{ activity.workDate | date: dateFormat}}</td>
-            <td>{{ activity.status }}</td>
-            <td><a *ngIf="authService.isLoggedIn()" [routerLink]="['edit', activity.id, 'false']" class="btn btn-primary">{{ 'activity.edit' | translate }}</a></td>
-            <td><a *ngIf="authService.isLoggedIn()" [routerLink]="['edit', activity.id, 'true']" class="btn btn-primary">{{ 'activity.copy' | translate }}</a></td>
-            <td><button *ngIf="authService.isLoggedIn()" mat-raised-button class="delete-button" color="warn" type="button" (click)="deleteActivity(activity)">{{ 'activity.delete' | translate }}</button></td>
-        </tr>
-    </tbody>
-</table> -->
-<button *ngIf="authService.isLoggedIn()" mat-raised-button class="btn btn-primary" type="button" (click)="exportAsXLSX()">{{ 'activity.exportExcel' | translate }}</button>
+<div fxLayout="row wrap" fxLayout.xs="column">
+    <button *ngIf="authService.isLoggedIn()" mat-raised-button class="btn btn-primary" type="button" (click)="exportAsXLSX()">{{ 'activity.exportExcel' | translate }}</button>
+    <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" [showFirstLastButtons]="true" [length]="totalSize"
+        [pageIndex]="currentPage" (page)="handlePage($event)">
+    </mat-paginator>
+</div>
