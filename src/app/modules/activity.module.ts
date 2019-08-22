@@ -16,10 +16,11 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
-import { MatButtonModule, MatInputModule, MatSliderModule, MatDialogModule, MatDatepickerModule, MatNativeDateModule, MatAutocompleteModule, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
+import { MatButtonModule, MatInputModule, MatSliderModule, MatDialogModule, MatDatepickerModule, MatNativeDateModule, MatAutocompleteModule, DateAdapter, MAT_DATE_FORMATS, MatCardModule } from '@angular/material';
 import { I18nProvider } from '../providers/I18nProvider';
 import { DialogOkCancelComponent } from '../components/dialog/dialog-ok-cancel.component';
 import { CustomDateAdapter } from '../providers/custom-date-adapter';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 export function ActivityHttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/activity/', '.json');
@@ -34,6 +35,8 @@ export function ActivityHttpLoaderFactory(http: HttpClient) {
         AngularFirestoreModule,
         AngularFireAuthModule,
         MomentDateModule,
+        FlexLayoutModule,
+        MatCardModule,
         MatButtonModule,
         MatInputModule,
         MatSliderModule,

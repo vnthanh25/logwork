@@ -26,7 +26,7 @@ import { HomeComponent } from './components/home/home.component';
 import { AuthService } from './services/auth.service';
 import { CommonModule, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { I18nProvider } from './providers/I18nProvider';
-import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatButtonModule, MatDialogModule, MatDatepickerModule } from '@angular/material';
+import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatButtonModule, MatDialogModule, MatDatepickerModule, MatIconModule } from '@angular/material';
 import { CustomDateAdapter } from './providers/custom-date-adapter';
 import { EmailService } from './services/email.service';
 import { ProjectService } from './services/project.service';
@@ -69,6 +69,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MomentDateModule,
     MatDialogModule,
     MatButtonModule,
+    MatIconModule,
     MatDatepickerModule,
     HttpClientModule,
     ChartsModule,

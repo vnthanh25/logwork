@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 
 import {SlimLoadingBarService} from 'ng2-slim-loading-bar';
@@ -16,15 +16,22 @@ import { UserService } from './services';
 import { EventProvider } from './providers/EventProvider';
 //import { LocalizeRouterService } from 'localize-router';
 
+import { MediaMatcher } from '@angular/cdk/layout';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   private fullName = '';
+  mobileQuery: MediaQueryList;
+  isMenuToogle: boolean;
+
   constructor(
     private loadingBar: SlimLoadingBarService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private mediaMatcher: MediaMatcher,
     private router: Router,
     private translate: TranslateService,
     private i18nProvider: I18nProvider,
@@ -34,6 +41,7 @@ export class AppComponent {
     public authService: AuthService,
     private userService: UserService
   ) {
+
     const language = 'vi';
     translate.addLangs(['en', 'vi']);
     translate.setDefaultLang(language);
@@ -79,6 +87,24 @@ export class AppComponent {
     });
   }
 
+  ngOnInit() {
+    this.mobileQuery = this.mediaMatcher.matchMedia('(min-width: 600px)');
+    this.isMenuToogle = this.mobileQuery.matches;
+    this.mobileQuery.addListener(this.mobileQueryListener);
+  }
+
+  ngOnDestroy() {
+    this.mobileQuery.removeListener(this.mobileQueryListener);
+  }
+
+  mobileQueryListener(event) {
+    //this.changeDetectorRef.detectChanges();
+    console.log(event.matches ? 'match' : 'no match');
+  }
+
+  menuToggle() {
+    this.isMenuToogle = !this.isMenuToogle;
+  }
   private navigationInterceptor(event: Event): void {
     if (event instanceof NavigationStart) {
       this.loadingBar.start();
@@ -103,24 +129,6 @@ export class AppComponent {
       localStorage.setItem('dateFormat', 'dd/MM/yyyy');
     } else {
       localStorage.setItem('dateFormat', 'MM/dd/yyyy');
-    }
-  }
-
-  /* List action */
-  listAction() {
-    const currentEntity = localStorage.getItem('currentEntity');
-
-    switch (currentEntity) {
-      case 'user': {
-        // Route.
-        this.router.navigate(['/user']);
-        break;
-      }
-      case 'activity': {
-        // Route.
-        this.router.navigate(['/activity']);
-        break;
-      }
     }
   }
 
@@ -178,6 +186,24 @@ export class AppComponent {
     });
   }
 
+  /* List action */
+  listAction() {
+    const currentEntity = localStorage.getItem('currentEntity');
+
+    switch (currentEntity) {
+      case 'user': {
+        // Route.
+        this.router.navigate(['/user']);
+        break;
+      }
+      case 'activity': {
+        // Route.
+        this.router.navigate(['/activity']);
+        break;
+      }
+    }
+  }
+
   /* Add action */
   addAction() {
     const currentEntity = localStorage.getItem('currentEntity');
@@ -194,6 +220,12 @@ export class AppComponent {
         break;
       }
     }
+  }
+
+  fullNameAction() {
+    localStorage.setItem('currentEntity', 'activity');
+    // Route.
+    this.router.navigate(['/activity']);
   }
 
 }

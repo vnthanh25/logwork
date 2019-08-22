@@ -60,7 +60,7 @@ export class ActivityListComponent implements OnInit {
 
     getActivities() {
         const owner = localStorage.getItem('idUserSelected');
-        this.activityService.getByPropertyOrderByWorkDate('owner', owner).then((response: any) => {
+        this.activityService.getByPropertyOrderByWorkDate('owner', owner, false).then((response: any) => {
             this.activities = response;
         });
     }

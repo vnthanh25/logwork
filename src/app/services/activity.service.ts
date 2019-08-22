@@ -99,7 +99,7 @@ export class ActivityService {
         });
     }
 
-    getByPropertyOrderByWorkDate(name, value) {
+    getByPropertyOrderByWorkDate(name, value, asc) {
         return new Promise((resolve, reject) => {
             this.firebaseService.searchDocumentsByProperty(this.COLLECTION, name, value).subscribe(result => {
                 const datePipe = this.datePipe;
@@ -114,7 +114,8 @@ export class ActivityService {
                         return activity;
                     });
                     // Sort by workDate.
-                    activities = activities.sort(function(item1: any, item2: any) {
+                    let order = asc ? -1 : 1;
+                    activities = activities.sort((item1: any, item2: any) => {
                         // value1.
                         let value1 = item1.workDate;
                         //const numbers1 = value1.match(/\d+/g);
@@ -126,8 +127,8 @@ export class ActivityService {
                         //value2 = new Date(numbers2[2], numbers2[1] - 1, numbers2[0]);
                         value2 = datePipe.transform(value2, 'yyyyMMdd').toString();
                         // compare workDate asc.
-                        if (value1 < value2) { return -1; }
-                        if (value1 > value2) { return 1; }
+                        if (value1 < value2) { return order; }
+                        if (value1 > value2) { return order * -1; }
                         return 0;
                     });
                 }

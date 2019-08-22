@@ -4,7 +4,27 @@
       {{userSelected.surname + ' ' + userSelected.name}}
     </div>
 </div>
-<table class="table table-hover">
+<div fxLayout="row wrap" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="32px" fxLayoutAlign="center">
+    <mat-card fxFlex="0 1 calc(33.3% - 32px)" class="card" *ngFor="let activity of activities">
+        <mat-card-header>
+            <mat-card-title>
+                {{ activity.workDate | date: dateFormat }}
+            </mat-card-title>
+            <mat-card-subtitle>
+                {{ activity.projectName }}
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            {{ activity.code }}
+        </mat-card-content>
+        <mat-card-actions>
+            <button *ngIf="authService.isLoggedIn()" mat-raised-button color="accent" [routerLink]="['edit', activity.id, 'false']">{{ 'activity.edit' | translate }}</button>
+            <button *ngIf="authService.isLoggedIn()" mat-raised-button color="primary" [routerLink]="['edit', activity.id, 'true']">{{ 'activity.copy' | translate }}</button>
+            <button *ngIf="authService.isLoggedIn()" mat-raised-button color="warn" (click)="deleteActivity(activity)">{{ 'activity.delete' | translate }}</button>
+        </mat-card-actions>
+    </mat-card>
+</div>
+<!-- <table class="table table-hover">
     <thead>
         <tr>
             <td>{{ 'activity.projectName' | translate }}</td>
@@ -32,5 +52,5 @@
             <td><button *ngIf="authService.isLoggedIn()" mat-raised-button class="delete-button" color="warn" type="button" (click)="deleteActivity(activity)">{{ 'activity.delete' | translate }}</button></td>
         </tr>
     </tbody>
-</table>
+</table> -->
 <button *ngIf="authService.isLoggedIn()" mat-raised-button class="btn btn-primary" type="button" (click)="exportAsXLSX()">{{ 'activity.exportExcel' | translate }}</button>
