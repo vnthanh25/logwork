@@ -77,8 +77,6 @@ export class AppComponent implements OnInit, OnDestroy {
           // Emit user logined.
           this.eventProvider.eventLogined.emit(user.payload.doc.data());
           // Redirect to activity.
-          localStorage.setItem('idUserSelected', localStorage.getItem('idUserLogined'));
-          localStorage.setItem('userSelected', localStorage.getItem('userLogined'));
           this.router.navigate(['/activity']);
         }
       });
@@ -226,7 +224,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   fullNameAction() {
     localStorage.setItem('currentEntity', 'activity');
-    // Route.
+    localStorage.setItem('idUserSelected', localStorage.getItem('idUserLogined'));
+    localStorage.setItem('userSelected', localStorage.getItem('userLogined'));
+    // Redirect to activity.
     this.router.navigate(['/activity']);
   }
 
