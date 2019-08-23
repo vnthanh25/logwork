@@ -31,6 +31,8 @@ export class UserEditComponent implements OnInit {
    ],
    'account': [
      { type: 'required', message: 'Account is required.' }
+   ],
+   'email': [
    ]
  };
 
@@ -72,15 +74,16 @@ export class UserEditComponent implements OnInit {
       userName: [this.user.userName, Validators.required],
       name: [this.user.name, Validators.required],
       surname: [this.user.surname, Validators.required],
-      account: [this.user.account, Validators.required]
+      account: [this.user.account, Validators.required],
+      email: [this.user.email]
     });
   }
 
   onSubmit(value) {
-    value.id = this.user.id;
+    //value.id = this.user.id;
     value.avatar = this.avatar;
     value.userName = value.userName.toLowerCase();
-    this.userService.update(value)
+    this.userService.update(this.user.id, value)
     .then(
       res => {
         this.router.navigate(['/user']);
@@ -89,7 +92,6 @@ export class UserEditComponent implements OnInit {
   }
 
   delete() {
-    //this.firebaseService.deleteDocument('users', this.user.id)
     this.userService.delete(this.user.id)
     .then(
       res => {

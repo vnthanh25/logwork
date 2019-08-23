@@ -23,9 +23,10 @@ import { DialogDateRangeComponent } from '../dialog/dialog-date-range.component'
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
-  searchValue = '';
-  datePipe = new DatePipe('en-US');
-  users: Array<any>;
+  private startDay = 3; // Wednerday;
+  private datePipe = new DatePipe('en-US');
+  public searchValue = '';
+  public users: Array<any>;
   public started = false;
 
   constructor(
@@ -277,7 +278,10 @@ export class UserListComponent implements OnInit {
   exportWeeklyAsExcelFile(): void {
     const dataFormat = 'yyyy-MM-dd';
     const currentDate = this.datePipe.transform(new Date(), dataFormat).toString();
-    const fromDate = moment.utc(currentDate, dataFormat.toUpperCase());
+    let fromDate = moment.utc(currentDate, dataFormat.toUpperCase());
+    while ((fromDate.weekday() + 7) % 7 !== this.startDay) {
+      fromDate = fromDate.add(-1, 'd');
+    }
     const toDate = moment.utc(currentDate, dataFormat.toUpperCase());
     const dialogData: any = { title: this.translate.instant('user.choseDate'), 
       fromDate: fromDate, toDate: toDate, 

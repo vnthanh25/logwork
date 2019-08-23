@@ -13,23 +13,25 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  private startDay = 3; // Wednerday;
   private datePipe = new DatePipe('en-US');
   private defaultColor = { borderColor: 'black', backgroundColor: 'black' };
   private memberColors = {
     'dunghq3': { borderColor: 'black', backgroundColor: '#E52B50' },
-    'phuongntl6': { borderColor: 'black', backgroundColor: '#FFBF00' },
+    'phuongntl6': { borderColor: 'black', backgroundColor: '#FF00AF' },
     'manhbv1': { borderColor: 'black', backgroundColor: '#9966CC' },
     'hocdd': { borderColor: 'black', backgroundColor: '#FBCEB1' },
     'bactn': { borderColor: 'black', backgroundColor: '#7FFFD4' },
-    'longndp': { borderColor: 'black', backgroundColor: '	#007FFF' },
+    'longndp': { borderColor: 'black', backgroundColor: '#50C878' },
     'lamtt6': { borderColor: 'black', backgroundColor: '#89CFF0' },
-    'anhhdt1': { borderColor: 'black', backgroundColor: '#F5F5DC' },
-    'thanhvn5': { borderColor: 'black', backgroundColor: '#0000FF' },
-    'nghiath5': { borderColor: 'black', backgroundColor: '#0095B6' },
-    'thanhvq': { borderColor: 'black', backgroundColor: '#8A2BE2' },
-    'tuantm13': { borderColor: 'black', backgroundColor: '#DE5D83' },
-    'liemntt': { borderColor: 'black', backgroundColor: '#CD7F32' },
-    'truongln': { borderColor: 'black', backgroundColor: '#964B00', }
+    'anhhdt1': { borderColor: 'black', backgroundColor: '#964B00' },
+    'thanhvn5': { borderColor: 'black', backgroundColor: '#007FFF' },
+    'nghiath5': { borderColor: 'black', backgroundColor: '#00FF3F' },
+    'thanhvq': { borderColor: 'black', backgroundColor: '#FFD700' },
+    'tuantm13': { borderColor: 'black', backgroundColor: '#008000' },
+    'liemntt': { borderColor: 'black', backgroundColor: '#4B0082' },
+    'truongln': { borderColor: 'black', backgroundColor: '#008080' },
+    'dungtm10': { borderColor: 'black', backgroundColor: '#964B00' }
   }
   public lineChartColors: Color[] = [
     this.defaultColor
@@ -72,8 +74,7 @@ export class HomeComponent implements OnInit {
     const dataFormat = 'yyyy-MM-dd';
     const currentDate = this.datePipe.transform(new Date(), dataFormat).toString();
     let fromDate = moment.utc(currentDate, dataFormat.toUpperCase());
-    const startDay = 3; // Wednerday;
-    while ((fromDate.weekday() + 7) % 7 !== startDay) {
+    while ((fromDate.weekday() + 7) % 7 !== this.startDay) {
       fromDate = fromDate.add(-1, 'd');
     }
     const toDate = moment.utc(currentDate, dataFormat.toUpperCase());

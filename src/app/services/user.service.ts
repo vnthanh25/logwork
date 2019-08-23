@@ -38,8 +38,8 @@ export class UserService {
         });
     }
 
-    update(user) {
-        return this.firebaseService.updateDocument(this.COLLECTION, user.id, user);
+    update(id, user) {
+        return this.firebaseService.updateDocument(this.COLLECTION, id, user);
     }
 
     delete(id) {

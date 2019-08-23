@@ -227,6 +227,7 @@ export class AppComponent implements OnInit, OnDestroy {
     localStorage.setItem('idUserSelected', localStorage.getItem('idUserLogined'));
     localStorage.setItem('userSelected', localStorage.getItem('userLogined'));
     // Redirect to activity.
+    this.router.navigated = false;
     this.router.navigate(['/activity']);
   }
 

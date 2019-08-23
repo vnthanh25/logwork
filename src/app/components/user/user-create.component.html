@@ -7,18 +7,19 @@
   <div class="page-content">
     <div class="row">
       <div class="col col-md-4">
-          <div class="form-group row">
-              <input type="file" name="image" (change)="onFileChanged($event)">
-              <div class="info" *ngIf="avatar">
-                  <img [src]="avatar"/>
-              </div>
-          </div>
+        <!-- avatar -->
+        <div class="form-group row">
+            <input type="file" name="image" (change)="onFileChanged($event)">
+            <div class="info" *ngIf="avatar">
+                <img [src]="avatar"/>
+            </div>
+        </div>
       </div>
 
       <div class="col col-md-8">
-
+        <!-- form -->
         <form class="create-form" [formGroup]="exampleForm" novalidate (ngSubmit)="onSubmit(exampleForm.value)">
-
+          <!-- userName -->
           <div class="form-group">
             <mat-form-field class="input-style">
               <input matInput placeholder="{{ 'user.userName' | translate }}" class="form-control" formControlName="userName">
@@ -27,7 +28,7 @@
               <mat-error *ngIf="exampleForm.get('userName').hasError(validation.type) && (exampleForm.get('userName').dirty || exampleForm.get('userName').touched)">{{validation.message}}</mat-error>
             </ng-container>
           </div>
-
+          <!-- name -->
           <div class="form-group">
             <mat-form-field class="input-style">
               <input matInput placeholder="{{ 'user.name' | translate }}" class="form-control" formControlName="name">
@@ -36,7 +37,7 @@
               <mat-error *ngIf="exampleForm.get('name').hasError(validation.type) && (exampleForm.get('name').dirty || exampleForm.get('name').touched)">{{validation.message}}</mat-error>
             </ng-container>
           </div>
-
+          <!-- surname -->
           <div class="form-group">
             <mat-form-field class="input-style">
               <input matInput placeholder="{{ 'user.surname' | translate }}" class="form-control" formControlName="surname">
@@ -45,7 +46,7 @@
               <mat-error *ngIf="exampleForm.get('surname').hasError(validation.type) && (exampleForm.get('surname').dirty || exampleForm.get('surname').touched)">{{validation.message}}</mat-error>
             </ng-container>
           </div>
-
+          <!-- account -->
           <div class="form-group">
             <mat-form-field class="input-style">
               <input matInput placeholder="{{ 'user.account' | translate }}" class="form-control" formControlName="account">
@@ -54,7 +55,16 @@
               <mat-error *ngIf="exampleForm.get('account').hasError(validation.type) && (exampleForm.get('account').dirty || exampleForm.get('account').touched)">{{validation.message}}</mat-error>
             </ng-container>
           </div>
-
+          <!-- email -->
+          <div class="form-group">
+            <mat-form-field class="input-style">
+              <input matInput placeholder="{{ 'user.email' | translate }}" class="form-control" formControlName="email">
+            </mat-form-field>
+            <ng-container *ngFor="let validation of validation_messages.email">
+              <mat-error *ngIf="exampleForm.get('email').hasError(validation.type) && (exampleForm.get('email').dirty || exampleForm.get('email').touched)">{{validation.message}}</mat-error>
+            </ng-container>
+          </div>
+          <!-- actions -->
           <div class="row submit-button-container">
             <div class="col-md-4">
               <button *ngIf="authService.isLoggedIn()" mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="!exampleForm.valid">{{ 'user.create' | translate }}</button>
