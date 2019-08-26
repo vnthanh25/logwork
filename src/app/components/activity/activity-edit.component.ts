@@ -200,9 +200,9 @@ export class ActivityEditComponent implements OnInit {
         this.activity = { ... this.activity, ... value };
         if (this.activity.workDate) {
             if (moment.isMoment(this.activity.workDate)) {
-                this.activity.workDate = this.activity.workDate.format();
+                this.activity.workDate = this.activity.workDate.utc().format();
             } else {
-                this.activity.workDate = moment(this.activity.workDate.toGMTString()).format();
+                this.activity.workDate = moment(this.activity.workDate.toGMTString()).utc().format();
             }
         }
         this.activity.code = this.encryptService.encrypt(this.activity.code);

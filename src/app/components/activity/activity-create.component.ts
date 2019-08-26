@@ -163,6 +163,14 @@ export class ActivityCreateComponent implements OnInit {
 
     /* Submit */
     onSubmit(value) {
+        let workDate = value.workDate;
+        if (value.workDate) {
+            if (moment.isMoment(value.workDate)) {
+                workDate = value.workDate.utc().format();
+            } else {
+                workDate = moment(value.workDate.toGMTString()).utc().format();
+            }
+        }
         const activity = {
             code: this.encryptService.encrypt(value.code),
             summary: value.summary ? this.encryptService.encrypt(value.summary) : '',
@@ -170,7 +178,7 @@ export class ActivityCreateComponent implements OnInit {
             type: value.type,
             reportTo: value.reportTo,
             reportToEmails: value.reportToEmails,
-            workDate: value.workDate.format(),
+            workDate: workDate,
             status: value.status,
             owner: localStorage.getItem('idUserSelected'),
             createdBy: localStorage.getItem('userName'),
