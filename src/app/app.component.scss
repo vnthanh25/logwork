@@ -19,3 +19,11 @@
 .menu-icon-button {
   display: none
 }
+
+.mat-expansion-panel-content {
+  height: 0px !important;
+}
+
+.mat-expansion-panel-body {
+  padding: 0px !important;
+}
