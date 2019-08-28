@@ -11,9 +11,10 @@ import { ExcelService } from 'src/app/services/excel.service';
 import { DatePipe } from '@angular/common';
 import * as moment from 'moment';
 
-import {
+/* import {
   SpeechRecognitionService
 } from '@kamiazya/ngx-speech-recognition';
+ */
 import { MatDialog } from '@angular/material';
 import { DialogDateRangeComponent } from '../dialog/dialog-date-range.component';
 
@@ -31,7 +32,7 @@ export class UserListComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private speechService: SpeechRecognitionService,
+    /* private speechService: SpeechRecognitionService, */
     public authService: AuthService,
     public dialog: MatDialog,
     //private i18nProvider: I18nProvider,
@@ -42,6 +43,8 @@ export class UserListComponent implements OnInit {
   ) {
     // Set localStorage: currentEntity.
     localStorage.setItem('currentEntity', 'user');
+
+/*
     this.speechService.onstart = (e) => {
       this.started = true;
     };
@@ -53,9 +56,9 @@ export class UserListComponent implements OnInit {
       this.searchValue = e.results[0].item(0).transcript;
       this.searchByName();
     };
-
+ */
   }
-
+/*
   startSpeech() {
     if (!this.started) {
       this.speechService.start();
@@ -67,7 +70,7 @@ export class UserListComponent implements OnInit {
       this.speechService.stop();
     }
   }
-
+ */
   ngOnInit() {
     this.getData();
   }
