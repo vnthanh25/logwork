@@ -26,12 +26,12 @@ export class HomeComponent implements OnInit {
     'lamtt6': { borderColor: 'black', backgroundColor: '#89CFF0' },
     'anhhdt1': { borderColor: 'black', backgroundColor: '#964B00' },
     'thanhvn5': { borderColor: 'black', backgroundColor: '#007FFF' },
-    'nghiath5': { borderColor: 'black', backgroundColor: '#00FF3F' },
+    'thanhnt62': { borderColor: 'black', backgroundColor: '#00FF3F' },
     'thanhvq': { borderColor: 'black', backgroundColor: '#FFD700' },
     'tuantm13': { borderColor: 'black', backgroundColor: '#008000' },
     'liemntt': { borderColor: 'black', backgroundColor: '#4B0082' },
     'truongln': { borderColor: 'black', backgroundColor: '#008080' },
-    'dungtm10': { borderColor: 'black', backgroundColor: '#964B00' }
+    'dungtm10': { borderColor: 'black', backgroundColor: '#40826D' }
   }
   public lineChartColors: Color[] = [
     this.defaultColor
@@ -86,7 +86,7 @@ export class HomeComponent implements OnInit {
       let count = 0;
       for (let index = 0; index < length; index++) {
         const user: any = users[index];
-        const owner = user.payload.doc.data().id;
+        const owner = user.payload.doc.id;
         const userName = user.payload.doc.data().userName.replace('@fsoft.com.vn', '');
         if (owner) {
           count++;

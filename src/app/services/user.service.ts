@@ -15,7 +15,7 @@ export class UserService {
         private authService: AuthService,
         private firebaseService: FirebaseService
     ) {
-        this.firebaseService.getDocuments(this.COLLECTION).subscribe(result => {
+        this.getAll().subscribe(result => {
             const users = {};
             result.forEach((item) => {
                 users[item.payload.doc.id] = item.payload.doc.data();
@@ -47,7 +47,7 @@ export class UserService {
     }
 
     getAll() {
-        return this.firebaseService.getDocuments(this.COLLECTION);
+        return this.firebaseService.searchDocumentsByProperty(this.COLLECTION, 'isUse', true);
     }
 
     searchByNameStart(name) {

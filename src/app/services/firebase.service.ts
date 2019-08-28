@@ -31,19 +31,19 @@ export class FirebaseService {
     return this.db.collection(collection).add(document);
   }
 
-  getDocument(collection: string, id){
+  getDocument(collection: string, id) {
     return this.db.collection(collection).doc(id).snapshotChanges();
   }
 
-  updateDocument(collection: string, id, value){
+  updateDocument(collection: string, id, value) {
     return this.db.collection(collection).doc(id).set(value, { merge: true });
   }
 
-  deleteDocument(collection: string, id: any){
+  deleteDocument(collection: string, id: any) {
     return this.db.collection(collection).doc(id).delete();
   }
 
-  getDocuments(collection: string){
+  getDocuments(collection: string) {
     return this.db.collection(collection).snapshotChanges();
   }
 

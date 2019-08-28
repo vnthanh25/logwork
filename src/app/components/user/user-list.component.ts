@@ -199,7 +199,7 @@ export class UserListComponent implements OnInit {
         const sheetRows = [];
         const sheetNames: string[] = [];
         this.users.forEach((user: any) => {
-          const owner = user.payload.doc.data().id;
+          const owner = user.payload.doc.id;
           const sheetName: string = user.payload.doc.data().userName.replace('@fsoft.com.vn', '').toUpperCase();
           if (owner) {
             this.activityService.getByPropertyAndWorkDateRange('owner', owner, fromDate, toDate).then((activities: any[]) => {
@@ -313,7 +313,7 @@ export class UserListComponent implements OnInit {
         for (let index = 0; index < length; index++) {
           userActivities[index.toString()] = [];
           user = this.users[index];
-          let owner = user.payload.doc.data().id;
+          let owner = user.payload.doc.id;
           owners[index.toString()] = user.payload.doc.data();
           //console.log(user.payload.doc.data());
           if (owner) {
@@ -330,13 +330,9 @@ export class UserListComponent implements OnInit {
                   if (item1.projectName > item2.projectName) { return 1; }
                   // value1.
                   let value1 = item1.workDate;
-                  //const numbers1 = value1.match(/\d+/g);
-                  //value1 = new Date(numbers1[2], numbers1[1] - 1, numbers1[0]);
                   value1 = datePipe.transform(value1, 'yyyyMMdd').toString();
                   // value2.
                   let value2 = item2.workDate;
-                  //const numbers2 = value2.match(/\d+/g);
-                  //value2 = new Date(numbers2[2], numbers2[1] - 1, numbers2[0]);
                   value2 = datePipe.transform(value2, 'yyyyMMdd').toString();
                   // compare workDate asc.
                   if (value1 < value2) { return -1; }

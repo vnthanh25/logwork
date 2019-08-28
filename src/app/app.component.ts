@@ -11,12 +11,13 @@ import { NavigationCancel,
 import { AuthService } from './services/auth.service';
 import { I18nProvider } from './providers/I18nProvider';
 import { DialogOkCancelData, DialogOkCancelComponent } from './components/dialog/dialog-ok-cancel.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatIconRegistry } from '@angular/material';
 import { UserService } from './services';
 import { EventProvider } from './providers/EventProvider';
 //import { LocalizeRouterService } from 'localize-router';
 
 import { MediaMatcher } from '@angular/cdk/layout';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -38,6 +39,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private eventProvider: EventProvider,
     //private localizeRouterService: LocalizeRouterService,
     public dialog: MatDialog,
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer,
     public authService: AuthService,
     private userService: UserService
   ) {
@@ -48,6 +51,16 @@ export class AppComponent implements OnInit, OnDestroy {
     this.i18nProvider.defaultLanguage = language;
     localStorage.setItem('language', language);
     localStorage.setItem('dateFormat', 'dd/MM/yyyy');
+
+    this.matIconRegistry.addSvgIcon(
+      "imgUmSvg",
+      this.domSanitizer.bypassSecurityTrustResourceUrl("./assets/images/um.svg")
+    );
+
+    this.matIconRegistry.addSvgIcon(
+      "imgVnSvg",
+      this.domSanitizer.bypassSecurityTrustResourceUrl("./assets/images/vn.svg")
+    );
 
     /* translate.addLangs(["en", "vi"]);
     translate.setDefaultLang('en');
@@ -88,7 +101,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.mobileQuery = this.mediaMatcher.matchMedia('(min-width: 600px)');
+    this.mobileQuery = this.mediaMatcher.matchMedia('(min-width: 768px)');
     this.isMenuToogle = this.mobileQuery.matches;
     this.mobileQuery.addListener(this.mobileQueryListener);
   }

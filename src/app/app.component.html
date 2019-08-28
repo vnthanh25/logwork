@@ -24,10 +24,8 @@
 				<button mat-button color="primary" *ngIf="authService.isLoggedIn()" (click)="changePassword()" class="nav-link" routerLinkActive="active">{{'app.changePasswordTitle' | translate }}</button>
 			</li> -->
 			<li class="nav-item">
-				<button mat-button (click)="useLanguage('en')" class="nav-link" routerLinkActive="active">English</button>
-			</li>
-			<li class="nav-item">
-				<button mat-button (click)="useLanguage('vi')" class="nav-link" routerLinkActive="active">Tiếng việt</button>
+				<button mat-icon-button (click)="useLanguage('en')" class="nav-link" routerLinkActive="active"><mat-icon svgIcon="imgUmSvg"></mat-icon></button>
+				<button mat-icon-button (click)="useLanguage('vi')" class="nav-link" routerLinkActive="active"><mat-icon svgIcon="imgVnSvg"></mat-icon></button>
 			</li>
 		</ul>
 	</div>
@@ -57,10 +55,8 @@
 				<button mat-button color="primary" *ngIf="authService.isLoggedIn()" (click)="changePassword()" class="nav-link" routerLinkActive="active">{{'app.changePasswordTitle' | translate }}</button>
 			</li> -->
 			<li class="nav-item">
-				<button mat-button (click)="useLanguage('en')" class="nav-link" routerLinkActive="active">English</button>
-			</li>
-			<li class="nav-item">
-				<button mat-button (click)="useLanguage('vi')" class="nav-link" routerLinkActive="active">Tiếng việt</button>
+				<button mat-icon-button (click)="useLanguage('en')" class="nav-link" routerLinkActive="active"><mat-icon svgIcon="imgUmSvg"></mat-icon></button>
+				<button mat-icon-button (click)="useLanguage('vi')" class="nav-link" routerLinkActive="active"><mat-icon svgIcon="imgVnSvg"></mat-icon></button>
 			</li>
 		</ul>
 	</mat-expansion-panel>
