@@ -182,7 +182,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   /* Change password */
   changePassword() {
-    
     const dialogData: DialogOkCancelData = { title: this.translate.instant('app.changePasswordTitle'), content: this.translate.instant('app.changePasswordContent'), result: -1 };
     const dialogRef = this.dialog.open(DialogOkCancelComponent, {
         data: dialogData
@@ -236,12 +235,28 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   fullNameAction() {
-    localStorage.setItem('currentEntity', 'activity');
-    localStorage.setItem('idUserSelected', localStorage.getItem('idUserLogined'));
-    localStorage.setItem('userSelected', localStorage.getItem('userLogined'));
-    // Redirect to activity.
-    this.router.navigated = false;
-    this.router.navigate(['/activity']);
+    // Default redirect to activity.
+    if (localStorage.getItem('idUserSelected')) {
+      // Redirect to activity.
+      localStorage.setItem('currentEntity', 'activity');
+      this.router.navigated = false;
+      this.router.navigate(['/activity']);
+    } else
+    if (localStorage.getItem('userName')) {
+      this.userService.searchByUserName(localStorage.getItem('userName')).subscribe((response: any[]) => {
+        if (response.length > 0) {
+          const user = response[0];
+          localStorage.setItem('idUserSelected', user.payload.doc.id);
+          localStorage.setItem('userSelected', JSON.stringify(user.payload.doc.data()));
+          // Emit user logined.
+          this.eventProvider.eventLogined.emit(user.payload.doc.data());
+          // Redirect to activity.
+          localStorage.setItem('currentEntity', 'activity');
+          this.router.navigated = false;
+          this.router.navigate(['/activity']);
+        }
+      });
+    }
   }
 
 }
