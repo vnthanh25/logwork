@@ -36,6 +36,7 @@ import * as firebase from 'firebase';
 import { ChartsModule } from 'ng2-charts';
 import { LogCountService } from './services/logcount.service';
 import { DialogDateRangeComponent } from './components/dialog/dialog-date-range.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 firebase.initializeApp(environment.firebase);
 // required for AOT compilation
@@ -49,7 +50,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoginComponent,
     DialogOkCancelComponent,
     DialogDateRangeComponent,
-    HomeComponent
+    HomeComponent,
+    DashboardComponent
   ],
   entryComponents: [
     DialogOkCancelComponent,

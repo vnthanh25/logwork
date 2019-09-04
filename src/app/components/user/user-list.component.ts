@@ -155,6 +155,7 @@ export class UserListComponent implements OnInit {
         data['Project Name'] = activity.projectName;
         data['Project key'] = null;
         data['Summary'] = activity.code.charAt(0).toUpperCase() + activity.code.slice(1);
+        data['Description'] = activity.summary.charAt(0).toUpperCase() + activity.summary.slice(1);
         data['Issue Type'] = activity.type;
         data['Reporter'] = activity.reportTo;
         data['Assignee'] = this.userService.users[activity.owner].account;
