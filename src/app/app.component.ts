@@ -134,6 +134,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   useLanguage(language: string) {
+    this.isMenuToogle = false;
     localStorage.setItem('language', language);
     this.translate.use(language);
     this.i18nProvider.defaultLanguage = language;
@@ -147,6 +148,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   /* Login */
   login() {
+    this.isMenuToogle = false;
     //this.router.navigate(['/login']);
     this.authService.signInWithMicrosoft().then(response => {
       const userName = response.additionalUserInfo.profile['mail'].toLowerCase();
@@ -182,6 +184,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   /* Change password */
   changePassword() {
+    this.isMenuToogle = false;
     const dialogData: DialogOkCancelData = { title: this.translate.instant('app.changePasswordTitle'), content: this.translate.instant('app.changePasswordContent'), result: -1 };
     const dialogRef = this.dialog.open(DialogOkCancelComponent, {
         data: dialogData
@@ -234,7 +237,9 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
+  /* Full name action */
   fullNameAction() {
+    this.isMenuToogle = false;
     // Default redirect to activity.
     if (localStorage.getItem('idUserSelected')) {
       // Redirect to activity.
@@ -259,4 +264,9 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
+  /* Navigate action */
+  navigate(path: string) {
+    this.isMenuToogle = false;
+    this.router.navigate([path]);
+  }
 }

@@ -4,17 +4,12 @@ import { Router, Params } from '@angular/router';
 import { UserService } from '../../services';
 import { AuthService } from '../../services/auth.service';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
-//import { I18nProvider } from 'src/app/providers/I18nProvider';
 import { lang } from 'moment';
 import { ActivityService } from 'src/app/services/activity.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { DatePipe } from '@angular/common';
 import * as moment from 'moment';
 
-/* import {
-  SpeechRecognitionService
-} from '@kamiazya/ngx-speech-recognition';
- */
 import { MatDialog } from '@angular/material';
 import { DialogDateRangeComponent } from '../dialog/dialog-date-range.component';
 
@@ -32,10 +27,8 @@ export class UserListComponent implements OnInit {
 
   constructor(
     private router: Router,
-    /* private speechService: SpeechRecognitionService, */
     public authService: AuthService,
     public dialog: MatDialog,
-    //private i18nProvider: I18nProvider,
     private translate: TranslateService,
     private userService: UserService,
     private excelService: ExcelService,
@@ -43,38 +36,14 @@ export class UserListComponent implements OnInit {
   ) {
     // Set localStorage: currentEntity.
     localStorage.setItem('currentEntity', 'user');
-
-/*
-    this.speechService.onstart = (e) => {
-      this.started = true;
-    };
-    this.speechService.onend = (e) => {
-      this.started = false;
-    };
-    this.speechService.onresult = (e) => {
-      this.stopSpeech();
-      this.searchValue = e.results[0].item(0).transcript;
-      this.searchByName();
-    };
- */
-  }
-/*
-  startSpeech() {
-    if (!this.started) {
-      this.speechService.start();
-    }
   }
 
-  stopSpeech() {
-    if (this.started) {
-      this.speechService.stop();
-    }
-  }
- */
+  /* Init */
   ngOnInit() {
     this.getData();
   }
 
+  /* Get all users and order by order */
   getData() {
     this.userService.getAll()
     .subscribe(result => {
@@ -88,16 +57,19 @@ export class UserListComponent implements OnInit {
     });
   }
 
-  viewDetails(user){
+  /* Edit selected user */
+  viewDetails(user) {
     this.router.navigate(['/user/edit/' + user.payload.doc.id]);
   }
 
+  /* Navigate to activitis of selected user */
   listActivities(user) {
     localStorage.setItem('idUserSelected', user.payload.doc.id);
     localStorage.setItem('userSelected', JSON.stringify(user.payload.doc.data()));
     this.router.navigate(['/activity']);
   }
 
+  /* Search user by exactly name */
   searchByName() {
     let value = this.searchValue.toLowerCase();
     value = value.charAt(0).toUpperCase() + value.slice(1);
@@ -113,6 +85,7 @@ export class UserListComponent implements OnInit {
     });
   }
 
+  /* Search by start name */
   searchByUserNameStart() {
     const value = this.searchValue.toLowerCase();
     this.userService.searchByUserNameStart(value)
@@ -127,9 +100,8 @@ export class UserListComponent implements OnInit {
     });
   }
 
+  /* Generate excel data for daily report */
   generateExcelData(activities: any) {
-    // send mail.
-    //this.emailService.send({});
     const daySeconds = 8 * 3600;
     let reporter;
     let estimate = 1;
@@ -177,33 +149,36 @@ export class UserListComponent implements OnInit {
     return excelData;
   }
 
+  /* Export to excel file for daily */
   exportDailyAsExcelFile(): void {
-    const dataFormat = 'yyyy-MM-dd';
-    const currentDate = this.datePipe.transform(new Date(), dataFormat).toString();
-    const fromDate = moment.utc(currentDate, dataFormat.toUpperCase());
-    const toDate = moment.utc(currentDate, dataFormat.toUpperCase());
-    const dialogData: any = { title: this.translate.instant('user.choseDate'), 
-      fromDate: fromDate, toDate: toDate, 
-      fromDateTitle: this.translate.instant('user.fromDate'), toDateTitle: this.translate.instant('user.toDate'), 
+    /* Process from date and to date */
+    const dateFormat = 'yyyy-MM-dd';
+    const currentDate = this.datePipe.transform(new Date(), dateFormat).toString();
+    let fromDate = moment.utc(currentDate, dateFormat.toUpperCase());
+    let toDate = moment.utc(currentDate, dateFormat.toUpperCase());
+    /* dialogData */
+    const dialogData: any = { title: this.translate.instant('user.choseDate'), fromDate, toDate,
+      fromDateTitle: this.translate.instant('user.fromDate'), toDateTitle: this.translate.instant('user.toDate'),
       cancel: this.translate.instant('user.cancel'), ok: this.translate.instant('user.ok')
     };
+    /* dialog open */
     const dialogRef = this.dialog.open(DialogDateRangeComponent, {
         data: dialogData
     });
-
+    /* dialog subscribe */
     dialogRef.afterClosed().subscribe(result => {
       if (dialogData.result !== null) {
-        const fromDate = dialogData.result.fromDate;
-        const toDate = dialogData.result.toDate;
+        fromDate = dialogData.result.fromDate;
+        toDate = dialogData.result.toDate;
         const datePipe = this.datePipe;
-        const sheets = {};
         const sheetRows = [];
         const sheetNames: string[] = [];
         this.users.forEach((user: any) => {
           const owner = user.payload.doc.id;
           const sheetName: string = user.payload.doc.data().userName.replace('@fsoft.com.vn', '').toUpperCase();
           if (owner) {
-            this.activityService.getByPropertyAndWorkDateRange('owner', owner, fromDate, toDate).then((activities: any[]) => {
+            this.activityService.getByPropertyAndWorkDateRange('owner', owner, fromDate, toDate)
+            .then((activities: any[]) => {
               // Sort by workDate.
               if (activities.length > 0) {
                 activities = activities.sort((item1: any, item2: any) => {
@@ -240,6 +215,7 @@ export class UserListComponent implements OnInit {
     });
   }
 
+  /* Generate excel data for weekly of each user */
   generateExcelDataForWeekly(order, userName, fullName, activities: any[]) {
     let projectName = '';
     let data: any;
@@ -265,61 +241,64 @@ export class UserListComponent implements OnInit {
         data['Workload/Project'] = data['Workload/Project'] + 1;
       }
     }
-    excelData.forEach((data) => {
-      const status = data['Tasks status'].toUpperCase();
+    excelData.forEach((item: any) => {
+      const status = item['Tasks status'].toUpperCase();
       if (status === 'DONE' || status === 'FIXED') {
-        data['Tasks status'] = 1;
+        item['Tasks status'] = 1;
       } else {
-        data['Tasks status'] = 0.5;
-        data['Ready for new task'] = 'No';
+        item['Tasks status'] = 0.5;
+        item['Ready for new task'] = 'No';
       }
-      data['Workload/Project'] = data['Workload/Project'] / length;
-    })
+      item['Workload/Project'] = item['Workload/Project'] / length;
+    });
     // return.
     return excelData;
   }
 
+  /* Export to excel file for weekly */
   exportWeeklyAsExcelFile(): void {
-    const dataFormat = 'yyyy-MM-dd';
-    const currentDate = this.datePipe.transform(new Date(), dataFormat).toString();
-    let fromDate = moment.utc(currentDate, dataFormat.toUpperCase());
+    /* Process from date and to date */
+    const dateFormat = 'yyyy-MM-dd';
+    const currentDate = this.datePipe.transform(new Date(), dateFormat).toString();
+    let fromDate = moment.utc(currentDate, dateFormat.toUpperCase());
     while ((fromDate.weekday() + 7) % 7 !== this.startDay) {
       fromDate = fromDate.add(-1, 'd');
     }
-    const toDate = moment.utc(currentDate, dataFormat.toUpperCase());
-    const dialogData: any = { title: this.translate.instant('user.choseDate'), 
-      fromDate: fromDate, toDate: toDate, 
-      fromDateTitle: this.translate.instant('user.fromDate'), toDateTitle: this.translate.instant('user.toDate'), 
+    let toDate = moment.utc(currentDate, dateFormat.toUpperCase());
+    /* dialogData */
+    const dialogData: any = { title: this.translate.instant('user.choseDate'), fromDate, toDate,
+      fromDateTitle: this.translate.instant('user.fromDate'), toDateTitle: this.translate.instant('user.toDate'),
       cancel: this.translate.instant('user.cancel'), ok: this.translate.instant('user.ok')
     };
+    /* dialog open */
     const dialogRef = this.dialog.open(DialogDateRangeComponent, {
         data: dialogData
     });
-
+    /* dialog subscribe */
     dialogRef.afterClosed().subscribe(result => {
       if (dialogData.result !== null) {
-        const fromDate = dialogData.result.fromDate;
-        const toDate = dialogData.result.toDate;
+        fromDate = dialogData.result.fromDate;
+        toDate = dialogData.result.toDate;
         const sheetRows = [[], [], []];
         const sheetNames: string[] = ['Projects Overview', 'Projects Members', 'Projects Note'];
         const membersSheet: any[] = [];
         sheetRows.push(membersSheet);
         sheetNames.push('Members');
+        const userActivities = {};
+        const owners = {};
         let count = 0;
         let activities;
         let user;
-        let userActivities = {};
-        let owners = {};
         const length = this.users.length;
         for (let index = 0; index < length; index++) {
           userActivities[index.toString()] = [];
           user = this.users[index];
           let owner = user.payload.doc.id;
           owners[index.toString()] = user.payload.doc.data();
-          //console.log(user.payload.doc.data());
           if (owner) {
             count++;
-            this.activityService.getByPropertyAndWorkDateRange('owner', owner, fromDate, toDate).then((response: any[]) => {
+            this.activityService.getByPropertyAndWorkDateRange('owner', owner, fromDate, toDate)
+            .then((response: any[]) => {
               count--;
               activities = response;
               if (activities.length > 0) {
@@ -343,9 +322,9 @@ export class UserListComponent implements OnInit {
                 userActivities[index.toString()] = activities;
               }
               if (count === 0) {
-                for (let index = 0; index < length; index++) {
-                  activities = userActivities[index.toString()];
-                  owner = owners[index.toString()];
+                for (let idx = 0; idx < length; idx++) {
+                  activities = userActivities[idx.toString()];
+                  owner = owners[idx.toString()];
                   const order = owner.order;
                   const userName = owner.userName;
                   const fullName = owner.surname + ' ' + owner.name;
@@ -373,6 +352,95 @@ export class UserListComponent implements OnInit {
             });
           }
         }// for.
+      }
+    });
+  }
+
+  generateExcelDataForMissLogwork() {
+
+  }
+
+  exportMissLogworkAsExcelFile() {
+    const momentDateFormat = localStorage.getItem('dateFormat').toUpperCase();
+    /* Process from date and to date */
+    const dateFormat = 'yyyy-MM-dd';
+    const currentDate = this.datePipe.transform(new Date(), dateFormat).toString();
+    let fromDate = moment.utc(currentDate, dateFormat.toUpperCase());
+    while ((fromDate.weekday() + 7) % 7 !== this.startDay) {
+      fromDate = fromDate.add(-1, 'd');
+    }
+    let toDate = moment.utc(currentDate, dateFormat.toUpperCase());
+    /* dialogData */
+    const dialogData: any = { title: this.translate.instant('user.choseDate'), fromDate, toDate,
+      fromDateTitle: this.translate.instant('user.fromDate'), toDateTitle: this.translate.instant('user.toDate'),
+      cancel: this.translate.instant('user.cancel'), ok: this.translate.instant('user.ok')
+    };
+    /* dialog open */
+    const dialogRef = this.dialog.open(DialogDateRangeComponent, {
+        data: dialogData
+    });
+    /* dialog subscribe */
+    dialogRef.afterClosed().subscribe(result => {
+      if (dialogData.result !== null) {
+        fromDate = dialogData.result.fromDate;
+        toDate = dialogData.result.toDate;
+        const datePipe = this.datePipe;
+        const excelData = [];
+        let weekday;
+        const workDates = [];
+        const fromDate1 = moment(fromDate);
+        const toDate1 = moment(toDate);
+        while (fromDate1 <= toDate1) {
+          weekday = fromDate1.weekday();
+          if (weekday === 0 || weekday === 6) {
+            continue;
+          }
+          workDates.push(moment(fromDate1));
+          fromDate1.add(1, 'd');
+        }
+        let count = 0;
+        this.users.forEach((user: any) => {
+          const owner = user.payload.doc.id;
+          const user1: any = user.payload.doc.data();
+          if (owner) {
+            count++;
+            this.activityService.getByPropertyAndWorkDateRange('owner', owner, fromDate, toDate)
+            .then((activities: any[]) => {
+              count--;
+              const workDates1 = [...workDates];
+              activities.forEach((item: any) => {
+                // Convert to moment date.
+                let workDate: any = datePipe.transform(item.workDate, dateFormat).toString();
+                workDate = moment.utc(workDate, dateFormat.toUpperCase());
+                for (let i = 0; i < workDates1.length; i++) {
+                  const element = workDates1[i];
+                  if (element.isSame(workDate)) {
+                    workDates1.splice(i, 1);
+                    break;
+                  }
+                }
+              });
+              if (workDates1.length > 0) {
+                // Push data to excelData.
+                const data = {};
+                data['User Name'] = user1.userName;
+                data['Display Name'] = user1.surname + ' ' + user1.name;
+                const missDates = [];
+                workDates1.forEach((item1: any) => {
+                  missDates.push(item1.format(momentDateFormat));
+                });
+                data['Miss dates'] = missDates.join(', ');
+                excelData.push(data);
+              }
+              if (count === 0) {
+                // Export to excel file.
+                this.excelService.exportAsExcelFile(excelData, 'Miss', 'MissLogwork-' + fromDate.format(momentDateFormat) + '-' + toDate.format(momentDateFormat));
+              }
+            }).catch(error => {
+            });
+          } else {
+          }
+        });
       }
     });
   }

@@ -37,5 +37,6 @@
 <section layout="row" layout-sm="column" layout-align="end center" layout-wrap>
     <button *ngIf="authService.isLoggedIn()" mat-raised-button class="btn btn-primary" type="button" (click)="exportDailyAsExcelFile()">{{ 'user.exportDailyAsExcel' | translate }}</button>
     <button *ngIf="authService.isLoggedIn()" mat-raised-button class="btn btn-primary" type="button" (click)="exportWeeklyAsExcelFile()">{{ 'user.exportWeeklyAsExcel' | translate }}</button>
+    <button *ngIf="authService.isLoggedIn()" mat-raised-button class="btn btn-primary" type="button" (click)="exportMissLogworkAsExcelFile()">{{ 'user.exportMissLogworkAsExcelFile' | translate }}</button>
 </section>
  

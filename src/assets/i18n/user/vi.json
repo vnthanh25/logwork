@@ -18,8 +18,9 @@
         "choseDate": "Chọn ngày",
         "fromDate": "Từ ngày",
         "toDate": "Đến ngày",
-        "exportDailyAsExcel": "Xuất theo ngày bằng excel",
-        "exportWeeklyAsExcel": "Xuất theo tuần bằng excel"
+        "exportDailyAsExcel": "Xuất theo ngày ra excel",
+        "exportWeeklyAsExcel": "Xuất theo tuần ra excel",
+        "exportMissLogworkAsExcelFile": "Xuất thiếu log work ra excel"
     },
     "validation": {
         "isRequired": " không thể rỗng."

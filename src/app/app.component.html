@@ -3,13 +3,13 @@
 	<div class="container-fluid">
 		<ul class="navbar-nav">
 			<li class="nav-item">
-				<button mat-button color="primary" routerLink="/home" class="nav-link" routerLinkActive="active"><mat-icon>home</mat-icon></button>
+				<button mat-button color="primary" (click)="navigate('/home')" class="nav-link" routerLinkActive="active"><mat-icon>home</mat-icon></button>
 			</li>
 			<li class="nav-item">
-				<button mat-button color="primary" routerLink="/dashboard" class="nav-link" routerLinkActive="active"><mat-icon>dashboard</mat-icon></button>
+				<button mat-button color="primary" (click)="navigate('/dashboard')" class="nav-link" routerLinkActive="active"><mat-icon>dashboard</mat-icon></button>
 			</li>
 			<li class="nav-item">
-				<button mat-button color="primary" routerLink="/user" class="nav-link" routerLinkActive="active">{{ 'app.members' | translate }}</button>
+				<button mat-button color="primary" (click)="navigate('/user')" class="nav-link" routerLinkActive="active">{{ 'app.members' | translate }}</button>
 			</li>
 		</ul>
 		<ul>
@@ -34,7 +34,7 @@
 	</div>
 </nav>
 <mat-accordion [class.menu-icon-button]="mobileQuery.matches">
-	<mat-expansion-panel (opened)="isMenuToogle = true" (closed)="isMenuToogle = false">
+	<mat-expansion-panel [expanded]="isMenuToogle === true" (opened)="isMenuToogle = true" (closed)="isMenuToogle = false">
 		<mat-expansion-panel-header>
 			<mat-panel-title>
 				<h5>{{ 'app.title' | translate }}</h5>
@@ -42,13 +42,13 @@
 		</mat-expansion-panel-header>
 		<ul class="navbar-nav">
 			<li class="nav-item">
-				<button mat-button color="primary" routerLink="/home" class="nav-link" routerLinkActive="active"><mat-icon>home</mat-icon></button>
+				<button mat-button color="primary" (click)="navigate('/home')" class="nav-link" routerLinkActive="active"><mat-icon>home</mat-icon></button>
 			</li>
 			<li class="nav-item">
-				<button mat-button color="primary" routerLink="/dashboard" class="nav-link" routerLinkActive="active"><mat-icon>dashboard</mat-icon></button>
+				<button mat-button color="primary" (click)="navigate('/dashboard')" class="nav-link" routerLinkActive="active"><mat-icon>dashboard</mat-icon></button>
 			</li>
 			<li class="nav-item">
-				<button mat-button color="primary" routerLink="/user" class="nav-link" routerLinkActive="active">{{ 'app.members' | translate }}</button>
+				<button mat-button color="primary" (click)="navigate('/user')" class="nav-link" routerLinkActive="active">{{ 'app.members' | translate }}</button>
 			</li>
 			<li class="nav-item">
 				<button mat-button color="primary" *ngIf="authService.isLoggedIn()" (click)="fullNameAction()" class="nav-link" routerLinkActive="active">{{fullName}}</button>

@@ -11,7 +11,6 @@ export class ExcelService {
   constructor() { }
 
   public exportAsExcelFile(json: any[], sheetName: string, excelFileName: string): void {
-    
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
     const sheets: any = {};
     sheets[sheetName] = worksheet;

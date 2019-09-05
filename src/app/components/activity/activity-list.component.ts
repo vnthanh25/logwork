@@ -179,9 +179,7 @@ export class ActivityListComponent implements OnInit {
             // push.
             excelData.push(data);
         }
-
-        // const excelData = this.activities.map(item => {
-        // });
+        // Export to excel file.
         this.excelService.exportAsExcelFile(excelData, 'daily', 'DailyReport_' + this.datePipe.transform(new Date(), 'yyyyMMdd') + '(' + reporter + ')');
     }
 }

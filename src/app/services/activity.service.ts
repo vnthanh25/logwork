@@ -63,18 +63,11 @@ export class ActivityService {
     }
 
     getByPropertyAndWorkDateRange(name, value, fromDate, toDate) {
-        let fromDate1 = fromDate;
-        if (moment.isMoment(fromDate1)) {
-            fromDate1 = fromDate1.utc().format();
-        } else {
-            fromDate1 = fromDate1.format();
-        }
-        let toDate1 = toDate.add(1, 'd');
-        if (moment.isMoment(toDate1)) {
-            toDate1 = toDate1.utc().format();
-        } else {
-            toDate1 = toDate1.format();
-        }
+        let fromDate1: any = moment(fromDate);
+        fromDate1 = fromDate1.utc().format();
+        let toDate1: any = moment(toDate);
+        toDate1.add(1, 'd');
+        toDate1 = toDate1.utc().format();
         return new Promise((resolve, reject) => {
             this.fireStore.collection(this.COLLECTION, ref => ref
                 .where(name, '==', value)

@@ -19,7 +19,8 @@
         "fromDate": "From date",
         "toDate": "To date",
         "exportDailyAsExcel": "Export daily to excel",
-        "exportWeeklyAsExcel": "Export weekly to excel"
+        "exportWeeklyAsExcel": "Export weekly to excel",
+        "exportMissLogworkAsExcelFile": "Export Miss Log Work to Excel"
     },
     "validation": {
         "isRequired": " is required."
