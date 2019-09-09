@@ -393,6 +393,7 @@ export class UserListComponent implements OnInit {
         while (fromDate1 <= toDate1) {
           weekday = fromDate1.weekday();
           if (weekday === 0 || weekday === 6) {
+            fromDate1.add(1, 'd');
             continue;
           }
           workDates.push(moment(fromDate1));
@@ -434,7 +435,7 @@ export class UserListComponent implements OnInit {
               }
               if (count === 0) {
                 // Export to excel file.
-                this.excelService.exportAsExcelFile(excelData, 'Miss', 'MissLogwork-' + fromDate.format(momentDateFormat) + '-' + toDate.format(momentDateFormat));
+                this.excelService.exportAsExcelFile(excelData, 'Miss', 'MissLogwork-' + fromDate.format('YYYYMMDD') + '-' + toDate.format('YYYYMMDD'));
               }
             }).catch(error => {
             });
