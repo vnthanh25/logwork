@@ -218,6 +218,8 @@ export class UserListComponent implements OnInit {
   /* Generate excel data for weekly of each user */
   generateExcelDataForWeekly(order, userName, fullName, activities: any[]) {
     let projectName = '';
+    let code = '';
+    let summary = '';
     let data: any;
     const excelData = [];
     const length = activities.length;
@@ -225,11 +227,16 @@ export class UserListComponent implements OnInit {
       const activity = activities[index];
       if (projectName !== activity.projectName) {
         projectName = activity.projectName;
+        code = activity.code;
+        summary = activity.summary;
         data = {};
         data['Order'] = order;
         data['User Name'] = userName;
         data['Display Name'] = fullName;
-        data['Detail'] = activity.code;
+        data['Detail'] = code;
+        if (summary) {
+          data['Detail'] += '\r\n' + summary;
+        }
         data['Tasks status'] = activity.status;
         data['Workload/Project'] = 1;
         data['Project'] = activity.projectName;
@@ -237,6 +244,19 @@ export class UserListComponent implements OnInit {
         // push.
         excelData.push(data);
       } else {
+        if (code !== activity.code) {
+          code = activity.code;
+          summary = activity.summary;
+          data['Detail'] += '\r\n' + code;
+          if (summary) {
+            data['Detail'] += '\r\n' + summary;
+          }
+        } else {
+          if (activity.summary && summary !== activity.summary) {
+            summary = activity.summary;
+            data['Detail'] += '\r\n' + summary
+          }
+        }
         data['Tasks status'] = activity.status;
         data['Workload/Project'] = data['Workload/Project'] + 1;
       }
