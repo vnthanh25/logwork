@@ -7,6 +7,7 @@
         "update": "Cập nhật",
         "delete": "Xóa",
         "cancel": "Hủy",
+        "ok": "Đồng ý",
         "copy": "Sao chép",
         "projectName": "Tên dự án",
         "code": "Tên công việc",
@@ -19,7 +20,11 @@
         "action": "Hành động",
         "exportExcel": "Xuất ra excel",
         "pleaseLogin": "Vui lòng đăng nhập!",
-        "areYouDelete": "Bạn có chắc là xóa?"
+        "areYouDelete": "Bạn có chắc là xóa?",
+        "chooseDate": "Chọn ngày",
+        "fromDate": "Từ ngày",
+        "toDate": "Đến ngày",
+        "logworkOff": "Nghỉ phép"
     },
     "validation": {
         "isRequired": " không thể rỗng."

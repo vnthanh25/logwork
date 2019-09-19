@@ -7,6 +7,7 @@
         "update": "Update",
         "delete": "Delete",
         "cancel": "Cancel",
+        "ok": "Ok",
         "copy": "Copy",
         "projectName": "Project name",
         "code": "Code",
@@ -19,7 +20,11 @@
         "action": "Actions",
         "exportExcel": "Export excel",
         "pleaseLogin": "Please login!",
-        "areYouDelete": "Are you sure delete?"
+        "areYouDelete": "Are you sure delete?",
+        "chooseDate": "Choose date",
+        "fromDate": "From date",
+        "toDate": "To date",
+        "logworkOff": "Work off"
     },
     "validation": {
         "isRequired": " is required."

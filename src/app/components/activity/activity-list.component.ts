@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { Activity } from 'src/app/models/activity';
 import { DatePipe } from '@angular/common';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { DialogDateRangeComponent } from '../dialog/dialog-date-range.component';
 
 import { ExcelService } from '../../services/excel.service';
 import { EmailService } from '../../services/email.service';
@@ -133,6 +134,92 @@ export class ActivityListComponent implements OnInit {
                 });
             }
         });
+    }
+
+    logworkOff() {
+      const momentDateFormat = localStorage.getItem('dateFormat').toUpperCase();
+      /* Process from date and to date */
+      const dateFormat = 'yyyy-MM-dd';
+      const currentDate = this.datePipe.transform(new Date(), dateFormat).toString();
+      let fromDate = moment.utc(currentDate, dateFormat.toUpperCase());
+      let toDate = moment.utc(currentDate, dateFormat.toUpperCase());
+      /* dialogData */
+      const dialogData: any = { title: this.translate.instant('activity.chooseDate'), fromDate, toDate,
+        fromDateTitle: this.translate.instant('activity.fromDate'), toDateTitle: this.translate.instant('activity.toDate'),
+        cancel: this.translate.instant('activity.cancel'), ok: this.translate.instant('activity.ok')
+      };
+      /* dialog open */
+      const dialogRef = this.dialog.open(DialogDateRangeComponent, {
+          data: dialogData
+      });
+      /* dialog subscribe */
+      dialogRef.afterClosed().subscribe(result => {
+        if (dialogData.result !== null) {
+            const code = "Off work";
+            fromDate = dialogData.result.fromDate;
+            toDate = dialogData.result.toDate;
+            let workDate;
+            while (fromDate.isBefore(toDate) || fromDate.isSame(toDate)) {
+                workDate = fromDate.utc().format();
+                const activity = {
+                    code: this.encryptService.encrypt(code),
+                    summary: '',
+                    projectName: '',
+                    type: '',
+                    reportTo: '',
+                    reportToEmails: '',
+                    workDate: workDate,
+                    status: '',
+                    owner: localStorage.getItem('idUserSelected'),
+                    createdBy: localStorage.getItem('userName'),
+                    createdDate: moment(new Date()).utc().format(),
+                    lastModifiedBy: localStorage.getItem('userName'),
+                    lastModifiedDate: moment(new Date()).utc().format()
+                };
+                // Save.
+                this.firebaseService.createDocument(this.COLLECTION, activity).then(result => {
+                    const defaultEmail = 'thanh-nhut.vo@aia.com';
+                    const userSelected: any = JSON.parse(localStorage.getItem('userSelected'));
+                    let ccEmails = defaultEmail;
+                    if (userSelected.email) {
+                        ccEmails += ';' + userSelected.email;
+                    }
+                    const subject = 'Work log';
+                    let toEmails = defaultEmail;
+                    const fullName = this.userService.users[activity.owner].surname + ' ' + this.userService.users[activity.owner].name;
+                    const mailData = {
+                        'from': localStorage.getItem('userName'),
+                        'to': toEmails,
+                        'cc': ccEmails,
+                        'subject': subject,
+                        'text': '',
+                        'html': '<h2>' + code + '</h2>'
+                         + '<p>'
+                         + '<ul style="list-style-type:none;">'
+                         + '<li>Người làm: ' + fullName + '</li>'
+                         + '<li>Ngày làm: ' + this.datePipe.transform(activity.workDate, localStorage.getItem('dateFormat')).toString() + '</li>'
+                         + '</ul>'
+                         + '</p>'
+                         + '<p>'
+                         + 'Best Regards, <br>'
+                         + '<span style="font-weight: bold">' + JSON.parse(localStorage.getItem('userSelected')).userName.replace('@fsoft.com.vn', '').toUpperCase() + '</span>'
+                         + '</p>'
+                    };
+                   // send mail.
+                   this.emailService.send(mailData).subscribe((response) => {
+                        //console.log(response);
+                    });
+                }).catch(error => {
+                    alert(this.translate.instant('activity.pleaseLogin'));
+                });
+
+                // Increase from date.
+                fromDate = fromDate.add(1, 'd');
+            }
+            // Reload list.
+            this.getActivities();
+        }
+      });
     }
 
     exportAsXLSX(): void {

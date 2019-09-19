@@ -15,7 +15,7 @@
         "surname": "Surname",
         "account": "Window account",
         "searchByName": "Search by email",
-        "choseDate": "Chose date",
+        "chooseDate": "Choose date",
         "fromDate": "From date",
         "toDate": "To date",
         "exportDailyAsExcel": "Export daily to excel",

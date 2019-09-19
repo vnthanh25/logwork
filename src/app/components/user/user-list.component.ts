@@ -157,7 +157,7 @@ export class UserListComponent implements OnInit {
     let fromDate = moment.utc(currentDate, dateFormat.toUpperCase());
     let toDate = moment.utc(currentDate, dateFormat.toUpperCase());
     /* dialogData */
-    const dialogData: any = { title: this.translate.instant('user.choseDate'), fromDate, toDate,
+    const dialogData: any = { title: this.translate.instant('user.chooseDate'), fromDate, toDate,
       fromDateTitle: this.translate.instant('user.fromDate'), toDateTitle: this.translate.instant('user.toDate'),
       cancel: this.translate.instant('user.cancel'), ok: this.translate.instant('user.ok')
     };
@@ -266,7 +266,7 @@ export class UserListComponent implements OnInit {
     }
     let toDate = moment.utc(currentDate, dateFormat.toUpperCase());
     /* dialogData */
-    const dialogData: any = { title: this.translate.instant('user.choseDate'), fromDate, toDate,
+    const dialogData: any = { title: this.translate.instant('user.chooseDate'), fromDate, toDate,
       fromDateTitle: this.translate.instant('user.fromDate'), toDateTitle: this.translate.instant('user.toDate'),
       cancel: this.translate.instant('user.cancel'), ok: this.translate.instant('user.ok')
     };
@@ -371,7 +371,7 @@ export class UserListComponent implements OnInit {
     }
     let toDate = moment.utc(currentDate, dateFormat.toUpperCase());
     /* dialogData */
-    const dialogData: any = { title: this.translate.instant('user.choseDate'), fromDate, toDate,
+    const dialogData: any = { title: this.translate.instant('user.chooseDate'), fromDate, toDate,
       fromDateTitle: this.translate.instant('user.fromDate'), toDateTitle: this.translate.instant('user.toDate'),
       cancel: this.translate.instant('user.cancel'), ok: this.translate.instant('user.ok')
     };

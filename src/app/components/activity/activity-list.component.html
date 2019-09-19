@@ -2,6 +2,9 @@
     <div class="col col-md-4 image-col">
       <img class="image" [src]="userSelected.avatar">
       {{userSelected.surname + ' ' + userSelected.name}}
+      <button *ngIf="authService.isLoggedIn()" mat-raised-button color="accent" (click)="logworkOff()">{{ 'activity.logworkOff' | translate }}</button>
+    </div>
+    <div class="col col-md-4 image-col">
     </div>
 </div>
 <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0px" fxLayoutAlign="left">
