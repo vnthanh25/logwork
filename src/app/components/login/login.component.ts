@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
     onSubmit(value) {
         let userName: string = value.userName;
         if (userName.indexOf('@') < 0) {
-            userName += '@fsoft.com.vn';
+            userName += '@vnt.com.vn';
         }
         this.signInWithEmail(userName, value.password);
     }

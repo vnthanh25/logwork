@@ -55,7 +55,7 @@ export class ActivityListComponent implements OnInit {
     ) {
         // Set localStorage: currentEntity.
         localStorage.setItem('currentEntity', 'activity');
-        this.userName = localStorage.getItem('userName').replace('@fsoft.com.vn', '');
+        this.userName = localStorage.getItem('userName').replace('@vnt.com.vn', '');
         this.dateFormat = localStorage.getItem('dateFormat');//.replace(/D/g, 'd').replace(/Y/g, 'y');
     }
     /* OnInit */
@@ -124,7 +124,7 @@ export class ActivityListComponent implements OnInit {
                          + '</p>'
                          + '<p>'
                          + 'Best Regards, <br>'
-                         + '<span style="font-weight: bold">' + JSON.parse(localStorage.getItem('userSelected')).userName.replace('@fsoft.com.vn', '').toUpperCase() + '</span>'
+                         + '<span style="font-weight: bold">' + JSON.parse(localStorage.getItem('userSelected')).userName.replace('@vnt.com.vn', '').toUpperCase() + '</span>'
                          + '</p>'
                     };
                     this.emailService.send(mailData).subscribe((response) => {
@@ -202,7 +202,7 @@ export class ActivityListComponent implements OnInit {
                          + '</p>'
                          + '<p>'
                          + 'Best Regards, <br>'
-                         + '<span style="font-weight: bold">' + JSON.parse(localStorage.getItem('userSelected')).userName.replace('@fsoft.com.vn', '').toUpperCase() + '</span>'
+                         + '<span style="font-weight: bold">' + JSON.parse(localStorage.getItem('userSelected')).userName.replace('@vnt.com.vn', '').toUpperCase() + '</span>'
                          + '</p>'
                     };
                    // send mail.

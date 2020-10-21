@@ -221,7 +221,7 @@ export class ActivityCreateComponent implements OnInit {
                  + '</p>'
                  + '<p>'
                  + 'Best Regards, <br>'
-                 + '<span style="font-weight: bold">' + JSON.parse(localStorage.getItem('userSelected')).userName.replace('@fsoft.com.vn', '').toUpperCase() + '</span>'
+                 + '<span style="font-weight: bold">' + JSON.parse(localStorage.getItem('userSelected')).userName.replace('@vnt.com.vn', '').toUpperCase() + '</span>'
                  + '</p>'
             };
            // send mail.

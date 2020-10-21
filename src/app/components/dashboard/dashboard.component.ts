@@ -87,7 +87,7 @@ export class DashboardComponent implements OnInit {
       for (let index = 0; index < length; index++) {
         const user: any = users[index];
         const owner = user.payload.doc.id;
-        const userName = user.payload.doc.data().userName.replace('@fsoft.com.vn', '');
+        const userName = user.payload.doc.data().userName.replace('@vnt.com.vn', '');
         if (owner) {
           count++;
           const workDates: string[] = [];

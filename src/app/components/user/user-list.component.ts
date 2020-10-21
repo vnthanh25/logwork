@@ -175,7 +175,7 @@ export class UserListComponent implements OnInit {
         const sheetNames: string[] = [];
         this.users.forEach((user: any) => {
           const owner = user.payload.doc.id;
-          const sheetName: string = user.payload.doc.data().userName.replace('@fsoft.com.vn', '').toUpperCase();
+          const sheetName: string = user.payload.doc.data().userName.replace('@vnt.com.vn', '').toUpperCase();
           if (owner) {
             this.activityService.getByPropertyAndWorkDateRange('owner', owner, fromDate, toDate)
             .then((activities: any[]) => {
