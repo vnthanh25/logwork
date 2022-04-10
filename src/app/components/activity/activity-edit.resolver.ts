@@ -15,7 +15,7 @@ export class ActivityEditResolver implements Resolve<any> {
             this.firebaseService.getDocument(this.COLLECTION, id)
             .subscribe(
                 result => {
-                    const activity = { id: result.payload.id, ... result.payload.data() };
+                    const activity = { id: 1 };
                     if (isCreate === 'true') {
                         activity['isCreate'] = isCreate;
                     }

@@ -18,7 +18,7 @@ export class UserService {
         this.getAll().subscribe(result => {
             const users = {};
             result.forEach((item) => {
-                users[item.payload.doc.id] = item.payload.doc.data();
+                // users[item.payload.doc.id] = item.payload.doc.data();
             });
             this.users = users;
         });

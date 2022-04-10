@@ -1,0 +1,29 @@
+{
+    "app": {
+        "home": "Home",
+        "title": "Work log",
+        "text": "Welcome every one",
+        "clickMe": "Touch me ^^",
+        "members": "Members",
+        "login": "Login",
+        "logout": "Logout",
+        "changePasswordTitle": "Change password",
+        "changePasswordContent": "Link to change password will sent to your email.",
+        "save": "Save",
+        "create": "Create",
+        "edit": "Edit",
+        "update": "Update",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "copy": "Copy",
+        "searchByName": "Search by email"
+    },
+    "validation": {
+        "isRequired": " is required."
+    },
+    "login": {
+        "title": "Login",
+        "userName": "Account of VNT (@vnt.com.vn)",
+        "password": "Password"
+    }
+}

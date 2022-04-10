@@ -8,9 +8,6 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
-import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 
 import { FirebaseService } from './services/firebase.service';
@@ -32,13 +29,9 @@ import { EmailService } from './services/email.service';
 import { ProjectService } from './services/project.service';
 import { ActivityService } from './services/activity.service';
 import { EventProvider } from './providers/EventProvider';
-import * as firebase from 'firebase';
 import { ChartsModule } from 'ng2-charts';
-import { LogCountService } from './services/logcount.service';
 import { DialogDateRangeComponent } from './components/dialog/dialog-date-range.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-
-firebase.initializeApp(environment.firebase);
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/app/', '.json');
@@ -65,9 +58,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     SlimLoadingBarModule,
     FormsModule,
     ReactiveFormsModule,
-    AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),
-    AngularFirestoreModule,
-    AngularFireAuthModule,
     MomentDateModule,
     MatDialogModule,
     MatButtonModule,
@@ -94,7 +84,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     AuthService,
     ProjectService,
     ActivityService,
-    LogCountService,
     I18nProvider,
     EventProvider,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
