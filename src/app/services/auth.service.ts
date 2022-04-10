@@ -1,83 +1,41 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/auth';
-import * as firebase from 'firebase/app';
 import { Observable } from 'rxjs/Observable';
+import { HttpClient } from '@angular/common/http';
+
+const userUrl = 'assets/data/user.json';
+const usersUrl = 'assets/data/users.json';
+
 @Injectable()
 export class AuthService {
-    private user: Observable<firebase.User>;
-    private userDetails: firebase.User = null;
 
-    constructor(private firebaseAuth: AngularFireAuth, private router: Router) {
-        this.user = firebaseAuth.authState;
-        this.user.subscribe(
-            (user) => {
-                if (user) {
-                    this.userDetails = user;
-                } else {
-                    this.userDetails = null;
-                }
-            }
-        );
+    constructor(private http: HttpClient, private router: Router) {
     }
     signInRegular(email, password) {
         //const credential = firebase.auth.EmailAuthProvider.credential( email, password );
-        return this.firebaseAuth.auth.signInWithEmailAndPassword(email, password);
-    }
-
-    signInWithMicrosoft() {
-        const provider = new firebase.auth.OAuthProvider('microsoft.com');
-        //this.firebaseAuth.auth.signInWithRedirect(provider);
-        //return this.firebaseAuth.auth.getRedirectResult();
-        return this.firebaseAuth.auth.signInWithPopup(provider);
-        //return firebase.auth().signInWithPopup(provider);
-    }
-
-    signInWithMicrosoftResult() {
-        return this.firebaseAuth.auth.getRedirectResult();
-    }
-
-    signInWithTwitter() {
-        return this.firebaseAuth.auth.signInWithPopup(
-            new firebase.auth.TwitterAuthProvider()
-        );
-    }
-    signInWithFacebook() {
-        return this.firebaseAuth.auth.signInWithPopup(
-            new firebase.auth.FacebookAuthProvider()
-        );
-    }
-    signInWithGoogle() {
-        return this.firebaseAuth.auth.signInWithPopup(
-            new firebase.auth.GoogleAuthProvider()
-        );
+    return this.http.get<Object>(userUrl).toPromise();
     }
     isLoggedIn() {
-        if (this.userDetails == null ) {
-            return false;
-        } else {
-            return true;
-        }
+        return true;
     }
     logout() {
-        return this.firebaseAuth.auth.signOut();
+        // return this.firebaseAuth.auth.signOut();
         //.then((res) => this.router.navigate(['/']));
-    }
-    logoutMicrosoft() {
-        return this.firebaseAuth.auth.signOut();
-        //return firebase.auth().signOut();
+    return this.http.get<Object>(userUrl).toPromise();
     }
 
     changePassword(email: string) {
-        return this.firebaseAuth.auth.sendPasswordResetEmail(email);
+        // return this.firebaseAuth.auth.sendPasswordResetEmail(email);
+    return this.http.get<Object>(userUrl).toPromise();
     }
 
     createUser(email, password) {
-        return this.firebaseAuth.auth.createUserWithEmailAndPassword(email, password);
+        // return this.firebaseAuth.auth.createUserWithEmailAndPassword(email, password);
             // .then(() => {
             // this.service.save(user);
             // })
             // .catch((e) => console.log(e));
+    return this.http.get<Object>(userUrl).toPromise();
    }
 
 }

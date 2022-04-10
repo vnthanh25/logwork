@@ -12,9 +12,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Routes, RouterModule, Router } from '@angular/router';
 import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireAuthModule } from '@angular/fire/auth';
 import { MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { MatButtonModule, MatInputModule, MatSliderModule, MatDialogModule, MatDatepickerModule, MatNativeDateModule, MatAutocompleteModule, DateAdapter, MAT_DATE_FORMATS, MatCardModule, MatPaginatorModule, MatPaginatorIntl } from '@angular/material';
 import { I18nProvider } from '../providers/I18nProvider';
@@ -33,8 +30,6 @@ export function ActivityHttpLoaderFactory(http: HttpClient) {
         SlimLoadingBarModule,
         FormsModule,
         ReactiveFormsModule,
-        AngularFirestoreModule,
-        AngularFireAuthModule,
         MomentDateModule,
         FlexLayoutModule,
         MatCardModule,

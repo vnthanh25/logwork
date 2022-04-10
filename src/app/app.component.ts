@@ -150,9 +150,8 @@ export class AppComponent implements OnInit, OnDestroy {
   login() {
     this.isMenuToogle = false;
     //this.router.navigate(['/login']);
-    this.authService.signInWithMicrosoft().then(response => {
-      const userName = response.additionalUserInfo.profile['mail'].toLowerCase();
-      this.userService.searchByUserName(userName).subscribe((users: any[]) => {
+    this.authService.signInRegular('111', '1111').then(response => {
+      this.userService.searchByUserName('111').subscribe((users: any[]) => {
           if (users.length > 0) {
             const user = users[0];
             localStorage.setItem('idUserLogined', user.payload.doc.id);
@@ -161,7 +160,7 @@ export class AppComponent implements OnInit, OnDestroy {
             this.eventProvider.eventLogined.emit(user.payload.doc.data());
           }
       });
-      localStorage.setItem('userName', userName);
+      localStorage.setItem('userName', '111');
       this.router.navigate(['home']);
     }).catch(error => {
       console.log(error);

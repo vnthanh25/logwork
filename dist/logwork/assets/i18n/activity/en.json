@@ -1,0 +1,39 @@
+{
+    "activity": {
+        "title": "Activity",
+        "save": "Save",
+        "create": "Create",
+        "edit": "Edit",
+        "update": "Update",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "ok": "Ok",
+        "copy": "Copy",
+        "projectName": "Project name",
+        "code": "Code",
+        "summary": "Summary",
+        "type": "Type",
+        "reportTo": "Report to",
+        "reportToEmails": "Report to emails",
+        "workDate": "Work date",
+        "status": "Status",
+        "action": "Actions",
+        "exportExcel": "Export excel",
+        "pleaseLogin": "Please login!",
+        "areYouDelete": "Are you sure delete?",
+        "chooseDate": "Choose date",
+        "fromDate": "From date",
+        "toDate": "To date",
+        "logworkOff": "Work off"
+    },
+    "validation": {
+        "isRequired": " is required."
+    },
+    "ITEMS_PER_PAGE_LABEL": "Items per page:",
+    "NEXT_PAGE_LABEL": "Next page",
+    "PREVIOUS_PAGE_LABEL": "Previous page",
+    "FIRST_PAGE_LABEL": "First page",
+    "LAST_PAGE_LABEL": "Last page",
+    "RANGE_PAGE_LABEL_1": "0 of {{length}}",
+    "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} of {{length}}"
+}

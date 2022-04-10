@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 import * as moment from 'moment';
-import { LogCountService } from '../../services/logcount.service';
 import { UserService } from 'src/app/services';
 import { ActivityService } from 'src/app/services/activity.service';
 import { DatePipe } from '@angular/common';

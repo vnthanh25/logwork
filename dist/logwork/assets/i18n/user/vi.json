@@ -1,0 +1,28 @@
+{
+    "user": {
+        "title": "Thành viên",
+        "save": "Lưu",
+        "create": "Tạo mới",
+        "edit": "Chỉnh sửa",
+        "update": "Cập nhật",
+        "delete": "Xóa",
+        "cancel": "Hủy",
+        "copy": "Sao chép",
+        "ok": "Đồng ý",
+        "createUser": "Create user",
+        "userName": "Email",
+        "name": "Tên",
+        "surname": "Họ lót",
+        "account": "Tên window user",
+        "searchByName": "Tìm theo email",
+        "chooseDate": "Chọn ngày",
+        "fromDate": "Từ ngày",
+        "toDate": "Đến ngày",
+        "exportDailyAsExcel": "Xuất theo ngày ra excel",
+        "exportWeeklyAsExcel": "Xuất theo tuần ra excel",
+        "exportMissLogworkAsExcelFile": "Xuất thiếu log work ra excel"
+    },
+    "validation": {
+        "isRequired": " không thể rỗng."
+    }
+}

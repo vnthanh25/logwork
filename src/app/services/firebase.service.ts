@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { HttpClient } from '@angular/common/http';
+
+const userUrl = 'assets/data/user.json';
+const usersUrl = 'assets/data/users.json';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
 
-  constructor(public db: AngularFirestore) {}
+  constructor(private http: HttpClient) {}
 
   getAvatars() {
-      return this.db.collection('/avatar').valueChanges();
   }
 
   // save(user: any) {
@@ -28,23 +30,23 @@ export class FirebaseService {
   // }
 
   createDocument(collection: string, document: any) {
-    return this.db.collection(collection).add(document);
+    return this.http.get<Object>(userUrl).toPromise();
   }
 
   getDocument(collection: string, id) {
-    return this.db.collection(collection).doc(id).snapshotChanges();
+    return this.http.get<Object>(userUrl);
   }
 
   updateDocument(collection: string, id, value) {
-    return this.db.collection(collection).doc(id).set(value, { merge: true });
+    return this.http.get<Object>(userUrl).toPromise();
   }
 
   deleteDocument(collection: string, id: any) {
-    return this.db.collection(collection).doc(id).delete();
+    return this.http.get<Object>(userUrl).toPromise();
   }
 
   getDocuments(collection: string) {
-    return this.db.collection(collection).snapshotChanges();
+    return this.http.get<Object[]>(usersUrl);
   }
 
   // searchDocuments(collection: string, searchValue) {
@@ -55,11 +57,11 @@ export class FirebaseService {
 
   searchDocumentsByProperty(collection: string, property: string, value) {
     //return this.db.collection(collection,ref => ref.orderBy(property).startAt(value)).snapshotChanges();
-    return this.db.collection(collection, ref => ref.where(property, '==', value)).snapshotChanges();
+    return this.http.get<Object[]>(usersUrl);
   }
 
   searchDocumentsByStartAtProperty(collection: string, property: string, value) {
-    return this.db.collection(collection, ref => ref.orderBy(property).startAt(value).endAt(value + '\uf8ff')).snapshotChanges();
+    return this.http.get<Object[]>(usersUrl);
   }
 
 }

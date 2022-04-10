@@ -1,0 +1,39 @@
+{
+    "activity": {
+        "title": "Công việc",
+        "save": "Lưu",
+        "create": "Tạo mới",
+        "edit": "Chỉnh sửa",
+        "update": "Cập nhật",
+        "delete": "Xóa",
+        "cancel": "Hủy",
+        "ok": "Đồng ý",
+        "copy": "Sao chép",
+        "projectName": "Tên dự án",
+        "code": "Tên công việc",
+        "summary": "Mô tả chi tiết",
+        "type": "Loại công việc",
+        "reportTo": "Người quản lý",
+        "reportToEmails": "Email của những người quản lý",
+        "workDate": "Ngày làm",
+        "status": "Trạng thái",
+        "action": "Hành động",
+        "exportExcel": "Xuất ra excel",
+        "pleaseLogin": "Vui lòng đăng nhập!",
+        "areYouDelete": "Bạn có chắc là xóa?",
+        "chooseDate": "Chọn ngày",
+        "fromDate": "Từ ngày",
+        "toDate": "Đến ngày",
+        "logworkOff": "Nghỉ phép"
+    },
+    "validation": {
+        "isRequired": " không thể rỗng."
+    },
+    "ITEMS_PER_PAGE_LABEL": "Số lượng trên trang:",
+    "NEXT_PAGE_LABEL": "Trang tiếp",
+    "PREVIOUS_PAGE_LABEL": "Trang trước",
+    "FIRST_PAGE_LABEL": "Trang đầu",
+    "LAST_PAGE_LABEL": "Trang cuối",
+    "RANGE_PAGE_LABEL_1": "0 trong {{length}}",
+    "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} trong {{length}}"
+}

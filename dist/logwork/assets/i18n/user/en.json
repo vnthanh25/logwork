@@ -1,0 +1,28 @@
+{
+    "user": {
+        "title": "User",
+        "save": "Save",
+        "create": "Create",
+        "edit": "Edit",
+        "update": "Update",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "ok": "Ok",
+        "copy": "Copy",
+        "createUser": "Create user",
+        "userName": "Email",
+        "name": "Name",
+        "surname": "Surname",
+        "account": "Window account",
+        "searchByName": "Search by email",
+        "chooseDate": "Choose date",
+        "fromDate": "From date",
+        "toDate": "To date",
+        "exportDailyAsExcel": "Export daily to excel",
+        "exportWeeklyAsExcel": "Export weekly to excel",
+        "exportMissLogworkAsExcelFile": "Export Miss Log Work to Excel"
+    },
+    "validation": {
+        "isRequired": " is required."
+    }
+}
